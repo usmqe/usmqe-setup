@@ -1,0 +1,7 @@
+# vim temp files
+.*.swp
+*~
+# ansible inventory files
+*.hosts
+# other ansible temporary files
+*.retry
