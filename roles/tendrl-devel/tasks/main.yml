@@ -1,0 +1,14 @@
+- name: Install dependencies
+  yum:
+    name={{ item }}
+  with_items:
+    - python-pip 
+    - git
+    - nodejs
+    - npm
+    - httpd
+    - python-devel
+    - gcc
+
+- name: Install virtualenv
+  pip: name=virtualenv
