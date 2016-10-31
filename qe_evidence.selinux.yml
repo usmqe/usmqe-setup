@@ -1,0 +1,11 @@
+---
+
+- name: Download SELinux audit logs
+  hosts: all
+  user: root
+  vars:
+    evidence_dirs:
+     - /var/log/audit/
+  roles:
+    - qe-evidence
+    - qe-evidence-probe

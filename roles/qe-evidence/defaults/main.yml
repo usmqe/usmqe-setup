@@ -1,0 +1,12 @@
+---
+
+# List of directories on remote machine to rsync into local target directory.
+
+evidence_dirs:
+ - /etc/
+ - /var/log/
+
+# List of individual files on remote machine to fetch into local target
+# directory. The default value is just an empty list.
+
+evidence_files: []

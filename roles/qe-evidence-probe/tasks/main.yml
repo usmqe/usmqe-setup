@@ -1,0 +1,61 @@
+---
+
+- name: Fail if evidence_target variable is not defined
+  fail: msg="You need to define evidence target variable"
+  when: evidence_target is undefined
+  delegate_to: 127.0.0.1
+
+# First of all, we need to create remote temporary directory, where we are
+# going to dump results of the probe.
+
+- name: Create remote target directory
+  file: path=/tmp/usmqe/ state=directory
+
+# We also need to create a local directory for each remote machine (we are
+# going to rsync data from remote machines there).
+
+- name: Create local target directories
+  file:
+    path={{ evidence_target }}/{{ inventory_hostname }}/tmp/usmqe/
+    state=directory
+  delegate_to: 127.0.0.1
+
+# Make sure that tools required for the probe are installed
+
+- name: Install required tools
+  yum: name={{ item }} state=present
+  with_items:
+   - psmisc
+   - policycoreutils
+   - policycoreutils-python
+   - lsof
+
+# So that we can run few data dumps/probes and store results into /tmp/usmqe/
+
+- name: Probe remote machine
+  shell: '{{ item.cmd }} > {{ item.out }}'
+  args:
+    chdir: /tmp/usmqe/
+    # creates: /tmp/usmqe/{{ item.out }}
+  with_items:
+   - { cmd: 'rpm -qa | sort', out: 'rpm-qa' }
+   - { cmd: 'yum repolist', out: 'yum-repolist' }
+   - { cmd: 'hostname', out: 'hostname' }
+   - { cmd: 'lsblk', out: 'lsblk' }
+   - { cmd: 'pstree -aplZ', out: 'pstree' }
+   - { cmd: 'systemctl status', out: 'systemctl-status' }
+   - { cmd: 'sestatus', out: 'sestatus' }
+   - { cmd: 'semanage permissive -l', out: 'semanage-permissive' }
+   - { cmd: 'ip a s', out: 'ip-adress-show' }
+   - { cmd: 'ip route s', out: 'ip-route-show' }
+   - { cmd: 'iptables -nvL', out: 'iptables-nvL' }
+   - { cmd: 'lsof -i', out: 'lsof-i' }
+
+# Now rsync all the data dumps from remote machines.
+
+- name: Rsync result of the probe into local machine
+  synchronize:
+    src=/tmp/usmqe/
+    dest={{ evidence_target }}/{{ inventory_hostname }}/tmp/usmqe/
+    mode=pull
+    archive=yes

@@ -1,0 +1,9 @@
+---
+
+# Minimal playbook for qe-evidence role (role defaults are used)
+
+- name: Download all logs and all configuration from all machines
+  hosts: all
+  user: root
+  roles:
+    - qe-evidence

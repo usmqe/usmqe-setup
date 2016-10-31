@@ -1,0 +1,20 @@
+---
+
+# Instead of listing all configuration and log files to be fetched,
+# this playbook just downloads almost everything and then runs the probe.
+
+- name: Download all logs and all configuration from all machines
+  hosts: all
+  user: root
+  vars:
+    evidence_dirs:
+     - /etc/
+     - /root/
+     - /var/log/
+    evidence_files:
+     - /proc/cpuinfo
+     - /proc/meminfo
+     - /proc/version
+  roles:
+    - qe-evidence
+    - qe-evidence-probe

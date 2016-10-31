@@ -1,0 +1,38 @@
+---
+
+- name: Fail if evidence_target variable is not defined
+  fail: msg="You need to define evidence target variable"
+  when: evidence_target is undefined
+  delegate_to: 127.0.0.1
+
+# First of all, we need to create local directories, where we are going to
+# rsync data from remote machines.
+
+- name: Create local target directories
+  file:
+    path={{ evidence_target }}/{{ inventory_hostname }}/{{ item }}
+    state=directory
+  delegate_to: 127.0.0.1
+  with_items: '{{ evidence_dirs }}'
+
+# Now rsync each directory in evidence_dirs variable into local target
+# directory.
+
+- name: Rsync given directories from remote machine into target directories
+  synchronize:
+    src={{ item }}
+    dest={{ evidence_target }}/{{ inventory_hostname }}/{{ item }}
+    mode=pull
+    archive=yes
+  with_items: '{{ evidence_dirs }}'
+  ignore_errors: true
+
+# And now something bit different: fetch individual files from evidence_files
+# into local target directory.
+
+- name: Fetch given files from remote machine into target directories
+  fetch:
+    src={{ item }}
+    dest={{ evidence_target }}/
+    fail_on_missing=no
+  with_items: '{{ evidence_files }}'
