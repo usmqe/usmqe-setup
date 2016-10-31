@@ -1,0 +1,28 @@
+---
+
+# https://fedoraproject.org/wiki/EPEL
+# https://getfedora.org/keys/
+
+- name: Copy EPEL rpm-gpg key first (hack)
+  copy:
+    src='RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}'
+    dest=/root
+
+- name: Import EPEL rpm-gpg key
+  rpm_key:
+    key='/root/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}'
+    state=present
+
+- name: Install EPEL repo
+  yum:
+    name='https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version  }}.noarch.rpm'
+    state=present
+
+# This is sane default for QE purposes. One should enable EPEL repository only
+# when needed.
+- name: Disable EPEL repo by default (accessible via yum --enablerepo only)
+  ini_file:
+    dest=/etc/yum.repos.d/epel.repo
+    section=epel
+    option=enabled
+    value=0

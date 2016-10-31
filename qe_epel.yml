@@ -1,0 +1,6 @@
+---
+- name: Install EPEL repo, but disable it by default
+  hosts: all
+  user: root
+  roles:
+    - epel
