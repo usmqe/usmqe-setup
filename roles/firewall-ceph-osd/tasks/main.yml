@@ -1,0 +1,12 @@
+---
+
+# Based on section "2.4.3. Configuring OSD node Ports"
+# from "Red Hat Storage Console 2.0 Quick Start Guide"
+
+- name: Make sure firewalld is enabled and running
+  service: name=firewalld state=started enabled=yes
+
+- name: Enable port for Ceph Storage
+  firewalld:
+    port=6800-7300/tcp
+    zone=public permanent=true state=enabled immediate=true

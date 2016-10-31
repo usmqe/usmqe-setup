@@ -1,0 +1,21 @@
+---
+
+# This playbook just tries to enable firewall on all machines of the cluster.
+
+- name: Configure and enable firewalld on skyrings/RHSCon 2.0 server machine
+  hosts: usm_server
+  user: root
+  roles:
+    - firewall-skyrings
+
+- name: Configure and enable firewalld configuration on Ceph Monitor machines
+  hosts: ceph_mon
+  user: root
+  roles:
+    - firewall-ceph-mon
+
+- name: Configure and enable firewalld configuration on Ceph OSD machines
+  hosts: ceph_osd
+  user: root
+  roles:
+    - firewall-ceph-osd

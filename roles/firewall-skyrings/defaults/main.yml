@@ -1,0 +1,4 @@
+---
+
+# Is skyring service is available via https?
+skyring_uses_https: true
