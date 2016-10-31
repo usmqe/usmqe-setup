@@ -9,6 +9,4 @@
     - httpd
     - python-devel
     - gcc
-
-- name: Install virtualenv
-  pip: name=virtualenv
+    - python-virtualenv
