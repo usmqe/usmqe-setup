@@ -1,0 +1,28 @@
+- include: virtualenv.yml
+  when: virtualenv_path is defined
+
+- include: nonvirtualenv.yml
+  when: not virtualenv_path
+
+- name: Directory for Tendrl conf
+  file:
+    path=/etc/tendrl
+    state=directory
+
+- name: Directory for Tendrl log
+  file:
+    path=/var/log/tendrl
+    state=directory
+
+- name: Copy conf to remote
+  copy:
+    src=tendrl.conf
+    dest=/etc/tendrl/tendrl.conf
+    
+- name: Configure tendrl.conf - etcd_connection
+  lineinfile:
+    dest=/etc/tendrl/tendrl.conf
+    regexp="^(\#*)etcd_connection = (.*)"
+    line="etcd_connection = \"{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}:2379\""
+    
+
