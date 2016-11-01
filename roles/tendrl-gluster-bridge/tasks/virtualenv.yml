@@ -1,0 +1,6 @@
+- name: Install gluster_bridge into virtualenv
+  pip:
+    name=
+    chdir={{ gluster_bridge_path }}
+    virtualenv="{{ virtualenv_path }}"
+  when: virtualenv_path is defined
