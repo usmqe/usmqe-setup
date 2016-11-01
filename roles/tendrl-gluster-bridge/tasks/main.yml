@@ -8,19 +8,4 @@
   when: virtualenv_path is defined
 
 - include: nonvirtualenv.yml
-  when: not virtualenv_path    
-    
-#- name: Directory for config 
-#  file:
-#    path="/root/bricks/vol1_{{ inventory_hostname }}"
-#    state=directory
-
-#- name: Configure tendrl.conf etcd_connection
-#  lineinfile:
-#    dest={{ gluster_bridge_path }}/etc/create_api_job.py
-#    regexp="^(.*)\"brickdetails\":(.*)"
-#    line="\t\t\"brickdetails\"{{ ":" }} [{{ groups['gluster_storage']|join(', ') }}]"
-
-#- name: Run gluster-bridge
-#  command: "{{ virtualenv_path }}/bin/tendrl-gluster-bridge"
-#  when: virtualenv_path is defined
+  when: not virtualenv_path
