@@ -1,6 +1,7 @@
-##ETCD
+## etcd
 
-- Requires Ansible 2.1
-- Expects CentOS/RHEL 7 hosts
+This role installs etcd from package and configures it for the tendrl project
+based on upstream tendrl documentation.
 
-This role installs ETCD from package, sets up configuration file /etc/etcd/etcd.conf and starts the service.
+Since the configuration of etcd for tendrl is not properly documented, this
+role is not complete.
