@@ -1,0 +1,56 @@
+- name: Install Ruby
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - ruby
+    - ruby-devel
+
+- name: Clone tendrl.git
+  git:
+    repo={{ tendrl_repo_url }}
+    version={{ tendrl_repo_branch }}
+    dest={{ tendrl_api_local_path }}
+
+- name: Exclude files created by bundler from repo (HACK)
+  command: git update-index --assume-unchanged Gemfile.lock
+    chdir={{ tendrl_api_local_path }}
+
+- name: Install Ruby bundler (HACK)
+  gem:
+    name=bundler
+
+- name: Bundle installation of Tendrl (HACK)
+  bundler:
+    state=present
+    chdir={{ tendrl_api_local_path }}
+
+- name: Directory for config
+  file:
+    path={{ tendrl_api_local_path }}/config/sds
+    state=directory
+
+- name: Create config file with connection to etcd
+  shell: cp -r {{ tendrl_api_local_path }}/config/etcd.sample.yml {{ tendrl_api_local_path }}/config/etcd.yml
+
+- name: Copy yaml definition into proper directory
+  shell: cp -r {{ tendrl_api_local_path }}/spec/fixtures/sds/tendrl_definitions_gluster-3.8.3.yaml {{ tendrl_api_local_path }}/config/sds/tendrl_definitions_gluster-3.8.3.yaml
+
+- name: Configure config/etcd.yml - host
+  lineinfile:
+    dest={{ tendrl_api_local_path }}/config/etcd.yml
+    regexp="^  {{ ":" }}host{{ ":" }} \'127.0.0.1\'"
+    line="  {{ ":" }}{{ item }}{{ ":" }} \'{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}\'"
+  with_items:
+    - host
+    - host
+    - host
+
+- name: Make sure that ETCD service is running
+  service:
+    name=etcd
+    state=started
+
+- name: Seed the etcd instance
+  command: bundle exec rake etcd:seed
+    chdir={{ tendrl_api_local_path }}

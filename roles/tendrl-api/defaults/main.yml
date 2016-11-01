@@ -1,0 +1,8 @@
+--
+# when true, tendrl-api is installed from a source repository
+use_source: false
+# url of the source repository and the branch to checkout
+tendrl_api_repo_url: git://github.com/Tendrl/tendrl.git
+tendrl_api_repo_branch: master
+# target (the git repo would be checked out there)
+tendrl_api_local_path: /opt/tendrl/tendrl-api
