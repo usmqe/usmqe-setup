@@ -1,0 +1,4 @@
+- name: Install ceph_bridge
+  pip:
+    name='git+https://github.com/Tendrl/ceph_bridge#egg=ceph_bridge'
+  when: not virtualenv_path
