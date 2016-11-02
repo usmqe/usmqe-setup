@@ -1,0 +1,15 @@
+- name: Install newest setuptools into virtualenv
+  pip:
+    name=setuptools
+    state=latest
+    virtualenv="{{ virtualenv_path }}"
+
+- name: Directory for Tendrl virtualenv
+  file:
+    path="{{ virtualenv_path }}"
+    state=directory
+
+- name: Install bridge_common into virtualenv
+  pip:
+    name={{ tendrl_bridge_common_repo_url }}
+    virtualenv="{{ virtualenv_path }}"

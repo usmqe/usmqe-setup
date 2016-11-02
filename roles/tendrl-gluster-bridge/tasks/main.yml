@@ -1,11 +1,31 @@
-- name: Clone gluster_bridge
-  git:
-    repo=git://github.com/shtripat/gluster_bridge.git
-    dest={{ gluster_bridge_path }}
-    version=vol-operations
+#
+# installation
+#
 
-- include: virtualenv.yml
-  when: virtualenv_path is defined
+- include: source.yml
+  when: use_source
 
-- include: nonvirtualenv.yml
-  when: not virtualenv_path
+- include: binary.yml
+  when: not use_source
+
+#- name: Directory for config 
+#  file:
+#    path="/root/bricks/vol1_{{ inventory_hostname }}"
+#    state=directory
+
+#- name: Configure tendrl.conf etcd_connection
+#  lineinfile:
+#    dest={{ gluster_bridge_path }}/etc/create_api_job.py
+#    regexp="^(.*)\"brickdetails\":(.*)"
+#    line="\t\t\"brickdetails\"{{ ":" }} [{{ groups['gluster_storage']|join(', ') }}]"
+
+#- name: Run gluster-bridge
+#  command: "{{ virtualenv_path }}/bin/tendrl-gluster-bridge"
+#  when: virtualenv_path is defined
+
+#
+# post installation configuration
+#
+
+# TODO: move some configuration there when the documentation is clear and when
+# the rpm packages are available

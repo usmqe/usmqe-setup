@@ -1,0 +1,9 @@
+- name: Directory for Tendrl virtualenv
+  file:
+    path="{{ virtualenv_path }}"
+    state=directory
+
+- name: Install node_agent into virtualenv
+  pip:
+    name={{ tendrl_node_agent_repo_url }}
+    virtualenv="{{ virtualenv_path }}"

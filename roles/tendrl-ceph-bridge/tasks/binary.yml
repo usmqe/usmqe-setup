@@ -1,0 +1,5 @@
+- name: Binary builds are not avaiable
+  assert:
+    that:
+      - false
+ 

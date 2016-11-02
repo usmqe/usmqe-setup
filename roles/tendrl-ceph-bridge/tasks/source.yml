@@ -1,0 +1,9 @@
+- name: Directory for Tendrl virtualenv
+  file:
+    path="{{ virtualenv_path }}"
+    state=directory
+
+- name: Install ceph_bridge into virtualenv
+  pip:
+    name={{ tendrl_ceph_bridge_repo_url }}
+    virtualenv="{{ virtualenv_path }}"
