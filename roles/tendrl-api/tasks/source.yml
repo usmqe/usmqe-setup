@@ -46,11 +46,11 @@
     - host
     - host
 
-- name: Make sure that ETCD service is running
-  service:
-    name=etcd
-    state=started
+#- name: Make sure that ETCD service is running
+#  service:
+#    name=etcd
+#    state=started
 
-- name: Seed the etcd instance
-  command: bundle exec rake etcd:seed
-    chdir={{ tendrl_api_local_path }}
+#- name: Seed the etcd instance
+#  command: bundle exec rake etcd:seed
+#    chdir={{ tendrl_api_local_path }}

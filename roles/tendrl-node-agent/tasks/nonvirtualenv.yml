@@ -1,4 +1,0 @@
-- name: Install node_agent
-  pip:
-    name='git+https://github.com/Tendrl/node_agent#egg=node_agent'
-  when: not virtualenv_path

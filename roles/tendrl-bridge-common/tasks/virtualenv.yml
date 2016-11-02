@@ -1,4 +1,0 @@
-- name: Install bridge_common into virtualenv
-  pip:
-    name='git+https://github.com/Tendrl/bridge_common#egg=bridge_common'
-    virtualenv="{{ virtualenv_path }}"

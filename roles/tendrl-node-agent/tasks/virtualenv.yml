@@ -1,5 +1,0 @@
-- name: Install node_agent into virtualenv
-  pip:
-    name='git+https://github.com/Tendrl/node_agent#egg=node_agent'
-    virtualenv="{{ virtualenv_path }}"
-  when: virtualenv_path is defined 

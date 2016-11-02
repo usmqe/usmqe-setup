@@ -47,11 +47,11 @@
     - host
     - host
 
-- name: Make sure that ETCD service is running
-  service:
-    name=etcd
-    state=started
+#- name: Make sure that ETCD service is running
+#  service:
+#    name=etcd
+#    state=started
 
-- name: Seed the Etcd instance
-  command: bundle exec rake etcd:seed 
-    chdir={{ api_path }}
+#- name: Seed the Etcd instance
+#  command: bundle exec rake etcd:seed 
+#    chdir={{ api_path }}

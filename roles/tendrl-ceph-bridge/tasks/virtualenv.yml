@@ -1,5 +1,0 @@
-- name: Install ceph_bridge into virtualenv
-  pip:
-    name='git+https://github.com/Tendrl/ceph_bridge#egg=ceph_bridge'
-    virtualenv="{{ virtualenv_path }}"
-  when: virtualenv_path is defined 
