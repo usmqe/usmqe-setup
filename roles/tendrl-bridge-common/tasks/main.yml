@@ -19,5 +19,5 @@
   lineinfile:
     dest=/etc/tendrl/tendrl.conf
     regexp="^(\#*)etcd_connection = (.*)"
-    line="etcd_connection = \"{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}:2379\""
+    line="etcd_connection = {{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}"
     
