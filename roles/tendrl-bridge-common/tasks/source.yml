@@ -13,3 +13,18 @@
   pip:
     name={{ tendrl_bridge_common_repo_url }}
     virtualenv="{{ virtualenv_path }}"
+
+- name: Directory for Tendrl conf
+  file:
+    path=/etc/tendrl
+    state=directory
+
+- name: Directory for Tendrl log
+  file:
+    path=/var/log/tendrl
+    state=directory
+
+- name: Copy conf to remote
+  copy:
+    src=tendrl.conf
+    dest=/etc/tendrl/tendrl.conf

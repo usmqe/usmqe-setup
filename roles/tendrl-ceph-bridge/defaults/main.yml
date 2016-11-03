@@ -2,7 +2,7 @@
 # when true, tendrl-api is installed from a source repository
 use_source: false
 # url of the source repository and the branch to checkout
-tendrl_ceph_bridge_repo_url:'git+https://github.com/Tendrl/ceph_bridge#egg=ceph_bridge'
+tendrl_ceph_bridge_repo_url: 'git+https://github.com/Tendrl/ceph_bridge#egg=ceph_bridge'
 tendrl_ceph_bridge_repo_branch: master
 # path where will be stored virtualenv
 virtualenv_path: /opt/tendrl/virtualenv

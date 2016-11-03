@@ -8,20 +8,12 @@
 - include: binary.yml
   when: not use_source
 
-- name: Directory for Tendrl conf
-  file:
-    path=/etc/tendrl
-    state=directory
+#
+# post installation configuration
+#
 
-- name: Directory for Tendrl log
-  file:
-    path=/var/log/tendrl
-    state=directory
-
-- name: Copy conf to remote
-  copy:
-    src=tendrl.conf
-    dest=/etc/tendrl/tendrl.conf
+# TODO: move some configuration there when the documentation is clear and when
+# the rpm packages are available
     
 - name: Configure tendrl.conf - etcd_connection
   lineinfile:
@@ -29,9 +21,3 @@
     regexp="^(\#*)etcd_connection = (.*)"
     line="etcd_connection = \"{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}:2379\""
     
-#
-# post installation configuration
-#
-
-# TODO: move some configuration there when the documentation is clear and when
-# the rpm packages are available
