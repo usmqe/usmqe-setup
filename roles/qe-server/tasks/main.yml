@@ -1,0 +1,71 @@
+---
+
+#
+# usmqe test user (the tests are executed under this account)
+#
+
+- name: Create usmqe unix user group
+  group: name=usmqe state=present
+
+- name: Create usmqe unix user account
+  user:
+    name=usmqe
+    group=usmqe
+    createhome=yes
+    generate_ssh_key=yes
+    comment="USM QE test user account"
+    state=present
+
+#
+# ansible
+#
+
+- name: Install ansible
+  yum: name=ansible state=present enablerepo=epel
+
+- name: Configure ansible forks option
+  lineinfile:
+    regexp="^forks "
+    line="forks          = 50"
+    dest=/etc/ansible/ansible.cfg
+    state=present
+
+#
+# https://www.softwarecollections.org/en/scls/rhscl/rh-python35/
+#
+
+- name: Install python35 software collection
+  yum: name=rh-python35 state=present
+
+- name: Install python dev tools from software collection
+  yum: name={{ item }} state=present
+  with_items:
+    - rh-python35-python-devel
+    - rh-python35-python-tools
+    - rh-python35-python-pip
+    - rh-python35-python-docutils
+    - rh-python35-python-setuptools
+    - rh-python35-python-virtualenv
+
+#
+# usmqe dependencies
+#
+
+- name: Install usmqe dependencies from software collection
+  yum: name={{ item }} state=installed
+  with_items:
+   - rh-python35-PyYAML
+   - rh-python35-python-jinja2
+
+#
+# other tools
+#
+
+- name: Install other useful tools
+  yum: name={{ item }} state=installed enablerepo=epel
+  with_items:
+   - git
+   - vim
+   - tmux
+   - htop
+   - tree

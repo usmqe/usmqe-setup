@@ -1,0 +1,33 @@
+---
+
+# This playbook configures test server machine, where the integration
+# tests are executed from.
+
+- name: Configure QE test server
+  hosts: all
+  user: root
+  roles:
+   - epel
+   - scl
+   - qe-server
+
+- name: Prepare test environment of usmqe user
+  hosts: all
+  user: root
+  become: yes
+  become_user: usmqe
+  tasks:
+
+   - name: Clone usmqe git repositories
+     git:
+       repo={{ item.repo }}
+       dest=/home/usmqe/{{ item.name }}
+       version={{ item.version }}
+       update=no
+     with_items:
+      - name: 'usmqe-setup'
+        repo: 'https://github.com/Tendrl/usmqe-setup.git'
+        version: 'master'
+      - name: 'usmqe-tests'
+        repo: 'https://github.com/Tendrl/usmqe-tests.git'
+        version: 'master'
