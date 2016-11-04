@@ -1,4 +1,0 @@
----
-
-- name: Install centos-release-scl (package with the repo file)
-  yum: name=centos-release-scl state=installed

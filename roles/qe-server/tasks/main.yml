@@ -31,27 +31,10 @@
     state=present
 
 #
-# https://www.softwarecollections.org/en/scls/rhscl/rh-python35/
-#
-
-- name: Install python35 software collection
-  yum: name=rh-python35 state=present
-
-- name: Install python dev tools from software collection
-  yum: name={{ item }} state=present
-  with_items:
-    - rh-python35-python-devel
-    - rh-python35-python-tools
-    - rh-python35-python-pip
-    - rh-python35-python-docutils
-    - rh-python35-python-setuptools
-    - rh-python35-python-virtualenv
-
-#
 # usmqe dependencies
 #
 
-- name: Install usmqe dependencies from software collection
+- name: Install usmqe dependencies from rh-python-35 collection
   yum: name={{ item }} state=installed
   with_items:
    - rh-python35-PyYAML

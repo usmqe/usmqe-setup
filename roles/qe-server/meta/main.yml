@@ -1,4 +1,4 @@
 ---
 dependencies:
   - { role: epel }
-  - { role: scl }
+  - { role: rh-python35 }

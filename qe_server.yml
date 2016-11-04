@@ -8,7 +8,7 @@
   user: root
   roles:
    - epel
-   - scl
+   - rh-python35
    - qe-server
 
 - name: Prepare test environment of usmqe user
