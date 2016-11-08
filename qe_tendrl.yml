@@ -1,0 +1,23 @@
+---
+- hosts: usm_server 
+  remote_user: root
+  vars:
+    use_source: true
+    api_path: /opt/tendrl/tendrl
+  roles:
+    - tendrl-devel
+    - etcd
+    - tendrl-tendrl
+
+- hosts: gluster
+  remote_user: root
+  vars:
+    use_source: true
+    gluster_bridge_path: /opt/tendrl/gluster_bridge
+    tendrl_gluster_bridge_repo_branch: vol-operations
+  roles:
+    - tendrl-devel
+    - gluster
+    - tendrl-bridge-common
+    - tendrl-node-agent
+    - tendrl-gluster-bridge
