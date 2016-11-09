@@ -8,8 +8,8 @@
 
 - name: Clone tendrl.git
   git:
-    repo={{ tendrl_repo_url }}
-    version={{ tendrl_repo_branch }}
+    repo={{ tendrl_api_repo_url }}
+    version={{ tendrl_api_repo_branch }}
     dest={{ tendrl_api_local_path }}
 
 - name: Exclude files created by bundler from repo (HACK)

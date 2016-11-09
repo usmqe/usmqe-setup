@@ -1,4 +1,4 @@
---
+---
 # when true, tendrl-api is installed from a source repository
 use_source: false
 # url of the source repository and the branch to checkout
