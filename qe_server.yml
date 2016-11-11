@@ -1,10 +1,10 @@
 ---
 
-# This playbook configures test server machine, where the integration
-# tests are executed from.
+# This playbook configures qe server machine, where usmqe integration
+# tests are installed and executed.
 
-- name: Configure QE test server
-  hosts: all
+- name: Configure QE server
+  hosts: qe_server
   user: root
   roles:
    - epel
@@ -12,7 +12,7 @@
    - qe-server
 
 - name: Prepare test environment of usmqe user
-  hosts: all
+  hosts: qe_server
   user: root
   become: yes
   become_user: usmqe
