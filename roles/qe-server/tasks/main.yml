@@ -41,6 +41,15 @@
    - rh-python35-python-jinja2
 
 #
+# usmqeserver10 repo (from copr)
+#
+
+- name: Install usmqeserver10 repository
+  copy:
+    src='usmqe-usmqeserver10-epel-{{ ansible_distribution_major_version }}.repo'
+    dest=/etc/yum.repos.d/
+
+#
 # other tools
 #
 
