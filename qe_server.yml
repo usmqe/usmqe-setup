@@ -31,3 +31,8 @@
       - name: 'usmqe-tests'
         repo: 'https://github.com/Tendrl/usmqe-tests.git'
         version: 'master'
+
+   # Install all requirements of usmqe-tests repository via pip from PyPI
+   # locally for usmqe user and rh-python35 software collection only.
+   - name: HACK - install python modules required to run usmqe-tests
+     shell: scl enable rh-python35 'pip install --user -r /home/usmqe/usmqe-tests/requirements.txt'
