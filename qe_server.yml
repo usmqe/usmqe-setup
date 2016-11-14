@@ -1,0 +1,38 @@
+---
+
+# This playbook configures qe server machine, where usmqe integration
+# tests are installed and executed.
+
+- name: Configure QE server
+  hosts: qe_server
+  user: root
+  roles:
+   - epel
+   - rh-python35
+   - qe-server
+
+- name: Prepare test environment of usmqe user
+  hosts: qe_server
+  user: root
+  become: yes
+  become_user: usmqe
+  tasks:
+
+   - name: Clone usmqe git repositories
+     git:
+       repo={{ item.repo }}
+       dest=/home/usmqe/{{ item.name }}
+       version={{ item.version }}
+       update=no
+     with_items:
+      - name: 'usmqe-setup'
+        repo: 'https://github.com/Tendrl/usmqe-setup.git'
+        version: 'master'
+      - name: 'usmqe-tests'
+        repo: 'https://github.com/Tendrl/usmqe-tests.git'
+        version: 'master'
+
+   # Install all requirements of usmqe-tests repository via pip from PyPI
+   # locally for usmqe user and rh-python35 software collection only.
+   - name: HACK - install python modules required to run usmqe-tests
+     shell: scl enable rh-python35 'pip install --user -r /home/usmqe/usmqe-tests/requirements.txt'

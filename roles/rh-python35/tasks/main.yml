@@ -1,0 +1,21 @@
+---
+
+#
+# https://www.softwarecollections.org/en/scls/rhscl/rh-python35/
+#
+
+- name: Install centos-release-scl (package with the repo file)
+  yum: name=centos-release-scl state=installed
+
+- name: Install rh python35 software collection
+  yum: name=rh-python35 state=present
+
+- name: Install core dev tools from the software collection
+  yum: name={{ item }} state=present
+  with_items:
+    - rh-python35-python-devel
+    - rh-python35-python-tools
+    - rh-python35-python-pip
+    - rh-python35-python-docutils
+    - rh-python35-python-setuptools
+    - rh-python35-python-virtualenv
