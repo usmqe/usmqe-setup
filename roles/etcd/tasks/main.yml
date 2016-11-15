@@ -29,7 +29,8 @@
     regexp="^(\#*)ETCD_ADVERTISE_CLIENT_URLS(.*)"
     line="ETCD_ADVERTISE_CLIENT_URLS=\"http://{{ inventory_hostname }}:2379\""
 
-- name: Start etcd
+- name: Start and enable etcd
   service:
     name=etcd
     state=started
+    enabled=yes
