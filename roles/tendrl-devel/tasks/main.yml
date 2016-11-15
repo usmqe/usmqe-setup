@@ -2,7 +2,11 @@
   yum:
     name={{ item }}
   with_items:
-    - python-pip 
+    - @development  # CentOS group id, could (will) be different for other OSes
+    - ruby
+    - ruby-devel
+    - rubygem-bundler
+    - python-pip
     - git
     - nodejs
     - npm
