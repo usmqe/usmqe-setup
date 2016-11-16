@@ -3,6 +3,7 @@
     name={{ item }}
     state=present
   with_items:
+    - @development  # CentOS group id, could (will) be different for other OSes
     - ruby
     - ruby-devel
 
@@ -23,7 +24,17 @@
 - name: Bundle installation of Tendrl (HACK)
   bundler:
     state=present
+    binstub_directory={{ tendrl_api_bundle_install_path }}
     chdir={{ tendrl_api_local_path }}
+  when: not tendrl_api_bundle_without
+
+- name: Bundle installation of Tendrl (HACK)
+  bundler:
+    state=present
+    binstub_directory={{ tendrl_api_bundle_install_path }}
+    exclude_groups={{ tendrl_api_bundle_without_groups }}
+    chdir={{ tendrl_api_local_path }}
+  when: not tendrl_api_bundle_without
 
 - name: Directory for config
   file:
@@ -52,5 +63,38 @@
 #    state=started
 
 #- name: Seed the etcd instance
-#  command: bundle exec rake etcd:seed
+#  command: vendor/bin/rake etcd:seed
 #    chdir={{ tendrl_api_local_path }}
+
+- name: Start the development server
+  command: vendor/bin/shotgun
+    chdir={{ tendrl_api_local_path }}
+
+## Running on Port 80
+#- name: Install apache
+#  yum: name={{ item }}
+#    state=present
+#  with_items:
+#    httpd
+#
+#- name: Copy apache configuration
+#  shell: cp {{ tendrl_api_local_path }}/config/apache.vhost.sample /etc/httpd/conf.d/tendrl.conf
+#
+## TODO update the apache config file to specific host details
+#
+#-name: check configuration
+# command: apachectl configtest
+#
+#-name: Update the SELinux configuration for apache
+# seboolean:
+#    name=httpd_can_network_connect
+#    state=yes
+#    persistent=yes
+#
+#-name: Run the application via puma
+# command: vendor/bin/puma -e development -d
+#
+#-name: Start apache
+# service:
+#    name=httpd
+#    state=started

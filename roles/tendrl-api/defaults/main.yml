@@ -1,8 +1,18 @@
 ---
 # when true, tendrl-api is installed from a source repository
-use_source: false
+use_source: true
 # url of the source repository and the branch to checkout
-tendrl_api_repo_url: git://github.com/Tendrl/tendrl.git
+# e.g. tendrl_api_repo_url: git://github.com/Tendrl/tendrl.git
+tendrl_api_repo_url: https://github.com/Tendrl/tendrl-api.git
 tendrl_api_repo_branch: master
 # target (the git repo would be checked out there)
 tendrl_api_local_path: /opt/tendrl/tendrl-api
+tendrl_api_bundle_install_path: vendor/bin
+# if there some areas which we don't want to install set
+# tendrl_api_bundle_without to true
+tendrl_api_bundle_without: false
+# if true a tendrl_api_bundle_without_groups has to be set too
+# e.g. development setup only 
+# tendrl_api_bundle_without_groups: production
+# OR production setup only
+# tendrl_api_bundle_without_groups: development test documentation
