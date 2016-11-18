@@ -9,20 +9,33 @@
     path="{{ virtualenv_path }}"
     state=directory
 
-- name: Install bridge_common into virtualenv
+- name: Install common into virtualenv
   pip:
-    name={{ tendrl_bridge_common_repo_url }}
+    name={{ tendrl_common_repo_url }}
     virtualenv="{{ virtualenv_path }}"
 
 - name: Directory for Tendrl conf
   file:
-    path=/etc/tendrl
+    path={{ item }}
     state=directory
+  with_items:
+    - /etc/tendrl
+    - /etc/tendrl/node_agent
 
 - name: Directory for Tendrl log
   file:
-    path=/var/log/tendrl
+    path={{ item }}
     state=directory
+  with_items:
+    - /var/log/tendrl
+    - /var/log/tendrl/etc
+    - /var/log/tendrl/etc/tendrl
+    - /var/log/tendrl/etc/tendrl/ceph_integration
+    - /var/log/tendrl/etc/tendrl/gluster_integration
+    - /var/log/tendrl/node_agent
+    - /var/log/tendrl/common
+    - /var/log/tendrl/ceph_integration
+    - /var/log/tendrl/gluster_integration
 
 - name: Copy conf to remote
   copy:
