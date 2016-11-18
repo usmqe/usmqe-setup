@@ -1,0 +1,23 @@
+- name: Directory for gluster_integration
+  file:
+    path="{{ tendrl_gluster_integration_path }}"
+    state=directory
+
+- name: Clone gluster_integration
+  git:
+    repo={{ tendrl_gluster_integration_repo_url }}
+    dest={{ tendrl_gluster_integration_path }}
+    version={{ tendrl_gluster_integration_repo_branch }}
+
+- name: Directory for Tendrl virtualenv
+  file:
+    path="{{ virtualenv_path }}"
+    state=directory
+
+- name: Install gluster_integration into virtualenv
+  pip:
+    name={{ tendrl_gluster_integration_path }}
+    virtualenv="{{ virtualenv_path }}"
+
+- name: Create gluster_integration logging config file
+  shell: cp -r {{ tendrl_gluster_integration_path }}/etc/logging.yaml.timedrotation.sample /etc/tendrl/gluster_integration_logging.yaml

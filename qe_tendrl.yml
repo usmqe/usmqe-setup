@@ -12,10 +12,9 @@
   remote_user: root
   vars:
     use_source: true
-#    tendrl_gluster_bridge_repo_branch: vol-operations
   roles:
     - tendrl-devel
     - gluster
-    - tendrl-bridge-common
+    - tendrl-common
     - tendrl-node-agent
-    - tendrl-gluster-bridge
+    - tendrl-bridge

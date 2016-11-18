@@ -8,12 +8,11 @@
     repo={{ tendrl_node_agent_repo_url }}
     dest={{ tendrl_node_agent_path }}
 
-# TODO: Uncomment when there will be sample configs
-#- name: Create bridge_common logging config file
-#  shell: cp -r {{ tendrl_node_agent_path }}/etc/samples/logging.yaml.timedrotation.sample /etc/tendrl/common_logging.yaml
+- name: Create common logging config file
+  shell: cp -r {{ tendrl_node_agent_path }}/etc/logging.yaml.timedrotation.sample /etc/tendrl/common_logging.yaml
 
-#- name: Create bridge_common logging config file
-#  shell: cp -r {{ tendrl_node_agent_path }}/etc/samples/logging.yaml.timedrotation.sample /etc/tendrl/node_agent_logging.yaml
+- name: Create node_agent logging config file
+  shell: cp -r {{ tendrl_node_agent_path }}/etc/logging.yaml.timedrotation.sample /etc/tendrl/node_agent_logging.yaml
 
 # TODO: Find proper way how to install those prerequisities not mentioned in documentation
 - name: Install dependencies

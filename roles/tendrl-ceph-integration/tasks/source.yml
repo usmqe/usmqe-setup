@@ -1,0 +1,23 @@
+- name: Directory for ceph_integration
+  file:
+    path="{{ tendrl_ceph_integration_path }}"
+    state=directory
+
+- name: Clone ceph_integration
+  git:
+    repo={{ tendrl_ceph_integration_repo_url }}
+    dest={{ tendrl_ceph_integration_path }}
+    version={{ tendrl_ceph_integration_repo_branch }}
+
+- name: Directory for Tendrl virtualenv
+  file:
+    path="{{ virtualenv_path }}"
+    state=directory
+
+- name: Install ceph_integration into virtualenv
+  pip:
+    name={{ tendrl_ceph_integration_path }}
+    virtualenv="{{ virtualenv_path }}"
+
+- name: Create ceph_integration logging config file
+  shell: cp -r {{ tendrl_ceph_integration_path }}/etc/logging.yaml.timedrotation.sample /etc/tendrl/ceph_integration_logging.yaml

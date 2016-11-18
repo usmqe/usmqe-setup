@@ -2,8 +2,8 @@
 # when true, tendrl-api is installed from a source repository
 use_source: false
 # url of the source repository and the branch to checkout
-tendrl_gluster_bridge_repo_url: git://github.com/shtripat/gluster_bridge.git
-tendrl_gluster_bridge_repo_branch: master
-tendrl_gluster_bridge_path: /opt/tendrl/gluster_bridge
+tendrl_ceph_integration_repo_url: git://github.com/Tendrl/ceph_integration.git
+tendrl_ceph_integration_repo_branch: master
+tendrl_ceph_integration_path: /opt/tendrl/ceph_integration
 # path where will be stored virtualenv
 virtualenv_path: /opt/tendrl/virtualenv

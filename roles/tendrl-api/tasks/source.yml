@@ -1,11 +1,17 @@
+- name: Install the 'Development tools' package group
+  yum:
+    name="@Development tools"
+    state=present
+
 - name: Install Ruby
   yum:
     name={{ item }}
     state=present
   with_items:
-    - @development  # CentOS group id, could (will) be different for other OSes
+#    - @development  # CentOS group id, could (will) be different for other OSes
     - ruby
     - ruby-devel
+    - rubygem-bundler
 
 - name: Clone tendrl.git
   git:
@@ -34,7 +40,7 @@
     binstub_directory={{ tendrl_api_bundle_install_path }}
     exclude_groups={{ tendrl_api_bundle_without_groups }}
     chdir={{ tendrl_api_local_path }}
-  when: not tendrl_api_bundle_without
+  when: tendrl_api_bundle_without
 
 - name: Directory for config
   file:
@@ -44,8 +50,8 @@
 - name: Create config file with connection to etcd
   shell: cp -r {{ tendrl_api_local_path }}/config/etcd.sample.yml {{ tendrl_api_local_path }}/config/etcd.yml
 
-- name: Copy yaml definition into proper directory
-  shell: cp -r {{ tendrl_api_local_path }}/spec/fixtures/sds/tendrl_definitions_gluster-3.8.3.yaml {{ tendrl_api_local_path }}/config/sds/tendrl_definitions_gluster-3.8.3.yaml
+#- name: Copy yaml definition into proper directory
+#  shell: cp -r {{ tendrl_api_local_path }}/spec/fixtures/sds/tendrl_definitions_gluster-3.8.3.yaml {{ tendrl_api_local_path }}/config/sds/tendrl_definitions_gluster-3.8.3.yaml
 
 - name: Configure config/etcd.yml - host
   lineinfile:
@@ -66,9 +72,9 @@
 #  command: vendor/bin/rake etcd:seed
 #    chdir={{ tendrl_api_local_path }}
 
-- name: Start the development server
-  command: vendor/bin/shotgun
-    chdir={{ tendrl_api_local_path }}
+#- name: Start the development server
+#  command: vendor/bin/shotgun
+#    chdir={{ tendrl_api_local_path }}
 
 ## Running on Port 80
 #- name: Install apache
