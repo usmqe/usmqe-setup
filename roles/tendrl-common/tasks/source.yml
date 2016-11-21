@@ -28,10 +28,9 @@
     state=directory
   with_items:
     - /var/log/tendrl
-    - /var/log/tendrl/etc
-    - /var/log/tendrl/etc/tendrl
-    - /var/log/tendrl/etc/tendrl/ceph_integration
-    - /var/log/tendrl/etc/tendrl/gluster_integration
+    - /etc/tendrl
+    - /etc/tendrl/ceph_integration
+    - /etc/tendrl/gluster_integration
     - /var/log/tendrl/node_agent
     - /var/log/tendrl/common
     - /var/log/tendrl/ceph_integration
