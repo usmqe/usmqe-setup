@@ -1,0 +1,20 @@
+---
+# This is just a simple playbook to quickly deploy ssh public key to all
+# machines of the test cluster via ansible.
+
+- name: Deploy ssh public keys for root user account
+  hosts: all
+  user: root
+  tasks:
+
+   - name: Deploy public ssh key
+     authorized_key:
+       exclusive=no
+       user=root
+       state=present
+       key={{ item }}
+     with_items:
+       # TODO: add ssh public keys you need to deploy into this list (either
+       # directly or by referencing the filename with the public key)
+       - "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/username.id_rsa.pub') }}"
+       - "ssh-rsa FOO...BAR username@example.com"
