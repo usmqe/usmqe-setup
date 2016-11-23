@@ -1,0 +1,34 @@
+---
+
+- name: Check current ansible user account
+  fail: msg="This role should not be run under root, but dedicated qe user!"
+  when: ansible_user_id == 'root'
+
+- name: Clone usmqe git repositories into home directory
+  git:
+    repo={{ item.repo }}
+    dest={{ ansible_user_dir }}/{{ item.name }}
+    version={{ item.version }}
+    update=no
+  with_items:
+   - name: 'usmqe-setup'
+     repo: 'https://github.com/Tendrl/usmqe-setup.git'
+     version: 'master'
+   - name: 'usmqe-tests'
+     repo: 'https://github.com/Tendrl/usmqe-tests.git'
+     version: 'master'
+
+# Install all requirements of usmqe-tests repository via pip from PyPI
+# locally for usmqe user and rh-python35 software collection only.
+- name: HACK - install python modules required to run usmqe-tests
+  shell: scl enable rh-python35 "pip install --user -r  {{ ansible_user_dir }}/usmqe-tests/requirements.txt"
+
+# Based on http://developers.redhat.com/blog/2014/03/19/permanently-enable-a-software-collection/
+- name: Enable the software collection in ~/.bashrc
+  lineinfile:
+    dest={{ ansible_user_dir }}/.bashrc
+    state=present
+    line={{ item }}
+  with_items:
+   - 'source /opt/rh/rh-python35/enable'
+   - "export X_SCLS=$(scl enable rh-python35 'echo $X_SCLS')"
