@@ -1,0 +1,20 @@
+---
+
+# This playbook configures jenkins slave machine, where usmqe integration
+# tests are installed and executed.
+
+- name: Configure QE server
+  hosts: qe_server
+  user: root
+  roles:
+   - epel
+   - rh-python35
+   - qe-server
+
+- name: Prepare test environment of jenkins user
+  hosts: qe_server
+  user: root
+  become: yes
+  become_user: jenkins
+  roles:
+   - qe-server-user
