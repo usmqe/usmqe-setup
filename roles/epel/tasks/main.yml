@@ -3,6 +3,10 @@
 # https://fedoraproject.org/wiki/EPEL
 # https://getfedora.org/keys/
 
+- name: Check if EPEL is not permanently enabled on RHEL
+  fail: msg="Do not permanently enable EPEL on RHEL!"
+  when: enabled and ansible_distribution == 'RedHat'
+
 - name: Copy EPEL rpm-gpg key first (hack)
   copy:
     src='RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}'
@@ -17,10 +21,6 @@
   yum:
     name='https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version  }}.noarch.rpm'
     state=present
-
-- name: Check if EPEL is not permanently enabled on RHEL
-  fail: msg="Do not permanently enable EPEL on RHEL!"
-  when: enabled and ansible_distribution == 'RedHat'
 
 # This is sane default for QE purposes. One should enable EPEL repository only
 # when needed.
