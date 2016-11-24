@@ -1,0 +1,34 @@
+- name: Add Glusetr EPEL YUM repo
+  yum_repository:
+    name: gluster
+    description: Gluster EPEL YUM repo
+    baseurl: http://buildlogs.centos.org/centos/7/storage/x86_64/gluster-3.9
+
+- name: Install GlusterFS
+  yum:
+    name="{{ item }}"
+    disable_gpg_check=yes
+    state=latest
+  with_items:
+    - glusterfs
+    - glusterfs-fuse
+    - glusterfs-server
+    - python-gluster
+    - glusterfs-rdma
+#    - glusterfs-debuginfo
+    - glusterfs-api
+    - glusterfs-client
+    - glusterfs-api-devel
+    - glusterfs-devel
+    - glusterfs-libs
+    - userspace-rcu
+    - glusterfs-cli
+#    - glusterfs-events
+    - glusterfs-rdma
+    - glusterfs-client-xlators
+    - glusterfs-extra-xlators
+
+- name: Run glusterd service
+  service:
+    name=glusterd
+    state=started
