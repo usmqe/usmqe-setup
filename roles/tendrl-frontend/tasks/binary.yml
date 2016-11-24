@@ -1,0 +1,25 @@
+- name: Install tendrl-api dependencies
+  yum:
+    name={{ item }}
+    state=present
+    validate_certs=no
+  with_items:
+#    - rubygem-synatra
+    - epel-release
+    - rubygems
+    - rubygems-devel
+    - rubygem-etcd
+    - rubygem-puma
+ #    - rubygem-activesupport
+#    - rubygem-sinatra-cross_origin
+#    - http://download.eng.bos.redhat.com/brewroot/packages/rubygem-activesupport/4.2.7.1/2.el7/noarch/rubygem-activesupport-4.2.7.1-2.el7.noarch.rpm
+#    - rubygem-sinatra
+
+#- name: Install ruby dependencies
+#  gem:
+#    name=rubygem-activesupport
+
+- name: Install tendrl-api
+  yum:
+    name=tendrl-api
+    state=present

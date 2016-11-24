@@ -1,0 +1,75 @@
+- name: Install essential packages
+  yum:
+    name={{ item }}
+  with_items:
+    - git
+    - nodejs
+    - npm
+    - httpd
+
+- name: Directory for Tendrl UI
+  file:
+    path={{ tendrl_frontend_local_path }}
+    state=directory
+
+- name: Clone tendrl_frontend.git
+  git:
+    repo={{ tendrl_frontend_repo_url }}
+    dest={{ tendrl_frontend_local_path }}
+
+- name: Exclude src/commons/js/index.js from repo (HACK)
+  command: git update-index --assume-unchanged src/commons/js/index.js
+    chdir={{ tendrl_frontend_local_path }}
+    
+# TODO change it after configuration will be available (HACK)
+- name: Configure url of api server
+  lineinfile:
+    dest={{ tendrl_frontend_local_path }}/src/commons/js/index.js
+    regexp="baseUrl:"
+    line="            baseUrl{{ ":" }} \"http{{ ":" }}//{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}{{ ":" }}9393/1.0/\","
+    
+- name: Install gulp required modules
+  npm:
+    name={{ item }}
+    path={{ tendrl_frontend_local_path }}
+  with_items:
+    - restangular
+#    - angular-strap
+#    - idb-wrapper
+#    - c3-angular
+#    - patternfly
+#    - angular-patternfly
+#    - angular-bootstrap-datetimepicker
+
+- name: Install gulp
+  npm:
+    name=gulp
+    global=yes
+    path={{ tendrl_frontend_local_path }}
+
+#- name: Install tsd
+#  npm:
+#    name=tsd
+#    global=yes
+#    path={{ tendrl_frontend_local_path }}
+
+- name: Install packages
+  npm:
+    name=
+    path={{ tendrl_frontend_local_path }}
+
+#- name: Run tsd install command
+#  command: tsd install
+#    chdir={{ tendrl_frontend_local_path }}
+
+- name: Run gulp compile command
+  command: gulp
+    chdir={{ tendrl_frontend_local_path }}
+
+- name: Start httpd service
+  service:
+    name=httpd
+    state=started
+
+- name: Copy frontend files into html directory
+  shell: cp -r {{ tendrl_frontend_local_path }}/dist/* /var/www/html/

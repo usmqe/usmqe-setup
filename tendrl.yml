@@ -6,7 +6,9 @@
   roles:
     - tendrl-devel
     - etcd
+    - tendrl-repo
     - tendrl-api
+    - tendrl-frontend
 
 - hosts: gluster
   remote_user: root
@@ -17,4 +19,4 @@
     - gluster
     - tendrl-common
     - tendrl-node-agent
-    - tendrl-bridge
+    - tendrl-gluster-integration

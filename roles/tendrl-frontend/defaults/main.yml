@@ -1,0 +1,17 @@
+---
+# when true, tendrl-frontend is installed from a source repository
+use_source: false
+# url of the source repository and the branch to checkout
+# e.g. tendrl_frontend_repo_url: git://github.com/Tendrl/tendrl.git
+tendrl_frontend_repo_url: git://github.com/Tendrl/tendrl_frontend.git
+tendrl_frontend_repo_branch: master
+# target (the git repo would be checked out there)
+tendrl_frontend_local_path: /opt/tendrl/tendrl_frontend
+# if there some areas which we don't want to install set
+# tendrl_frontend_bundle_without to true
+tendrl_frontend_bundle_without: false
+# if true a tendrl_frontend_bundle_without_groups has to be set too
+# e.g. development setup only 
+# tendrl_frontend_bundle_without_groups: production
+# OR production setup only
+# tendrl_frontend_bundle_without_groups: development test documentation
