@@ -6,6 +6,7 @@
 
 - name: Install centos-release-scl (package with the repo file)
   yum: name=centos-release-scl state=installed
+  when: ansible_distribution == 'CentOS'
 
 - name: Install rh python35 software collection
   yum: name=rh-python35 state=present
