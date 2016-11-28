@@ -14,3 +14,9 @@
 
 # TODO: move some configuration there when the documentation is clear and when
 # the rpm packages are available
+    
+- name: Configure tendrl.conf - etcd_connection
+  lineinfile:
+    dest=/etc/tendrl/tendrl.conf
+    regexp="^(\#*)etcd_connection = (.*)"
+    line="etcd_connection = {{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}"
