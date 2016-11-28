@@ -1,5 +1,14 @@
-- name: Binary builds are not avaiable
-  assert:
-    that:
-      - false
- 
+- name: Install tendrl-common without allowed epel
+  yum:
+    name=tendrl-common
+    state=latest
+  when:
+    not use_epel
+    
+- name: Install tendrl-common with allowed epel
+  yum:
+    name=tendrl-common
+    state=latest
+    enablerepo=epel
+  when:
+    use_epel

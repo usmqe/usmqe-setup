@@ -1,6 +1,8 @@
 ---
-# when true, tendrl-api is installed from a source repository
+# when true, tendrl-node-agent is installed from a source repository
 use_source: false
+# when true, tendrl-node-agent is installed with EPEL7 support
+use_epel: false
 # url of the source repository and the branch to checkout
 tendrl_gluster_integration_repo_url: git://github.com/Tendrl/gluster_integration.git
 tendrl_gluster_integration_repo_branch: master

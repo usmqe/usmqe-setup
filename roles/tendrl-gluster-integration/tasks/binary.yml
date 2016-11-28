@@ -1,5 +1,14 @@
-- name: Binary builds are not avaiable
-  assert:
-    that:
-      - false
- 
+- name: Install tendrl-node-agent without allowed epel
+  yum:
+    name=tendrl-node-agent
+    state=latest
+  when:
+    not use_epel
+    
+- name: Install tendrl-node-agent with allowed epel
+  yum:
+    name=tendrl-node-agent
+    state=latest
+    enablerepo=epel
+  when:
+    use_epel

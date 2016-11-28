@@ -1,5 +1,14 @@
-- name: Binary builds are not avaiable
-  assert:
-    that:
-      - false
- 
+- name: Install tendrl-ceph-integration without allowed epel
+  yum:
+    name=tendrl-ceph-integration
+    state=latest
+  when:
+    not use_epel
+    
+- name: Install tendrl-ceph-integration with allowed epel
+  yum:
+    name=tendrl-ceph-integration
+    state=latest
+    enablerepo=epel
+  when:
+    use_epel
