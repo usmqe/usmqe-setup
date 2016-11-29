@@ -26,7 +26,7 @@ Playbooks starting with ``qe_`` prefix are not meant for direct Tendrl
 deployment, but for other tasks which QE team needed to automate, eg.:
 
 * ``qe_server.yml`` playbook automates deployment of QE Server machine, where
-   `usm qe integration tests`_ are installed and executed/managed from
+  `usm qe integration tests`_ are installed and executed/managed from
 * ``qe_evidence*.yml`` playbooks automate log/evidence gathering process
 
 Note that playbooks with ``skyrings`` in it's name are not supposed to be used
