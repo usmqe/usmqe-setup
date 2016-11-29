@@ -16,6 +16,15 @@ Main top level directories:
 * ``roles``: ansible roles
 * ``group_vars``: `ansible group variables`_ (file for each inventory group)
 
+Playbooks starting with ``qe_`` prefix are not meant for direct Tendrl
+deployment, but for other tasks which QE team needed to automate, eg.:
+
+* ``qe_server.yml`` playbook automates deployment of QE Server machine, where
+  the USM QE tests are installed and executed/managed from
+* ``qe_evidence*.yml`` playbooks automate log/evidence gathering process
+
+To see more details, check readme files of ansible roles used in the playbook.
+
 
 Requirements
 ------------
