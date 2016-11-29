@@ -9,6 +9,6 @@ Otherwise it is installed from packages. Installation is done according
 to  `tendrl README`_ file except few differencies:
 
 - not used virtualenvwrapper
-- not eddited $HOME/.bashrc
+- not edited $HOME/.bashrc
 
 .. _`tendrl README`: https://github.com/Tendrl/common/blob/master/doc/source/installation.rst

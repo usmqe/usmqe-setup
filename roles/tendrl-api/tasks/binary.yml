@@ -1,12 +1,3 @@
-- name: Install tendrl-api dependencies
-  yum:
-    name={{ item }}
-    state=present
-    validate_certs=no
-  with_items:
-    - epel-release
-    - systemd-units
-
 - name: Install tendrl-api without allowed epel
   yum:
     name=tendrl-api
