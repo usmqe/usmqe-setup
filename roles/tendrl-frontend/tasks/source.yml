@@ -27,7 +27,8 @@
     dest={{ tendrl_frontend_local_path }}/src/commons/js/index.js
     regexp="baseUrl:"
     line="            baseUrl{{ ":" }} \"http{{ ":" }}//{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}{{ ":" }}9393/1.0/\","
-    
+
+# TODO clean this step (or remove it)
 - name: Install gulp required modules
   npm:
     name={{ item }}
