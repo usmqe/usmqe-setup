@@ -14,13 +14,9 @@
 - hosts: gluster
   remote_user: root
   vars:
-<<<<<<< 0d0e762c3b14010fd5ba80b2c9b0c8f33510ce0a
-    use_source: true
-=======
 #    use_source: true
     use_epel: true
 #    tendrl_gluster_bridge_repo_branch: vol-operations
->>>>>>> add installation via packages
   roles:
     - tendrl-devel
     - gluster
