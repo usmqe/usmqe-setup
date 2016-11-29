@@ -1,4 +1,14 @@
-- name: Binary builds are not available
-  assert:
-    that:
-        - false
+- name: Install tendrl-frontend without allowed epel
+  yum:
+    name=tendrl-frontend
+    state=latest
+  when:
+    not use_epel
+    
+- name: Install tendrl-frontend with allowed epel
+  yum:
+    name=tendrl-frontend
+    state=latest
+    enablerepo=epel
+  when:
+    use_epel

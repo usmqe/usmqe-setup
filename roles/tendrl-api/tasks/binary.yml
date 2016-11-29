@@ -21,3 +21,33 @@
     enablerepo=epel
   when:
     use_epel
+
+- name: Install tendrl-api-httpd without allowed epel
+  yum:
+    name=tendrl-api-httpd
+    state=latest
+  when:
+    not use_epel
+    
+- name: Install tendrl-api-httpd with allowed epel
+  yum:
+    name=tendrl-api-httpd
+    state=latest
+    enablerepo=epel
+  when:
+    use_epel
+
+- name: Install tendrl-api-doc without allowed epel
+  yum:
+    name=tendrl-api-doc
+    state=latest
+  when:
+    not use_epel
+    
+- name: Install tendrl-api-doc with allowed epel
+  yum:
+    name=tendrl-api-doc
+    state=latest
+    enablerepo=epel
+  when:
+    use_epel

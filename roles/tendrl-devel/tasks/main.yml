@@ -2,10 +2,10 @@
   yum:
     name={{ item }}
   with_items:
-    - python-pip
+#    - python-pip
     - git
-    - nodejs
-    - npm
+#    - nodejs
+#    - npm
     - httpd
     - python-devel
     - gcc
