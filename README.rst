@@ -35,7 +35,7 @@ License
 Distributed under the terms of the `Apache License 2.0`_ license.
 
 
-.. _`Tendrl project`: https://github.com/Tendrl/
+.. _`Tendrl project`: http://tendrl.org/
 .. _`usm qe integration tests`: https://github.com/Tendrl/usmqe-tests/
 .. _`ansible best practices`: https://docs.ansible.com/ansible/playbooks_best_practices.html
 .. _`ansible group variables`: https://docs.ansible.com/ansible/intro_inventory.html#splitting-out-vars
