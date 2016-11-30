@@ -51,6 +51,13 @@ playbooks stored in this repository) run CentOS 7 distribution.
 .. is the current plan)
 
 
+Documentation
+-------------
+
+To find more details or to get a whole picture how this repository relates to
+integartion tests, see `usm qe documentation`_.
+
+
 License
 -------
 
@@ -59,6 +66,7 @@ Distributed under the terms of the `Apache License 2.0`_ license.
 
 .. _`Tendrl project`: http://tendrl.org/
 .. _`usm qe integration tests`: https://github.com/Tendrl/usmqe-tests/
+.. _`usm qe documentation`: https://usmqe-tests.readthedocs.io/en/latest/
 .. _`ansible best practices`: https://docs.ansible.com/ansible/playbooks_best_practices.html
 .. _`ansible group variables`: https://docs.ansible.com/ansible/intro_inventory.html#splitting-out-vars
 .. _`ansible playbooks`: https://docs.ansible.com/ansible/playbooks_intro.html
