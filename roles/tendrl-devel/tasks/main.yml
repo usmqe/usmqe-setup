@@ -1,4 +1,4 @@
-- name: Install dependencies
+- name: Install dependencies without allowed epel
   yum:
     name={{ item }}
   with_items:
@@ -10,3 +10,20 @@
     - python-devel
     - gcc
     - python-virtualenv
+  when:
+    not use_source
+
+- name: Install dependencies with allowed epel
+  yum:
+    name={{ item }}
+  with_items:
+    - python-pip
+    - git
+    - nodejs
+    - npm
+    - httpd
+    - python-devel
+    - gcc
+    - python-virtualenv
+  when:
+    use_source

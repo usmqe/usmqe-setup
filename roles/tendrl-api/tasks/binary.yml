@@ -42,3 +42,13 @@
     enablerepo=epel
   when:
     use_epel
+    
+- name: Configure etcd.yml - host
+  lineinfile:
+    dest=/etc/tendrl/etcd.yml
+    regexp="^  {{ ":" }}host{{ ":" }} \'127.0.0.1\'"
+    line="  {{ ":" }}{{ item }}{{ ":" }} \'{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}\'"
+  with_items:
+    - host
+    - host
+    - host

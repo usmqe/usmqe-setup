@@ -27,6 +27,7 @@
     - glusterfs-rdma
     - glusterfs-client-xlators
     - glusterfs-extra-xlators
+    - glusterfs-geo-replication
 
 - name: Run glusterd service
   service:

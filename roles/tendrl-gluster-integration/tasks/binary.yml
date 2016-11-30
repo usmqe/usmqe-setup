@@ -1,13 +1,13 @@
-- name: Install tendrl-node-agent without allowed epel
+- name: Install tendrl-gluster-integration without allowed epel
   yum:
-    name=tendrl-node-agent
+    name=tendrl-gluster-integration
     state=latest
   when:
     not use_epel
     
-- name: Install tendrl-node-agent with allowed epel
+- name: Install tendrl-gluster-integration with allowed epel
   yum:
-    name=tendrl-node-agent
+    name=tendrl-gluster-integration
     state=latest
     enablerepo=epel
   when:

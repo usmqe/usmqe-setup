@@ -14,3 +14,8 @@
 
 # TODO: move some configuration there when the documentation is clear and when
 # the rpm packages are available
+
+- name: Copy conf to remote
+  copy:
+    src=tendrl.conf
+    dest=/etc/tendrl/tendrl.conf

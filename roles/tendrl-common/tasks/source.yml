@@ -36,7 +36,3 @@
     - /var/log/tendrl/ceph_integration
     - /var/log/tendrl/gluster_integration
 
-- name: Copy conf to remote
-  copy:
-    src=tendrl.conf
-    dest=/etc/tendrl/tendrl.conf
