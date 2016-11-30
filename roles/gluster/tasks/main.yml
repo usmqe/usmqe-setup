@@ -2,7 +2,7 @@
   yum_repository:
     name: gluster
     description: Gluster EPEL YUM repo
-    baseurl: {{ gluster_repo_url }}
+    baseurl: "{{ gluster_repo_url }}"
 
 - name: Install GlusterFS
   yum:

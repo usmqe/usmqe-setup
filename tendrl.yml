@@ -16,7 +16,6 @@
   vars:
 #    use_source: true
     use_epel: true
-#    tendrl_gluster_bridge_repo_branch: vol-operations
   roles:
     - tendrl-devel
     - gluster
