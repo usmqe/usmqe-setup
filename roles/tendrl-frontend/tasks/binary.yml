@@ -1,14 +1,5 @@
-- name: Install tendrl-frontend without allowed epel
+- name: Install tendrl-frontend
   yum:
     name=tendrl-frontend
     state=latest
-  when:
-    not use_epel
-    
-- name: Install tendrl-frontend with allowed epel
-  yum:
-    name=tendrl-frontend
-    state=latest
-    enablerepo=epel
-  when:
-    use_epel
+    enablerepo="{{ enable_repo }}"

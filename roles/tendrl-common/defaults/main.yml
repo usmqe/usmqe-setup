@@ -1,8 +1,8 @@
 ---
 # when true, tendrl-api is installed from a source repository
 use_source: false
-# when true, tendrl-api is installed with EPEL7 support
-use_epel: false
+# when specified, tendrl-common is installed with provided repo support
+enable_repo: None
 # url of the source repository and the branch to checkout
 tendrl_common_repo_url: 'git+https://github.com/Tendrl/common#egg=common'
 tendrl_common_repo_branch: master

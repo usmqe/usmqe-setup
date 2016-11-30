@@ -14,6 +14,11 @@
 - name: Create node_agent logging config file
   shell: cp -r {{ tendrl_node_agent_path }}/etc/logging.yaml.timedrotation.sample /etc/tendrl/node_agent_logging.yaml
 
+- name: Install the 'Development tools' package group
+  yum:
+    name="@Development tools"
+    state=present
+  
 # TODO: Find proper way how to install those prerequisities not mentioned in documentation
 - name: Install dependencies
   yum:
@@ -30,6 +35,18 @@
     path=/var/log/tendrl/common/node_agent
     state=directory
 
+# TODO: install it correctly from requirements.txt
+- name: Install node_agent prerequisities into virtualenv
+  pip:
+    name={{ item }}
+    virtualenv="{{ virtualenv_path }}"
+    state=latest
+  with_items:
+    - ansible
+    - python-etcd
+    - gevent
+    - greenlet
+    
 - name: Install node_agent into virtualenv
   pip:
     name=.

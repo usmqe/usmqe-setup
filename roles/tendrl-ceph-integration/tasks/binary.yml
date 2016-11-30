@@ -1,14 +1,5 @@
-- name: Install tendrl-ceph-integration without allowed epel
+- name: Install tendrl-ceph-integration
   yum:
     name=tendrl-ceph-integration
     state=latest
-  when:
-    not use_epel
-    
-- name: Install tendrl-ceph-integration with allowed epel
-  yum:
-    name=tendrl-ceph-integration
-    state=latest
-    enablerepo=epel
-  when:
-    use_epel
+    enablerepo="{{ enable_repo }}"

@@ -1,14 +1,5 @@
-- name: Install tendrl-common without allowed epel
+- name: Install tendrl-common
   yum:
     name=tendrl-common
     state=latest
-  when:
-    not use_epel
-    
-- name: Install tendrl-common with allowed epel
-  yum:
-    name=tendrl-common
-    state=latest
-    enablerepo=epel
-  when:
-    use_epel
+    enablerepo="{{ enable_repo }}"

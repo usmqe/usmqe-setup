@@ -1,14 +1,5 @@
-- name: Install tendrl-gluster-integration without allowed epel
+- name: Install tendrl-gluster-integration
   yum:
     name=tendrl-gluster-integration
     state=latest
-  when:
-    not use_epel
-    
-- name: Install tendrl-gluster-integration with allowed epel
-  yum:
-    name=tendrl-gluster-integration
-    state=latest
-    enablerepo=epel
-  when:
-    use_epel
+    enablerepo="{{ enable_repo }}"

@@ -1,8 +1,8 @@
 ---
 # when true, tendrl-ceph-integration is installed from a source repository
 use_source: false
-# when true, tendrl-ceph-integraion is installed with EPEL7 support
-use_epel: false
+# when specified, tendrl-ceph-integration is installed with provided repo support
+enable_repo: None
 # url of the source repository and the branch to checkout
 tendrl_ceph_integration_repo_url: git://github.com/Tendrl/ceph_integration.git
 tendrl_ceph_integration_repo_branch: master

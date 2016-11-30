@@ -1,47 +1,20 @@
-- name: Install tendrl-api without allowed epel
+- name: Install tendrl-api
   yum:
     name=tendrl-api
     state=latest
-  when:
-    not use_epel
-    
-- name: Install tendrl-api with allowed epel
-  yum:
-    name=tendrl-api
-    state=latest
-    enablerepo=epel
-  when:
-    use_epel
+    enablerepo="{{ enable_repo }}"
 
-- name: Install tendrl-api-httpd without allowed epel
+- name: Install tendrl-api-httpd
   yum:
     name=tendrl-api-httpd
     state=latest
-  when:
-    not use_epel
-    
-- name: Install tendrl-api-httpd with allowed epel
-  yum:
-    name=tendrl-api-httpd
-    state=latest
-    enablerepo=epel
-  when:
-    use_epel
+    enablerepo="{{ enable_repo }}"
 
-- name: Install tendrl-api-doc without allowed epel
+- name: Install tendrl-api-doc
   yum:
     name=tendrl-api-doc
     state=latest
-  when:
-    not use_epel
-    
-- name: Install tendrl-api-doc with allowed epel
-  yum:
-    name=tendrl-api-doc
-    state=latest
-    enablerepo=epel
-  when:
-    use_epel
+    enablerepo="{{ enable_repo }}"
     
 - name: Configure etcd.yml - host
   lineinfile:

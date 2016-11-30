@@ -1,7 +1,7 @@
-- name: Add Glusetr EPEL YUM repo
+- name: Add Gluster YUM repo
   yum_repository:
     name: gluster
-    description: Gluster EPEL YUM repo
+    description: Gluster YUM repo
     baseurl: "{{ gluster_repo_url }}"
 
 - name: Install GlusterFS

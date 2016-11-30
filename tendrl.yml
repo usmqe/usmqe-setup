@@ -2,8 +2,8 @@
 - hosts: usm_server 
   remote_user: root
   vars:
-#    use_source: true
-    use_epel: true
+    use_source: false
+    enable_repo: epel
   roles:
     - tendrl-devel
     - etcd
@@ -14,8 +14,8 @@
 - hosts: gluster
   remote_user: root
   vars:
-#    use_source: true
-    use_epel: true
+    use_source: false
+    enable_repo: epel
   roles:
     - tendrl-devel
     - gluster
