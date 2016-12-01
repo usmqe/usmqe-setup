@@ -19,7 +19,12 @@
       file:
         name=/mnt/gluster
         state=directory
-        
+
+- hosts: gluster
+  remote_user: root
+  run_once: true
+  
+  tasks:
     - name: Peer probe all nodes
-      command: "gluster peer probe gluster{{ item }}"
+      command: "gluster peer probe gluster{{ item | int - 1 }}"
       with_sequence: count="{{ groups['gluster'] | length }}"
