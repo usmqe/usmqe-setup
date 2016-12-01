@@ -1,0 +1,25 @@
+---
+- hosts: gluster
+  remote_user: root
+  
+  tasks:
+    - name: Stop firewall service
+      service: name=firewalld state=stopped
+
+    - name: Update hosts file
+      lineinfile:
+        dest=/etc/hosts
+        regexp='^{{ hostvars[item.1].ansible_default_ipv4.address }}'
+        line="{{ hostvars[item.1].ansible_default_ipv4.address }} {{ item.1 }} gluster{{ item.0 }}"
+        state=present
+      when: hostvars[item.1].ansible_default_ipv4.address is defined
+      with_indexed_items: "{{ groups['gluster'] }}"
+      
+    - name: Create brick dir
+      file:
+        name=/mnt/gluster
+        state=directory
+        
+    - name: Peer probe all nodes
+      command: "gluster peer probe gluster{{ item }}"
+      with_sequence: count="{{ groups['gluster'] | length }}"
