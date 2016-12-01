@@ -18,7 +18,7 @@
     enable_repo: epel
   roles:
     - tendrl-devel
-    - gluster
+    - gluster-centos
     - tendrl-repo
     - tendrl-common
     - tendrl-node-agent
