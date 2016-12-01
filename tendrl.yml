@@ -2,7 +2,7 @@
 - hosts: usm_server 
   remote_user: root
   vars:
-    use_source: false
+    install_from: packages
     enable_repo: epel
   roles:
     - tendrl-devel
@@ -14,7 +14,7 @@
 - hosts: gluster
   remote_user: root
   vars:
-    use_source: false
+    install_from: packages
     enable_repo: epel
   roles:
     - tendrl-devel

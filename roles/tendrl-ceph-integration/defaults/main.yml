@@ -1,6 +1,6 @@
 ---
-# when true, tendrl-ceph-integration is installed from a source repository
-use_source: false
+# values: packages | source
+install_from: packages
 # when specified, tendrl-ceph-integration is installed with provided repo support
 enable_repo: None
 # url of the source repository and the branch to checkout

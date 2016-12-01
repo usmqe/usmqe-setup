@@ -3,10 +3,10 @@
 #
 
 - include: source.yml
-  when: use_source
+  when: install_from == "source"
 
 - include: binary.yml
-  when: not use_source
+  when: install_from == "packages"
 
 #
 # post installation configuration
