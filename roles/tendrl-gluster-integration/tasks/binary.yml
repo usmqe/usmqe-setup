@@ -3,3 +3,8 @@
     name=tendrl-gluster-integration
     state=latest
     enablerepo="{{ enable_repo }}"
+
+- name: Start tendrl-gluster-integration
+  service:
+    name=tendrl-glusterd
+    state=started

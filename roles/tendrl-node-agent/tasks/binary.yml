@@ -10,3 +10,9 @@
     name=tendrl-node-agent
     state=latest
     enablerepo="{{ enable_repo }}"
+
+
+- name: Start tendrl-node-agent
+  service:
+    name=tendrl-noded
+    state=started
