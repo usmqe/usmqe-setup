@@ -2,8 +2,8 @@
   yum_repository:
     name: tendrl
     description: Tendrl EPEL YUM repo
-    baseurl: "https://copr-be.cloud.fedoraproject.org/results/timothyasir/tendrl/epel-7-x86_64"
+    baseurl: "https://copr.fedorainfracloud.org/coprs/tendrl/tendrl/repo/epel-7/tendrl-tendrl-epel-7.repo"
 
 - name: Add public key
   rpm_key:
-    key="https://copr-be.cloud.fedoraproject.org/results/timothyasir/tendrl/pubkey.gpg"
+    key="https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl/pubkey.gpg"
