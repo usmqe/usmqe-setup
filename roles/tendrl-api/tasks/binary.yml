@@ -25,3 +25,8 @@
     - host
     - host
     - host
+
+- name: Start tendrl-api
+  service:
+    name=tendrl-apid
+    state=started
