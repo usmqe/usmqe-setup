@@ -23,3 +23,5 @@
     - tendrl-common
     - tendrl-node-agent
     - tendrl-gluster-integration
+
+- include: qe_gluster_cluster.yml
