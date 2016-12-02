@@ -13,13 +13,13 @@
   with_items:
    - name: 'usmqe-setup'
      repo: "{{ usmqe_setup_repo }}"
-     version: 'master'
+     version: "{{ usmqe_setup_version }}"
    - name: 'usmqe-tests'
      repo: "{{ usmqe_tests_repo }}"
-     version: 'master'
+     version: "{{ usmqe_tests_version }}"
    - name: 'ansible-gluster'
      repo: "{{ ansible_gluster_repo }}"
-     version: 'master'
+     version: "{{ ansible_gluster_version }}"
 
 # Install all requirements of usmqe-tests repository via pip from PyPI
 # locally for usmqe user and rh-python35 software collection only.
