@@ -1,0 +1,7 @@
+---
+usmqe_setup_repo: 'https://github.com/Tendrl/usmqe-setup.git'
+usmqe_setup_version: 'master'
+usmqe_tests_repo: 'https://github.com/Tendrl/usmqe-tests.git'
+usmqe_tests_version: 'master'
+ansible_gluster_repo: 'https://github.com/dahorak/ansible-gluster.git'
+ansible_gluster_version: 'master'
