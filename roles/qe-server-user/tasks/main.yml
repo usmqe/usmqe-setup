@@ -12,13 +12,13 @@
     update=no
   with_items:
    - name: 'usmqe-setup'
-     repo: 'https://github.com/Tendrl/usmqe-setup.git'
+     repo: "{{ usmqe_setup_repo }}"
      version: 'master'
    - name: 'usmqe-tests'
-     repo: 'https://github.com/Tendrl/usmqe-tests.git'
+     repo: "{{ usmqe_tests_repo }}"
      version: 'master'
    - name: 'ansible-gluster'
-     repo: 'https://github.com/dahorak/ansible-gluster.git'
+     repo: "{{ ansible_gluster_repo }}"
      version: 'master'
 
 # Install all requirements of usmqe-tests repository via pip from PyPI
