@@ -17,6 +17,9 @@
    - name: 'usmqe-tests'
      repo: 'https://github.com/Tendrl/usmqe-tests.git'
      version: 'master'
+   - name: 'ansible-gluster'
+     repo: 'https://github.com/dahorak/ansible-gluster.git'
+     version: 'master'
 
 # Install all requirements of usmqe-tests repository via pip from PyPI
 # locally for usmqe user and rh-python35 software collection only.
@@ -32,3 +35,9 @@
   with_items:
    - 'source /opt/rh/rh-python35/enable'
    - "export X_SCLS=$(scl enable rh-python35 'echo $X_SCLS')"
+
+- name: Add ANSIBLE_LIBRARY into in ~/.bashrc
+  lineinfile:
+    dest={{ ansible_user_dir }}/.bashrc
+    state=present
+    line="export ANSIBLE_LIBRARY={{ ansible_user_dir }}/ansible-gluster/"
