@@ -1,0 +1,12 @@
+---
+#
+# ansible-gluster libraries required
+# https://github.com/dahorak/ansible-gluster.git or
+# https://github.com/loadtheaccumulator/ansible-gluster.git
+# export ANSIBLE_LIBRARY=../ansible-gluster/
+#
+
+- hosts: gluster
+  remote_user: root
+  roles:
+  - { role: qe-gluster-peers, gluster_nodes: "{{groups['gluster']}}"}
