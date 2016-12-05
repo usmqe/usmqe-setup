@@ -24,4 +24,4 @@
     - tendrl-node-agent
     - tendrl-gluster-integration
 
-- include: qe_gluster_cluster.yml
+- include: gluster_peer_probe.yml
