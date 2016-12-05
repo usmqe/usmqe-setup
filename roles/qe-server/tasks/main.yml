@@ -24,11 +24,19 @@
   yum: name=ansible state=present enablerepo=epel
 
 - name: Configure ansible forks option
-  lineinfile:
-    regexp="^forks "
-    line="forks          = 50"
+  ini_file:
     dest=/etc/ansible/ansible.cfg
-    state=present
+    section=defaults
+    option=forks
+    value=50
+
+# Required to overcome ssh control path socket errors for very long hostnames.
+- name: Configure ansible control_path
+  ini_file:
+    dest=/etc/ansible/ansible.cfg
+    section=ssh_connection
+    option=control_path
+    value='%(directory)s/%%h-%%r'
 
 #
 # usmqe dependencies
