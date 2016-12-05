@@ -3,9 +3,6 @@
     name=etcd
     state=present
 
-# TODO: this is a hack, since the configuration is not properly documented in
-# the tendrl upstream
-
 - name: Directory for etcd api_jobs
   file:
     path=/etc/etcd/api_job_queue
@@ -33,3 +30,4 @@
   service:
     name=etcd
     state=started
+    enabled=yes
