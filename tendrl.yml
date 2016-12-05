@@ -9,7 +9,6 @@
     - etcd
     - tendrl-repo
     - tendrl-api
-#    - tendrl-frontend
 
 - hosts: gluster
   remote_user: root
