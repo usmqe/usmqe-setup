@@ -2,4 +2,7 @@
  Tendrl-repo
 =============
 
-This role enables Timothy's EPEL7 repo adds its public key.
+This role enables `tendrl/tendrl copr`_ repository and installs its public gpg
+rpm key.
+
+.. _`tendrl/tendrl copr`: https://copr.fedorainfracloud.org/coprs/tendrl/tendrl/
