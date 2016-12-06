@@ -1,10 +1,22 @@
 ---
 # values: packages | source
 install_from: packages
-# when specified, tendrl-common is installed with provided repo support
+
+#
+# variables used when install_from == packages
+#
+
+# when specified, tendrl-common is installed with specified repos enabled
 enable_repo: None
+
+#
+# variables used when install_from == source
+#
+
 # url of the source repository and the branch to checkout
-tendrl_common_repo_url: 'git+https://github.com/Tendrl/common#egg=common'
+# see https://pip.pypa.io/en/stable/reference/pip_install/#git
+tendrl_common_repo_url: 'git+https://github.com/Tendrl/common.git@master#egg=common'
+# note that you need to change the branch in the url as well
 tendrl_common_repo_branch: master
-# path where will be stored virtualenv
+# path where python virtualenv will be stored
 virtualenv_path: /opt/tendrl/virtualenv

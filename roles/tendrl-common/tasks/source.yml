@@ -1,13 +1,13 @@
+- name: Directory for Tendrl virtualenv
+  file:
+    path="{{ virtualenv_path }}"
+    state=directory
+
 - name: Install newest setuptools into virtualenv
   pip:
     name=setuptools
     state=latest
     virtualenv="{{ virtualenv_path }}"
-
-- name: Directory for Tendrl virtualenv
-  file:
-    path="{{ virtualenv_path }}"
-    state=directory
 
 - name: Install common into virtualenv
   pip:
@@ -22,7 +22,7 @@
     - /etc/tendrl
     - /etc/tendrl/node_agent
 
-- name: Directory for Tendrl log
+- name: Directory for Tendrl logs
   file:
     path={{ item }}
     state=directory
@@ -36,3 +36,12 @@
     - /var/log/tendrl/ceph_integration
     - /var/log/tendrl/gluster_integration
 
+- name: Use example config files as initial configuration (see installation.rst)
+  get_url:
+    url={{ item.url }}
+    dest=/etc/tendrl/{{ item.dest }}
+  with_items:
+    - url: "https://raw.githubusercontent.com/Tendrl/common/{{ tendrl_common_repo_branch }}/etc/tendrl/tendrl.conf.sample"
+      dest: 'tendrl.conf'
+    - url: "https://raw.githubusercontent.com/Tendrl/common/{{ tendrl_common_repo_branch }}/etc/samples/logging.yaml.timedrotation.sample"
+      dest: 'common_logging.conf'
