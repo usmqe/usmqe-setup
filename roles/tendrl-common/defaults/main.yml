@@ -18,5 +18,3 @@ enable_repo: None
 tendrl_common_repo_url: 'git+https://github.com/Tendrl/common.git@master#egg=common'
 # note that you need to change the branch in the url as well
 tendrl_common_repo_branch: master
-# path where python virtualenv will be stored
-virtualenv_path: /opt/tendrl/virtualenv
