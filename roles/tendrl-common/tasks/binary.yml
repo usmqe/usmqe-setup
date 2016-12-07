@@ -3,10 +3,3 @@
     name=tendrl-common
     state=latest
     enablerepo="{{ enable_repo }}"
-
-# HACK/WORKAROUND for https://github.com/Tendrl/common/issues/74
-- name: Use tendrl.conf.sample file for initial tendrl.conf
-  copy:
-    src=/usr/share/tendrl/commons/tendrl.conf.sample
-    dest=/etc/tendrl/tendrl.conf
-    remote_src=True

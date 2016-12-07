@@ -29,7 +29,5 @@
     url={{ item.url }}
     dest=/etc/tendrl/{{ item.dest }}
   with_items:
-    - url: "https://raw.githubusercontent.com/Tendrl/common/{{ tendrl_common_repo_branch }}/etc/tendrl/tendrl.conf.sample"
-      dest: 'tendrl.conf'
     - url: "https://raw.githubusercontent.com/Tendrl/common/{{ tendrl_common_repo_branch }}/etc/samples/logging.yaml.timedrotation.sample"
       dest: 'common_logging.conf'
