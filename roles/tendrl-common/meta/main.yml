@@ -1,3 +1,5 @@
 ---
 dependencies:
-  - { role: tendrl-devel }
+  # make sure common devel packages are installed for installation from sources
+  - role: tendrl-devel
+    when: install_from == "source"

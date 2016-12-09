@@ -11,3 +11,6 @@
 #
 # post installation configuration
 #
+
+# tendrl-common is just a library, configuration is done later during setup of
+# other components using tendrl-common

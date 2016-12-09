@@ -1,6 +1,18 @@
-- name: Install tendrl common
+- name: Directory for git repository
+  file:
+    path="{{ tendrl_common_repo }}"
+    state=directory
+
+- name: Clone git repository
+  git:
+    repo={{ tendrl_common_repo_url }}
+    version={{ tendrl_common_repo_branch }}
+    dest={{ tendrl_common_repo }}
+
+- name: Installation from source code
   pip:
-    name={{ tendrl_common_repo_url }}
+    name=.
+    chdir="{{ tendrl_common_repo }}"
 
 - name: Directory for Tendrl configuration
   file:
@@ -24,9 +36,10 @@
     - /var/log/tendrl/gluster_integration
 
 - name: Use example config files as initial configuration (see installation.rst)
-  get_url:
-    url={{ item.url }}
+  copy:
+    src={{ item.src }}
     dest=/etc/tendrl/{{ item.dest }}
+    remote_src=True
   with_items:
-    - url: "https://raw.githubusercontent.com/Tendrl/common/{{ tendrl_common_repo_branch }}/etc/samples/logging.yaml.timedrotation.sample"
+    - src: "{{ tendrl_common_repo }}/etc/samples/logging.yaml.timedrotation.sample"
       dest: 'common_logging.conf'
