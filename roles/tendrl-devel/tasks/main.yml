@@ -10,4 +10,5 @@
     - python-pip
     - gcc
     - python-virtualenv
+    - "@Development tools"
   when: install_from == "source"
