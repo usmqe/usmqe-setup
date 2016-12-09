@@ -2,10 +2,29 @@
  Tendrl-node-agent
 ===================
  
-This role installs Tendrl/node_agent. If variable virtualenv_path is specified 
-than node_agent is installed into virtualenv with provided path. If variable 
-install_from is set to "packages" than the component is installed from
-packages. If it is set to "source" than it is installed from sources.
-Installation is done according to `tendrl README`_ file.
+This role installs `tendrl-node-agent`_ component.
 
-.. _`tendrl README`: https://github.com/Tendrl/node_agent/blob/master/doc/source/installation.rst
+When variable ``install_from`` is set to ``packages``, the component is
+installed from rpm packages via ``yum``. On the other hand when the value is
+set to ``source``, tendrl-common is installed from sources from github via
+``pip``.
+
+The installation is based on information from:
+
+ * `installation.rst`_
+ * `README file`_
+
+with the following exceptions:
+
+* installation from sources is not done via Python virtualenv
+* ceph or gluster integration components are not installed in this role
+
+Open issues:
+
+* https://github.com/Tendrl/node_agent/issues/87
+* https://github.com/Tendrl/node_agent/issues/88
+* https://github.com/Tendrl/node_agent/issues/89
+
+.. _`installation.rst`: https://github.com/Tendrl/node_agent/blob/master/doc/source/installation.rst
+.. _`README file`: https://github.com/Tendrl/node_agent/blob/master/README.adoc
+.. _`tendrl-node-agent`: https://github.com/Tendrl/node_agent

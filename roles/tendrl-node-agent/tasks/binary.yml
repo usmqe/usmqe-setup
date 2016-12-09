@@ -1,18 +1,5 @@
-- name: Install tendrl-node-agent dependencies
-  yum:
-    name={{ item }}
-    state=present
-  with_items:
-    - python2-devel
-
 - name: Install tendrl-node-agent
   yum:
     name=tendrl-node-agent
     state=latest
     enablerepo="{{ enable_repo }}"
-
-
-- name: Start tendrl-node-agent
-  service:
-    name=tendrl-noded
-    state=started
