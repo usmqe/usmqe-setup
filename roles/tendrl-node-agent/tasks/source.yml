@@ -54,9 +54,12 @@
     - src: "{{ tendrl_node_agent_repo }}/etc/tendrl/tendrl.conf.sample"
       dest: 'tendrl.conf'
 
-#
-# Some features are missing compared to installation from rpm package.
-#
-
-- fail: msg="There is no systemd unit installed, we can't start and enable it"
-  when: not ignore_incomplete_installation
+# not based on any tednrl documentation
+- name: Install sysmted unit files into /etc/systemd/system/
+  copy:
+    src={{ item.src }}
+    dest=/etc/systemd/system/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_node_agent_repo }}/tendrl-noded.service"
+      dest: 'tendrl-noded.service'
