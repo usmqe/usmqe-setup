@@ -1,23 +1,43 @@
-- name: Directory for gluster_integration
+- name: Directory for git repository
   file:
-    path="{{ tendrl_gluster_integration_path }}"
+    path="{{ tendrl_gluster_integration_repo }}"
     state=directory
 
-- name: Clone gluster_integration
+- name: Clone git repository
   git:
     repo={{ tendrl_gluster_integration_repo_url }}
-    dest={{ tendrl_gluster_integration_path }}
     version={{ tendrl_gluster_integration_repo_branch }}
+    dest={{ tendrl_gluster_integration_repo }}
 
-- name: Directory for Tendrl virtualenv
+# as documented in installation.rst
+- name: Installation from source code
+  pip:
+    name=.
+    chdir="{{ tendrl_gluster_integration_repo }}"
+
+# as documented in installation.rst
+- name: Create directory for logging
   file:
-    path="{{ virtualenv_path }}"
+    path=/var/log/tendrl/gluster_integration
     state=directory
 
-- name: Install gluster_integration into virtualenv
-  pip:
-    name={{ tendrl_gluster_integration_path }}
-    virtualenv="{{ virtualenv_path }}"
+# as documented in installation.rst
+# (tendrl.conf is not created here, as this file is owned by tendrl-node-agent)
+- name: Use example config files as initial configuration (see installation.rst)
+  copy:
+    src={{ item.src }}
+    dest=/etc/tendrl/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_gluster_integration_repo }}/etc/logging.yaml.timedrotation.sample"
+      dest: 'gluster_integration_logging.yaml'
 
-- name: Create gluster_integration logging config file
-  shell: cp -r {{ tendrl_gluster_integration_path }}/etc/logging.yaml.timedrotation.sample /etc/tendrl/gluster_integration_logging.yaml
+# not based on any tednrl documentation
+- name: Install sysmted unit files into /etc/systemd/system/
+  copy:
+    src={{ item.src }}
+    dest=/etc/systemd/system/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_gluster_integration_repo }}/tendrl-glusterd.service"
+      dest: 'tendrl-glusterd.service'
