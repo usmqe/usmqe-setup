@@ -11,3 +11,9 @@
 #
 # post installation configuration
 #
+
+- name: Start and enable tendrl-ceph-integration service
+  service:
+    name=tendrl-cephd
+    state=started
+    enabled=yes

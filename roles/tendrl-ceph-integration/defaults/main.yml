@@ -1,11 +1,24 @@
 ---
 # values: packages | source
 install_from: packages
-# when specified, tendrl-ceph-integration is installed with provided repo support
+# set to 'true' to ingnore missing features in source installation compared to
+# packages or vice versa
+ignore_incomplete_installation: false
+
+#
+# variables used when install_from == packages
+#
+
+# when specified, component is installed with provided repo support
 enable_repo: None
+
+#
+# variables used when install_from == source
+#
+
 # url of the source repository and the branch to checkout
-tendrl_ceph_integration_repo_url: git://github.com/Tendrl/ceph_integration.git
+tendrl_ceph_integration_repo_url: 'https://github.com/Tendrl/ceph_integration'
 tendrl_ceph_integration_repo_branch: master
-tendrl_ceph_integration_path: /opt/tendrl/ceph_integration
-# path where will be stored virtualenv
-virtualenv_path: /opt/tendrl/virtualenv
+
+# directory where the git repo would be cloned into
+tendrl_ceph_integration_repo: /opt/tendrl/ceph_integration
