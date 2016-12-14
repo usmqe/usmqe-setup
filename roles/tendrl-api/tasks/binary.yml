@@ -8,25 +8,8 @@
   yum:
     name=tendrl-api-httpd
     state=latest
-    enablerepo="{{ enable_repo }}"
 
 - name: Install tendrl-api-doc
   yum:
     name=tendrl-api-doc
     state=latest
-    enablerepo="{{ enable_repo }}"
-    
-- name: Configure etcd.yml - host
-  lineinfile:
-    dest=/etc/tendrl/etcd.yml
-    regexp="^  {{ ":" }}host{{ ":" }} \'127.0.0.1\'"
-    line="  {{ ":" }}{{ item }}{{ ":" }} \'{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}\'"
-  with_items:
-    - host
-    - host
-    - host
-
-- name: Start tendrl-api
-  service:
-    name=tendrl-apid
-    state=started

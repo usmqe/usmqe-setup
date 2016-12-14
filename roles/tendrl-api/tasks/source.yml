@@ -1,9 +1,5 @@
-- name: Install the 'Development tools' package group
-  yum:
-    name="@Development tools"
-    state=present
-
-- name: Install Ruby
+# only packages not already installed in tednrl-devel are installed there
+- name: Install ruby dev tools
   yum:
     name={{ item }}
     state=present
@@ -12,54 +8,68 @@
     - ruby-devel
     - rubygem-bundler
 
-- name: Clone tendrl.git
+- name: Install other dependencies
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - httpd
+
+#
+# Installation
+#
+
+- name: Directory for git repository
+  file:
+    path="{{ tendrl_api_repo }}"
+    state=directory
+
+- name: Clone git repository
   git:
     repo={{ tendrl_api_repo_url }}
     version={{ tendrl_api_repo_branch }}
-    dest={{ tendrl_api_local_path }}
+    dest={{ tendrl_api_repo }}
 
 - name: Exclude files created by bundler from repo (HACK)
   command: git update-index --assume-unchanged Gemfile.lock
-    chdir={{ tendrl_api_local_path }}
+    chdir={{ tendrl_api_repo }}
 
 - name: Install Ruby bundler (HACK)
   gem:
     name=bundler
 
-- name: Bundle installation of Tendrl (HACK)
+- name: Bundle installation of Tendrl API (HACK)
   bundler:
     state=present
-    binstub_directory={{ tendrl_api_bundle_install_path }}
-    chdir={{ tendrl_api_local_path }}
-  when: not tendrl_api_bundle_without
+    binstub_directory={{ tendrl_api_binstub_directory }}
+    exclude_groups={{ tendrl_api_exclude_groups }}
+    chdir={{ tendrl_api_repo }}
 
-- name: Bundle installation of Tendrl (HACK)
-  bundler:
-    state=present
-    binstub_directory={{ tendrl_api_bundle_install_path }}
-    exclude_groups={{ tendrl_api_bundle_without_groups }}
-    chdir={{ tendrl_api_local_path }}
-  when: tendrl_api_bundle_without
-
-- name: Directory for config
+# we expect configuration to be in `/etc/tendrl/` no matter what
+# https://github.com/Tendrl/tendrl-api/issues/29
+- name: Make sure /etc/tendrl/ directory exists
   file:
-    path={{ tendrl_api_local_path }}/config/sds
+    path=/etc/tendrl
     state=directory
 
-- name: Create config file with connection to etcd
-  shell: cp -r {{ tendrl_api_local_path }}/config/etcd.sample.yml {{ tendrl_api_local_path }}/config/etcd.yml
-
-#
-## TODO update the apache config file to specific host details
-
-
-- name: Configure config/etcd.yml - host
-  lineinfile:
-    dest={{ tendrl_api_local_path }}/config/etcd.yml
-    regexp="^  {{ ":" }}host{{ ":" }} \'127.0.0.1\'"
-    line="  {{ ":" }}{{ item }}{{ ":" }} \'{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}\'"
+# as documented in README file
+- name: Use example config files as initial configuration (see installation.rst)
+  copy:
+    src={{ item.src }}
+    dest=/etc/tendrl/{{ item.dest }}
+    remote_src=True
   with_items:
-    - host
-    - host
-    - host
+    - src: "{{ tendrl_api_repo }}/config/etcd.sample.yml"
+      dest: 'etcd.yml'
 
+# not based on any tednrl documentation
+- name: Install sysmted unit files into /etc/systemd/system/
+  copy:
+    src={{ item.src }}
+    dest=/etc/systemd/system/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_api_repo }}/tendrl-apid.service"
+      dest: 'tendrl-apid.service'
+
+# TODO update the apache config file to specific host details
