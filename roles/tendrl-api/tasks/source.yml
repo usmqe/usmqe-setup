@@ -72,4 +72,9 @@
     - src: "{{ tendrl_api_repo }}/tendrl-apid.service"
       dest: 'tendrl-apid.service'
 
-# TODO update the apache config file to specific host details
+# as documented in README file and deployment.adoc from Tendrl/documentation
+- name: Apache config file for tendrl-api to run on port 80
+  copy:
+    src="{{ tendrl_api_repo }}/config/apache.vhost.sample"
+    dest=/etc/httpd/conf.d/tendlr.conf
+    remote_src=True

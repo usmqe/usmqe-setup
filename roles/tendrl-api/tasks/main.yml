@@ -12,6 +12,7 @@
 # post installation configuration
 #
 
+# as documented in README file
 # TODO: this is prone to break sooner or later, but there is no yaml file
 # module in ansible core or extras:
 # https://github.com/ansible/ansible-modules-core/issues/1746
@@ -27,7 +28,16 @@
     - host
     - host
 
-- name: Start tendrl-api
+# as documented in README file and deployment.adoc from Tendrl/documentation
+- name: Start and enable tendrl-api
   service:
     name=tendrl-apid
     state=started
+    enabled=yes
+
+# as documented in README file and deployment.adoc from Tendrl/documentation
+- name: Start and enable apache
+  service:
+    name=httpd
+    state=started
+    enabled=yes
