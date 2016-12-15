@@ -72,6 +72,14 @@
     - src: "{{ tendrl_api_repo }}/tendrl-apid.service"
       dest: 'tendrl-apid.service'
 
+# https://github.com/Tendrl/tendrl-api/issues/41
+- name: Workaround to get service file working with source installation
+  ini_file:
+    dest=/etc/systemd/system/tendrl-apid.service
+    section=Service
+    option=ExecStart
+    value="/usr/bin/puma -e production --dir {{ tendrl_api_repo }}"
+
 # as documented in README file and deployment.adoc from Tendrl/documentation
 - name: Apache config file for tendrl-api to run on port 80
   copy:
