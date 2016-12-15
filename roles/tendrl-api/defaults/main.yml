@@ -31,4 +31,4 @@ tendrl_api_binstub_directory: vendor/bin
 # String value passed to `exclude_groups` option of ansible `bundler` module,
 # which matches `--without` argument of `bundle` tool.
 # Default value based on information from README file (we use production setup)
-tendrl_api_exclude_groups: development test
+tendrl_api_exclude_groups: development test documentation
