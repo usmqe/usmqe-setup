@@ -86,3 +86,11 @@
     src="{{ tendrl_api_repo }}/config/apache.vhost.sample"
     dest=/etc/httpd/conf.d/tendlr.conf
     remote_src=True
+
+# as documented in README file
+# related to https://github.com/Tendrl/tendrl-api/issues/42
+- name: Enable httpd_can_network_connect SELinux boolean
+  seboolean:
+    name=httpd_can_network_connect
+    persistent=yes
+    state=yes
