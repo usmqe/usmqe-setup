@@ -3,12 +3,12 @@
   remote_user: root
   vars:
     install_from: packages
-    enable_repo: epel
   roles:
     - etcd
     - epel # based on https://github.com/Tendrl/tendrl-api/issues/25
     - tendrl-repo
-    - tendrl-api
+    - role: tendrl-api
+      enable_repo: epel
 
 - hosts: gluster
   remote_user: root
