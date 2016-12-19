@@ -14,12 +14,13 @@
   remote_user: root
   vars:
     install_from: packages
-    enable_repo: epel
   roles:
     - gluster-centos
+    - epel # based on https://github.com/Tendrl/node_agent/issues/75
     - tendrl-repo
     - tendrl-common
-    - tendrl-node-agent
+    - role: tendrl-node-agent
+      enable_repo: epel
     - tendrl-gluster-integration
 
 - include: gluster_peer_probe.yml
