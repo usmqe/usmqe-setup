@@ -6,6 +6,7 @@
     enable_repo: epel
   roles:
     - etcd
+    - epel # based on https://github.com/Tendrl/tendrl-api/issues/25
     - tendrl-repo
     - tendrl-api
 
