@@ -1,0 +1,45 @@
+- name: Directory for git repository
+  file:
+    path="{{ tendrl_common_repo }}"
+    state=directory
+
+- name: Clone git repository
+  git:
+    repo={{ tendrl_common_repo_url }}
+    version={{ tendrl_common_repo_branch }}
+    dest={{ tendrl_common_repo }}
+
+- name: Installation from source code
+  pip:
+    name=.
+    chdir="{{ tendrl_common_repo }}"
+
+- name: Directory for Tendrl configuration
+  file:
+    path={{ item }}
+    state=directory
+  with_items:
+    - /etc/tendrl
+    - /etc/tendrl/node_agent
+    - /etc/tendrl/ceph_integration
+    - /etc/tendrl/gluster_integration
+
+- name: Directory for Tendrl logs
+  file:
+    path={{ item }}
+    state=directory
+  with_items:
+    - /var/log/tendrl
+    - /var/log/tendrl/common
+    - /var/log/tendrl/node_agent
+    - /var/log/tendrl/ceph_integration
+    - /var/log/tendrl/gluster_integration
+
+- name: Use example config files as initial configuration (see installation.rst)
+  copy:
+    src={{ item.src }}
+    dest=/etc/tendrl/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_common_repo }}/etc/samples/logging.yaml.timedrotation.sample"
+      dest: 'common_logging.conf'

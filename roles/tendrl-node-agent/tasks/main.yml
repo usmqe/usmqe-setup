@@ -1,0 +1,26 @@
+#
+# installation
+#
+
+- include: source.yml
+  when: install_from == "source"
+
+- include: binary.yml
+  when: install_from == "packages"
+
+#
+# post installation configuration
+#
+
+- name: Specify etcd_connection in tendrl.conf
+  ini_file:
+    dest=/etc/tendrl/tendrl.conf
+    section=common
+    option=etcd_connection
+    value="{{ groups['usm_server'][0] }}"
+
+- name: Start and enable tendrl-node-agent daemon
+  service:
+    name=tendrl-noded
+    state=started
+    enabled=yes

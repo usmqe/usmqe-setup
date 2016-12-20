@@ -1,0 +1,39 @@
+#
+# installation
+#
+
+- include: source.yml
+  when: install_from == "source"
+
+- include: binary.yml
+  when: install_from == "packages"
+
+#
+# post installation configuration
+#
+
+# as documented in README file
+# TODO: this is prone to break sooner or later, but there is no yaml file
+# module in ansible core or extras:
+# https://github.com/ansible/ansible-modules-core/issues/1746
+# fix of this hack would need to some external yaml module such as:
+# https://github.com/kwoodson/yedit
+- name: Configure etcd.yml - host
+  replace:
+    dest=/etc/tendrl/etcd.yml
+    regexp="^  {{ ":" }}host{{ ":" }} .*"
+    replace="  {{ ":" }}host{{ ":" }} \'{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}\'"
+
+# as documented in README file and deployment.adoc from Tendrl/documentation
+- name: Start and enable tendrl-api
+  service:
+    name=tendrl-apid
+    state=started
+    enabled=yes
+
+# as documented in README file and deployment.adoc from Tendrl/documentation
+- name: Start and enable apache
+  service:
+    name=httpd
+    state=started
+    enabled=yes

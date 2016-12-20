@@ -1,0 +1,14 @@
+- name: Install tendrl-api
+  yum:
+    name=tendrl-api
+    state=latest
+
+- name: Install tendrl-api-httpd
+  yum:
+    name=tendrl-api-httpd
+    state=latest
+
+- name: Install tendrl-api-doc
+  yum:
+    name=tendrl-api-doc
+    state=latest

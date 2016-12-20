@@ -1,0 +1,28 @@
+#
+# installation
+#
+
+- include: source.yml
+  when: install_from == "source"
+
+- include: binary.yml
+  when: install_from == "packages"
+
+#
+# post installation configuration
+#
+
+# as documented in installation.rst
+# workaround for https://github.com/Tendrl/gluster_integration/issues/86
+- name: Specify log_cfg_path in tendrl.conf
+  ini_file:
+    dest=/etc/tendrl/tendrl.conf
+    section=gluster_integration
+    option=log_cfg_path
+    value="/etc/tendrl/gluster_integration_logging.yaml"
+
+- name: Start and enable tendrl-gluster-integration service
+  service:
+    name=tendrl-glusterd
+    state=started
+    enabled=yes

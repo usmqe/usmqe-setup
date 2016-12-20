@@ -1,0 +1,96 @@
+# only packages not already installed in tednrl-devel are installed there
+- name: Install ruby dev tools
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - ruby
+    - ruby-devel
+    - rubygem-bundler
+
+- name: Install other dependencies
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - httpd
+
+#
+# Installation
+#
+
+- name: Directory for git repository
+  file:
+    path="{{ tendrl_api_repo }}"
+    state=directory
+
+- name: Clone git repository
+  git:
+    repo={{ tendrl_api_repo_url }}
+    version={{ tendrl_api_repo_branch }}
+    dest={{ tendrl_api_repo }}
+
+- name: Exclude files created by bundler from repo (HACK)
+  command: git update-index --assume-unchanged Gemfile.lock
+    chdir={{ tendrl_api_repo }}
+
+- name: Install Ruby bundler (HACK)
+  gem:
+    name=bundler
+
+- name: Bundle installation of Tendrl API (HACK)
+  bundler:
+    state=present
+    binstub_directory={{ tendrl_api_binstub_directory }}
+    exclude_groups={{ tendrl_api_exclude_groups }}
+    chdir={{ tendrl_api_repo }}
+
+# we expect configuration to be in `/etc/tendrl/` no matter what
+# https://github.com/Tendrl/tendrl-api/issues/29
+- name: Make sure /etc/tendrl/ directory exists
+  file:
+    path=/etc/tendrl
+    state=directory
+
+# as documented in README file
+- name: Use example config files as initial configuration (see installation.rst)
+  copy:
+    src={{ item.src }}
+    dest=/etc/tendrl/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_api_repo }}/config/etcd.sample.yml"
+      dest: 'etcd.yml'
+
+# not based on any tednrl documentation
+- name: Install sysmted unit files into /etc/systemd/system/
+  copy:
+    src={{ item.src }}
+    dest=/etc/systemd/system/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_api_repo }}/tendrl-apid.service"
+      dest: 'tendrl-apid.service'
+
+# https://github.com/Tendrl/tendrl-api/issues/41
+- name: Workaround to get service file working with source installation
+  ini_file:
+    dest=/etc/systemd/system/tendrl-apid.service
+    section=Service
+    option=ExecStart
+    value="/usr/local/bin/puma -e production --dir {{ tendrl_api_repo }}"
+
+# as documented in README file and deployment.adoc from Tendrl/documentation
+- name: Apache config file for tendrl-api to run on port 80
+  copy:
+    src="{{ tendrl_api_repo }}/config/apache.vhost.sample"
+    dest=/etc/httpd/conf.d/tendlr.conf
+    remote_src=True
+
+# as documented in README file
+# related to https://github.com/Tendrl/tendrl-api/issues/42
+- name: Enable httpd_can_network_connect SELinux boolean
+  seboolean:
+    name=httpd_can_network_connect
+    persistent=yes
+    state=yes

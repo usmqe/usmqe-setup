@@ -1,0 +1,3 @@
+---
+# when true, tendrl-api is installed from a source repository
+gluster_repo_url: http://buildlogs.centos.org/centos/7/storage/x86_64/gluster-3.9

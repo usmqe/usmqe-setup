@@ -1,0 +1,16 @@
+#
+# installation
+#
+
+- include: source.yml
+  when: install_from == "source"
+
+- include: binary.yml
+  when: install_from == "packages"
+
+#
+# post installation configuration
+#
+
+# tendrl-common is just a library, configuration is done later during setup of
+# other components using tendrl-common

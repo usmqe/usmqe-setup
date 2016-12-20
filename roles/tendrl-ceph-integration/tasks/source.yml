@@ -1,0 +1,43 @@
+- name: Directory for git repository
+  file:
+    path="{{ tendrl_ceph_integration_repo }}"
+    state=directory
+
+- name: Clone git repository
+  git:
+    repo={{ tendrl_ceph_integration_repo_url }}
+    version={{ tendrl_ceph_integration_repo_branch }}
+    dest={{ tendrl_ceph_integration_repo }}
+
+# as documented in installation.rst
+- name: Installation from source code
+  pip:
+    name=.
+    chdir="{{ tendrl_ceph_integration_repo }}"
+
+# as documented in installation.rst
+- name: Create directory for logging
+  file:
+    path=/var/log/tendrl/ceph_integration
+    state=directory
+
+# as documented in installation.rst
+# (tendrl.conf is not created here, as this file is owned by tendrl-node-agent)
+- name: Use example config files as initial configuration (see installation.rst)
+  copy:
+    src={{ item.src }}
+    dest=/etc/tendrl/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_ceph_integration_repo }}/etc/logging.yaml.timedrotation.sample"
+      dest: 'ceph_integration_logging.yaml'
+
+# not based on any tednrl documentation
+- name: Install sysmted unit files into /etc/systemd/system/
+  copy:
+    src={{ item.src }}
+    dest=/etc/systemd/system/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_ceph_integration_repo }}/systemd/tendrl-cephd.service"
+      dest: 'tendrl-cephd.service'

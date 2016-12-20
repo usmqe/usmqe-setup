@@ -1,0 +1,26 @@
+---
+- hosts: usm_server 
+  remote_user: root
+  vars:
+    install_from: packages
+  roles:
+    - etcd
+    - tendrl-repo
+    - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/tendrl-api/issues/25
+    - tendrl-api
+    - { role: epel, epel_enabled: 0 }
+
+- hosts: gluster
+  remote_user: root
+  vars:
+    install_from: packages
+  roles:
+    - gluster-centos
+    - tendrl-repo
+    - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/node_agent/issues/75
+    - tendrl-common
+    - tendrl-node-agent
+    - tendrl-gluster-integration
+    - { role: epel, epel_enabled: 0 }
+
+- include: gluster_peer_probe.yml

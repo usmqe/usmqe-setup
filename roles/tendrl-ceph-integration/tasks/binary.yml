@@ -1,0 +1,4 @@
+- name: Install tendrl-ceph-integration
+  yum:
+    name=tendrl-ceph-integration
+    state=latest

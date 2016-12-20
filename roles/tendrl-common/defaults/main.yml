@@ -1,0 +1,23 @@
+---
+# values: packages | source
+install_from: packages
+# set to 'true' to ingnore missing features in source installation compared to
+# packages or vice versa
+ignore_incomplete_installation: false
+
+#
+# variables used when install_from == packages
+#
+
+
+#
+# variables used when install_from == source
+#
+
+# url of the source repository and the branch to checkout
+tendrl_common_repo_url: 'https://github.com/Tendrl/common'
+# note that you need to change the branch in the url as well
+tendrl_common_repo_branch: master
+
+# directory where the git repo would be cloned into
+tendrl_common_repo: /opt/tendrl/common

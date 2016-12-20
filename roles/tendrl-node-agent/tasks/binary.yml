@@ -1,0 +1,4 @@
+- name: Install tendrl-node-agent
+  yum:
+    name=tendrl-node-agent
+    state=latest

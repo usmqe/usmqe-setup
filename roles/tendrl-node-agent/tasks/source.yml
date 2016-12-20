@@ -1,0 +1,65 @@
+# as documented in README file
+# https://github.com/Tendrl/node_agent/blob/4969c8e9007079ea11005f84f529bccb8a259f09/README.adoc
+# we install only devel packages which are not already included in tedtrl-devel
+- name: Install dev dependencies
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - libffi-devel
+    - openssl-devel
+
+#
+# Installation
+#
+
+- name: Directory for git repository
+  file:
+    path="{{ tendrl_node_agent_repo }}"
+    state=directory
+
+- name: Clone git repository
+  git:
+    repo={{ tendrl_node_agent_repo_url }}
+    version={{ tendrl_node_agent_repo_branch }}
+    dest={{ tendrl_node_agent_repo }}
+
+# as documented in README file and installation.rst
+# https://github.com/Tendrl/node_agent/blob/4969c8e9007079ea11005f84f529bccb8a259f09/README.adoc
+# https://github.com/Tendrl/node_agent/blob/4969c8e9007079ea11005f84f529bccb8a259f09/doc/source/installation.rst
+- name: Installation from source code
+  pip:
+    name=.
+    chdir="{{ tendrl_node_agent_repo }}"
+
+- name: Create directory for configuration
+  file:
+    path=/etc/tendrl/node_agent
+    state=directory
+
+- name: Create directory for logging 
+  file:
+    path=/var/log/tendrl/node_agent
+    state=directory
+
+# based on information from installation.rst
+- name: Use example config files as initial configuration (see installation.rst)
+  copy:
+    src={{ item.src }}
+    dest=/etc/tendrl/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_node_agent_repo }}/etc/logging.yaml.timedrotation.sample"
+      dest: 'node_agent_logging.yaml'
+    - src: "{{ tendrl_node_agent_repo }}/etc/tendrl/tendrl.conf.sample"
+      dest: 'tendrl.conf'
+
+# not based on any tednrl documentation
+- name: Install sysmted unit files into /etc/systemd/system/
+  copy:
+    src={{ item.src }}
+    dest=/etc/systemd/system/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_node_agent_repo }}/tendrl-noded.service"
+      dest: 'tendrl-noded.service'

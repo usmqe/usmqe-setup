@@ -1,0 +1,14 @@
+- name: Install dependencies for installation from sources
+  yum:
+    name={{ item }}
+    enablerepo=epel
+  with_items:
+    - git
+    - nodejs
+    - npm
+    - python-devel
+    - python-pip
+    - gcc
+    - python-virtualenv
+    - "@Development tools"
+  when: install_from == "source"

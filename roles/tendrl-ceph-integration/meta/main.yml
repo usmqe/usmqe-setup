@@ -1,0 +1,10 @@
+---
+dependencies:
+  # make sure common devel packages are installed for installation from sources
+  - role: tendrl-devel
+    when: install_from == "source"
+  # for installation from packages, tendrl-common should be installed
+  # automatically based on rpm dependencies, but for installation from sources,
+  # we need to install other tendrl components explicitly
+  - role: tendrl-common
+    when: install_from == "source"

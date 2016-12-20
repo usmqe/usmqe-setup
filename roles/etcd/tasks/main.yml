@@ -1,0 +1,33 @@
+- name: Install etcd
+  yum:
+    name=etcd
+    state=present
+
+- name: Directory for etcd api_jobs
+  file:
+    path=/etc/etcd/api_job_queue
+    state=directory
+
+- name: Configure etcd.conf ETCD_LISTEN_PEER_URLS
+  lineinfile:
+    dest=/etc/etcd/etcd.conf
+    regexp="^(\#*)ETCD_LISTEN_PEER_URLS(.*)"
+    line="ETCD_LISTEN_PEER_URLS=\"http://{{ inventory_hostname }}:2380\""
+
+- name: Configure etcd.conf ETCD_LISTEN_CLIENT_URLS
+  lineinfile:
+    dest=/etc/etcd/etcd.conf
+    regexp="^(\#*)ETCD_LISTEN_CLIENT_URLS(.*)"
+    line="ETCD_LISTEN_CLIENT_URLS=\"http://{{ inventory_hostname }}:2379\""
+
+- name: Configure etcd.conf ETCD_ADVERTISE_CLIENT_URLS
+  lineinfile:
+    dest=/etc/etcd/etcd.conf
+    regexp="^(\#*)ETCD_ADVERTISE_CLIENT_URLS(.*)"
+    line="ETCD_ADVERTISE_CLIENT_URLS=\"http://{{ inventory_hostname }}:2379\""
+
+- name: Start etcd
+  service:
+    name=etcd
+    state=started
+    enabled=yes

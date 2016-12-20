@@ -1,0 +1,9 @@
+- name: Add tendrl repo
+  yum_repository:
+    name: tendrl
+    description: Copr repo for tendrl owned by tendrl
+    baseurl: "https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl/epel-7-x86_64/"
+
+- name: Add public key
+  rpm_key:
+    key="https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl/pubkey.gpg"

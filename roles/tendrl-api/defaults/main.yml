@@ -1,0 +1,32 @@
+---
+# values: packages | source
+install_from: packages
+# set to 'true' to ingnore missing features in source installation compared to
+# packages or vice versa
+ignore_incomplete_installation: false
+
+#
+# variables used when install_from == packages
+#
+
+
+#
+# variables used when install_from == source
+#
+
+# url of the source repository and the branch to checkout
+tendrl_api_repo_url: https://github.com/Tendrl/tendrl-api.git
+tendrl_api_repo_branch: master
+
+# directory where the git repo would be cloned into
+tendrl_api_repo: /opt/tendrl/tendrl-api
+
+# directory for bundler[1] bistub[2] scripts
+# [1] https://bundler.io/v1.12/#getting-started
+# [2] https://github.com/rbenv/rbenv/wiki/Understanding-binstubs
+tendrl_api_binstub_directory: vendor/bin
+
+# String value passed to `exclude_groups` option of ansible `bundler` module,
+# which matches `--without` argument of `bundle` tool.
+# Default value based on information from README file (we use production setup)
+tendrl_api_exclude_groups: development test documentation

@@ -1,0 +1,4 @@
+- name: Install tendrl-gluster-integration
+  yum:
+    name=tendrl-gluster-integration
+    state=latest

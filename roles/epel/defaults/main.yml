@@ -1,4 +1,4 @@
 ---
 # epel should be by default disabled, to enable it, use it this way:
-# - {role: epel, enabled: 1}
-enabled: 0
+# - {role: epel, epel_enabled: 1}
+epel_enabled: 0
