@@ -18,6 +18,7 @@ with the following exceptions:
 
 * installation from sources is not done via Python virtualenv
 * ceph or gluster integration components are not installed in this role
+* we don't install, configure or explicitly depend on etcd
 
 Open issues:
 
