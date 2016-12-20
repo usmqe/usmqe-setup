@@ -6,7 +6,7 @@ This role installs `tendrl-node-agent`_ component.
 
 When variable ``install_from`` is set to ``packages``, the component is
 installed from rpm packages via ``yum``. On the other hand when the value is
-set to ``source``, tendrl-common is installed from sources from github via
+set to ``source``, tendrl-node-agent is installed from sources from github via
 ``pip``.
 
 The installation is based on information from:

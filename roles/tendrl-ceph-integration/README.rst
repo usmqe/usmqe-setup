@@ -6,8 +6,8 @@ This role installs `tendrl-ceph-integration`_ component.
 
 When variable ``install_from`` is set to ``packages``, the component is
 installed from rpm packages via ``yum``. On the other hand when the value is
-set to ``source``, tendrl-common is installed from sources from github via
-``pip``.
+set to ``source``, tendrl-ceph-integration is installed from sources from
+github via ``pip``.
 
 The installation is based on information from `installation.rst`_ with the
 following exceptions:
