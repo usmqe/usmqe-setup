@@ -7,8 +7,7 @@
     - etcd
     - epel # based on https://github.com/Tendrl/tendrl-api/issues/25
     - tendrl-repo
-    - role: tendrl-api
-      enable_repo: epel
+    - { role: tendrl-api, enable_repo: epel}
 
 - hosts: gluster
   remote_user: root
@@ -19,8 +18,7 @@
     - epel # based on https://github.com/Tendrl/node_agent/issues/75
     - tendrl-repo
     - tendrl-common
-    - role: tendrl-node-agent
-      enable_repo: epel
+    - { role: tendrl-node-agent, enable_repo: epel}
     - tendrl-gluster-integration
 
 - include: gluster_peer_probe.yml

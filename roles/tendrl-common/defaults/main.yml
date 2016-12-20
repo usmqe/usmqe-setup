@@ -10,7 +10,7 @@ ignore_incomplete_installation: false
 #
 
 # when specified, tendrl-common is installed with specified repos enabled
-enable_repo: None
+enable_repo: ""
 
 #
 # variables used when install_from == source
