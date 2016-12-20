@@ -5,9 +5,10 @@
     install_from: packages
   roles:
     - etcd
-    - epel # based on https://github.com/Tendrl/tendrl-api/issues/25
     - tendrl-repo
-    - { role: tendrl-api, enable_repo: epel}
+    - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/tendrl-api/issues/25
+    - tendrl-api
+    - { role: epel, epel_enabled: 0 }
 
 - hosts: gluster
   remote_user: root
@@ -15,10 +16,11 @@
     install_from: packages
   roles:
     - gluster-centos
-    - epel # based on https://github.com/Tendrl/node_agent/issues/75
     - tendrl-repo
+    - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/node_agent/issues/75
     - tendrl-common
-    - { role: tendrl-node-agent, enable_repo: epel}
+    - tendrl-node-agent
     - tendrl-gluster-integration
+    - { role: epel, epel_enabled: 0 }
 
 - include: gluster_peer_probe.yml

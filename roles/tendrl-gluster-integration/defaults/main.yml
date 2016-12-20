@@ -9,8 +9,6 @@ ignore_incomplete_installation: false
 # variables used when install_from == packages
 #
 
-# when specified, tendrl-node-agent is installed with provided repo support
-enable_repo: ""
 
 #
 # variables used when install_from == source

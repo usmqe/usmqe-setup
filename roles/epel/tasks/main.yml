@@ -5,7 +5,7 @@
 
 - name: Check if EPEL is not permanently enabled on RHEL
   fail: msg="Do not permanently enable EPEL on RHEL!"
-  when: enabled and ansible_distribution == 'RedHat'
+  when: epel_enabled and ansible_distribution == 'RedHat'
 
 - name: Copy EPEL rpm-gpg key first (hack)
   copy:
@@ -29,4 +29,4 @@
     dest=/etc/yum.repos.d/epel.repo
     section=epel
     option=enabled
-    value={{ enabled }}
+    value={{ epel_enabled }}

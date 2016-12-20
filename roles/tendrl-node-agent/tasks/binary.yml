@@ -2,4 +2,3 @@
   yum:
     name=tendrl-node-agent
     state=latest
-    enablerepo="{{ enable_repo }}"

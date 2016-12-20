@@ -2,7 +2,6 @@
   yum:
     name=tendrl-api
     state=latest
-    enablerepo="{{ enable_repo }}"
 
 - name: Install tendrl-api-httpd
   yum:
