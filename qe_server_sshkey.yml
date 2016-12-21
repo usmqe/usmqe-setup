@@ -1,0 +1,32 @@
+---
+# This playbook deploy ssh public key for usmqe user to qe_server.
+
+- name: Deploy ssh public keys for usmqe user account
+  hosts: qe_server
+  user: root
+  tasks:
+  - name: Deploy public ssh key
+    authorized_key:
+      exclusive=no
+      user=usmqe
+      state=present
+      key="{{ item }}"
+    with_items:
+      - "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
+
+  - name: Get public key from qe_server.
+    command: cat /home/usmqe/.ssh/id_rsa.pub
+    register: usmqe_ssh_key
+
+- name: Deploy ssh public key of usmqe user to test machines
+  hosts: usm_server:usm_nodes
+  user: root
+  vars:
+    ssh_key: "{{ hostvars[groups['qe_server'][0]].usmqe_ssh_key.stdout }}"
+  tasks:
+  - name: Deploy public ssh key
+    authorized_key:
+      exclusive=no
+      user=root
+      state=present
+      key="{{ ssh_key }}"
