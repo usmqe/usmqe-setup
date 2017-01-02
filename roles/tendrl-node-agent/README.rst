@@ -27,5 +27,5 @@ Open issues:
 * https://github.com/Tendrl/node_agent/issues/89
 
 .. _`installation.rst`: https://github.com/Tendrl/node_agent/blob/master/doc/source/installation.rst
-.. _`README file`: https://github.com/Tendrl/node_agent/blob/master/README.adoc
+.. _`README file`: https://github.com/Tendrl/node_agent/blob/master/README.rst
 .. _`tendrl-node-agent`: https://github.com/Tendrl/node_agent
