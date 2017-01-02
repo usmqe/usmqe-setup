@@ -11,11 +11,6 @@
 # export ANSIBLE_LIBRARY=../ansible-gluster/
 #
 
-- name: glusterpeer probe
-  glusterpeer: command=probe name="{{item}}"
-  run_once: true
-  with_items: "{{gluster_nodes[1:]}}"
-
 - name: create a volume with automatic device discovery
   # replica parameter doesn't work, because of bug in ansible-gluster
   glustervolume: command=autocreate name={{ volumename }} num_bricks={{ num_bricks }} servers="{{ gluster_nodes|join(' }}"
