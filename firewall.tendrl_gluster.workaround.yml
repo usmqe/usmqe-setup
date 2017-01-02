@@ -11,6 +11,10 @@
       state: stopped
       enabled: no
     ignore_errors: yes
+#
+# The application of previous tasks seems to take some time, because without
+# this pause following tasks quite often fails on "Connection error".
+#
   - name: pause for 10 second
     pause:
       seconds: 10
