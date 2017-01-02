@@ -41,3 +41,14 @@
     dest={{ ansible_user_dir }}/.bashrc
     state=present
     line="export ANSIBLE_LIBRARY={{ ansible_user_dir }}/ansible-gluster/"
+
+- name: Configure ssh - UserKnownHostsFile and StrictHostKeyChecking
+  lineinfile:
+    dest={{ ansible_user_dir }}/.ssh/config
+    state=present
+    create=yes
+    line="{{ item }}"
+  with_items:
+    - 'Host *'
+    - '  StrictHostKeyChecking no'
+    - '  UserKnownHostsFile=/dev/null'
