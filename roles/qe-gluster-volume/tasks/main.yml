@@ -22,7 +22,7 @@
   run_once: true
   when: action == "create"
 
-- name: stop volume
+- name: start volume
   glustervolume: command=start name={{ volumename }}
   ignore_errors: yes
   run_once: true
