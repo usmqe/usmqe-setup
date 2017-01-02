@@ -19,15 +19,6 @@ following exceptions:
   latest tendrl code when needed. Actuall testing of a tendrl release should
   be done on packages.
 
-Virtualenv is very usefull for development and testing of particular
-components, and I still suggest to use it when code changes needs to be checked
-manually immediatelly during development (and for this reason, it's a good
-thing that virtualenv is suggested in devel installation docs of tendrl
-components), but for installing multiple python packages which needs to run
-under root for the purposes of integration testing, automation of virtualenv
-based installation is not maintenable (most ansible modules doesn't consider
-this use case and additional setup would be still needed).
-
 
 .. _`installation.rst`: https://github.com/Tendrl/common/blob/master/doc/source/installation.rst
 .. _`tendrl-common`: https://github.com/Tendrl/common
