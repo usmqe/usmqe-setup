@@ -46,6 +46,7 @@
   lineinfile:
     dest={{ ansible_user_dir }}/.ssh/config
     state=present
+    create=yes
     line="{{ item }}"
   with_items:
     - 'Host *'
