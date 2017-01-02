@@ -11,8 +11,8 @@ set to ``source``, tendrl-node-agent is installed from sources from github via
 
 The installation is based on information from:
 
- * `installation.rst`_
- * `README file`_
+* `installation.rst`_
+* `README file`_
 
 with the following exceptions:
 
