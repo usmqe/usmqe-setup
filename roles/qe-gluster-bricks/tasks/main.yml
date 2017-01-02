@@ -1,0 +1,19 @@
+---
+#
+# Create bricks on storage nodes.
+#
+# This role require ansible-gluster libraries:
+# https://github.com/dahorak/ansible-gluster.git or
+# https://github.com/loadtheaccumulator/ansible-gluster.git
+# export ANSIBLE_LIBRARY=../ansible-gluster/
+#
+
+- name: auto create bricks
+  glusterbrick: command=autocreate mountpoint="{{ brickmountpoint }}" brickname="{{ brickname }}"
+  register: num_bricks
+  when: action == "create"
+
+- name: auto destroy bricks
+  glusterbrick: command=autodestroy mountpoint="{{ brickmountpoint }}" brickname="{{ brickname }}"
+  register: num_bricks
+  when: action == "destroy"

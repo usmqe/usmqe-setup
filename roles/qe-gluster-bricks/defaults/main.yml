@@ -1,0 +1,4 @@
+---
+action: "create"
+brickmountpoint: "/bricks/fs_gluster"
+brickname: "brick"

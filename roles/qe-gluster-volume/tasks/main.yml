@@ -1,0 +1,36 @@
+---
+#
+# Create gluster volume
+#
+# variable gluster_nodes contains list of gluster peers,
+# by defaults contains list of hosts from group gluster
+#
+# This role require ansible-gluster libraries:
+# https://github.com/dahorak/ansible-gluster.git or
+# https://github.com/loadtheaccumulator/ansible-gluster.git
+# export ANSIBLE_LIBRARY=../ansible-gluster/
+#
+
+- name: create a volume with automatic device discovery
+  # replica parameter doesn't work, because of bug in ansible-gluster
+  glustervolume: command=autocreate name={{ volumename }} num_bricks={{ num_bricks }} servers="{{ gluster_nodes|join(' }}"
+  run_once: true
+  when: action == "create"
+
+- name: start volume
+  glustervolume: command=start name={{ volumename }}
+  ignore_errors: yes
+  run_once: true
+  when: action == "create"
+
+- name: stop volume
+  glustervolume: command=stop name={{ volumename }}
+  ignore_errors: yes
+  run_once: true
+  when: action == "destroy"
+
+- name: delete volume
+  glustervolume: command=delete name={{ volumename }}
+  ignore_errors: yes
+  run_once: true
+  when: action == "destroy"

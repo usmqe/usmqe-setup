@@ -1,0 +1,8 @@
+---
+gluster_nodes: "{{groups['gluster']}}"
+volumename: "TestVolumeA"
+# number of bricks used on one gluster storage server
+num_bricks: 1
+## FIXME: this doesn't work because of bug in ansible-gluster - glusterbrick module
+# set replica to 0 to create just distributed volume (disable replica)
+#- replica: 2
