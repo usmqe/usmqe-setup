@@ -1,0 +1,20 @@
+---
+# HACK
+# FIXME: There should be proper firewall configuration!
+
+- hosts: gluster:usm_server
+  remote_user: root
+  tasks:
+  - name: stop firewall
+    service:
+      name: firewalld
+      state: stopped
+      enabled: no
+    ignore_errors: yes
+#
+# The application of previous tasks seems to take some time, because without
+# this pause following tasks quite often fails on "Connection error".
+#
+  - name: pause for 10 second
+    pause:
+      seconds: 10
