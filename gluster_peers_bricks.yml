@@ -1,0 +1,12 @@
+---
+#
+# Create gluster trusted storage pool and bricks
+# on all available devices on gluster nodes.
+#
+
+- hosts: gluster
+  remote_user: root
+  roles:
+  #- { role: qe-gluster-peers, gluster_nodes: "{{groups['gluster']}}"}
+  - qe-gluster-peers
+  - qe-gluster-bricks
