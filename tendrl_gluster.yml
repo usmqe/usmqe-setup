@@ -23,5 +23,3 @@
     - tendrl-node-agent
     - tendrl-gluster-integration
     - { role: epel, epel_enabled: 0 }
-
-- include: gluster_peer_probe.yml

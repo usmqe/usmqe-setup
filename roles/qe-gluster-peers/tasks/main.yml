@@ -1,0 +1,21 @@
+---
+#
+# Create gluster cluster - trusted storage pool (gluster peer probe)
+#
+# variable gluster_nodes contains list of gluster peers,
+# by defaults contains list of hosts from group gluster
+#
+# This role require ansible-gluster libraries:
+# https://github.com/dahorak/ansible-gluster.git or
+# https://github.com/loadtheaccumulator/ansible-gluster.git
+# export ANSIBLE_LIBRARY=../ansible-gluster/
+#
+
+- name: glusterpeer probe
+  glusterpeer: command=probe name="{{item}}"
+  run_once: true
+  with_items: "{{gluster_nodes[1:]}}"
+
+- name: glusterpeer status
+  glusterpeer: command=status
+  run_once: true
