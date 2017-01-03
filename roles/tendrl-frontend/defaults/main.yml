@@ -1,0 +1,22 @@
+---
+# values: packages | source
+install_from: packages
+# set to 'true' to ingnore missing features in source installation compared to
+# packages or vice versa
+ignore_incomplete_installation: false
+
+#
+# variables used when install_from == packages
+#
+
+
+#
+# variables used when install_from == source
+#
+
+# url of the source repository and the branch to checkout
+tendrl_frontend_repo_url: https://github.com/Tendrl/tendrl_frontend.git
+tendrl_frontend_repo_branch: master
+
+# directory where the git repo would be cloned into
+tendrl_frontend_repo: /opt/tendrl/tendrl-frontend
