@@ -11,10 +11,3 @@
 #
 # post installation configuration
 #
-
-# as documented in README file
-# TODO: this is prone to break sooner or later, but there is no yaml file
-# module in ansible core or extras:
-# https://github.com/ansible/ansible-modules-core/issues/1746
-# fix of this hack would need to some external yaml module such as:
-# https://github.com/kwoodson/yedit
