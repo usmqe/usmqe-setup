@@ -4,6 +4,8 @@
 # on all available devices on gluster nodes.
 #
 
+- include: firewall.tendrl_gluster.workaround.yml
+
 - hosts: gluster
   remote_user: root
   roles:
