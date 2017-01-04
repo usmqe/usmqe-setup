@@ -1,0 +1,12 @@
+---
+#
+# Create gluster trusted storage pool and bricks
+# on all available devices on gluster nodes.
+#
+
+- hosts: gluster
+  remote_user: root
+  roles:
+  - gluster-centos
+  - qe-gluster-peers
+  - qe-gluster-bricks
