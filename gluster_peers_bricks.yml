@@ -7,6 +7,6 @@
 - hosts: gluster
   remote_user: root
   roles:
-  #- { role: qe-gluster-peers, gluster_nodes: "{{groups['gluster']}}"}
+  - gluster-centos
   - qe-gluster-peers
   - qe-gluster-bricks
