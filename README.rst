@@ -51,6 +51,21 @@ playbooks stored in this repository) run CentOS 7 distribution.
 .. is the current plan)
 
 
+Code style of YAML files
+------------------------
+
+We use `yamllint`_ tool to check syntax and formatting of yaml files in
+this repository. The rules we enforce (stored in ``.yamllint`` file) are based
+on `yamllint configuration of ansible project`_.
+
+To run the checks, install ``yamllint`` (use either `Fedora/CentOS yamllint
+packages`_ or PyPI via ``pip``) and run::
+
+    $ yamllint .
+
+This check is also run by `usmqe-setup Travis CI job`_ for each pull request.
+
+
 Documentation
 -------------
 
@@ -72,3 +87,7 @@ Distributed under the terms of the `Apache License 2.0`_ license.
 .. _`ansible playbooks`: https://docs.ansible.com/ansible/playbooks_intro.html
 .. _`Apache License 2.0`: http://www.apache.org/licenses/LICENSE-2.0
 .. _`ansible from current Fedora or EPEL`: https://apps.fedoraproject.org/packages/ansible
+.. _`yamllint`: https://yamllint.readthedocs.io/en/latest/
+.. _`yamllint configuration of ansible project`: https://github.com/ansible/ansible/blob/devel/.yamllint
+.. _`Fedora/CentOS yamllint packages`: https://apps.fedoraproject.org/packages/yamllint
+.. _`usmqe-setup Travis CI job`: https://travis-ci.org/Tendrl/usmqe-setup
