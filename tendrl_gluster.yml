@@ -21,7 +21,6 @@
     - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/node_agent/issues/75
     - tendrl-common
     - tendrl-node-agent
-    - tendrl-performance-monitoring
     - tendrl-gluster-integration
     - { role: epel, epel_enabled: 0 }
 
