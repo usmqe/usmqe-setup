@@ -1,0 +1,49 @@
+
+#
+# Installation
+#
+
+- name: Directory for git repository
+  file:
+    path="{{ tendrl_performance_monitoring_repo }}"
+    state=directory
+
+- name: Clone git repository
+  git:
+    repo={{ tendrl_performance_monitoring_repo_url }}
+    version={{ tendrl_performance_monitoring_repo_branch }}
+    dest={{ tendrl_performance_monitoring_repo }}
+
+- name: Installation from source code
+  pip:
+    name=.
+    chdir={{ tendrl_performance_monitoring_repo }}
+
+- name: Use example config files as initial configuration (see installation.rst)
+  copy:
+    src={{ item.src }}
+    dest=/etc/tendrl/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_performance_monitoring_repo }}/etc/tendrl/tendrl.conf.sample"
+      dest: 'tendrl.conf'
+    - src: "{{ tendrl_performance_monitoring_repo }}/etc/logging.yaml.timedrotation.sample"
+      dest: 'performance_monitoring_logging.yaml'
+
+- name: Specify log_cfg_path in tendrl.conf
+  ini_file:
+    dest=/etc/tendrl/tendrl.conf
+    section=performance_monitoring
+    option=log_cfg_path
+    value="/etc/tendrl/performance_monitoring_logging.yaml"
+
+# TODO add after daemon file is available
+# not based on any tendrl documentation
+#- name: Install sysmted unit files into /etc/systemd/system/
+#  copy:
+#    src={{ item.src }}
+#    dest=/etc/systemd/system/{{ item.dest }}
+#    remote_src=True
+#  with_items:
+#    - src: "{{ tendrl_performance_monitoring_repo }}/tendrl-noded.service"
+#      dest: 'tendrl-noded.service'

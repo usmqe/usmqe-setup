@@ -1,0 +1,5 @@
+# TODO Add when packages are ready
+#- name: Install tendrl-performance-monitoring
+#  yum:
+#    name=tendrl-performance-monitoring
+#    state=latest

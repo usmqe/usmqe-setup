@@ -9,6 +9,7 @@
     - python-devel
     - python-pip
     - gcc
+    - openssl-devel
     - python-virtualenv
     - "@Development tools"
   when: install_from == "source"
