@@ -1,0 +1,13 @@
+#
+# installation
+#
+
+- include: source.yml
+  when: install_from == "source"
+
+- include: binary.yml
+  when: install_from == "packages"
+
+#
+# post installation configuration
+#

@@ -33,6 +33,7 @@
     - /var/log/tendrl/common
     - /var/log/tendrl/node_agent
     - /var/log/tendrl/performance_monitoring
+    - /var/log/tendrl/alerting
     - /var/log/tendrl/ceph_integration
     - /var/log/tendrl/gluster_integration
 
