@@ -24,8 +24,6 @@
     dest=/etc/tendrl/{{ item.dest }}
     remote_src=True
   with_items:
-    - src: "{{ tendrl_performance_monitoring_repo }}/etc/tendrl/tendrl.conf.sample"
-      dest: 'tendrl.conf'
     - src: "{{ tendrl_performance_monitoring_repo }}/etc/logging.yaml.timedrotation.sample"
       dest: 'performance_monitoring_logging.yaml'
 
