@@ -1,0 +1,51 @@
+#
+# Installation
+#
+
+- name: Directory for git repository
+  file:
+    path="{{ tendrl_alerting_repo }}"
+    state=directory
+
+- name: Clone git repository
+  git:
+    repo={{ tendrl_alerting_repo_url }}
+    version={{ tendrl_alerting_repo_branch }}
+    dest={{ tendrl_alerting_repo }}
+
+- name: Installation from source code
+  pip:
+    name=.
+    chdir={{ tendrl_alerting_repo }}
+
+- name: Use example config files as initial configuration (see installation.rst)
+  copy:
+    src={{ item.src }}
+    dest=/etc/tendrl/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_alerting_repo }}/etc/tendrl/tendrl.conf.sample"
+      dest: 'tendrl.conf'
+    - src: "{{ tendrl_alerting_repo }}/etc/logging.yaml.timedrotation.sample"
+      dest: 'alerting_logging.yaml'
+
+- name: Specify log_cfg_path in tendrl.conf
+  ini_file:
+    dest=/etc/tendrl/tendrl.conf
+    section=alerting
+    option=log_cfg_path
+    value="/etc/tendrl/alerting_logging.yaml"
+
+# TODO add after daemon file is available
+# not based on any tendrl documentation
+#- name: Install sysmted unit files into /etc/systemd/system/
+#  copy:
+#    src={{ item.src }}
+#    dest=/etc/systemd/system/{{ item.dest }}
+#    remote_src=True
+#  with_items:
+#    - src: "{{ tendrl_alerting_repo }}/tendrl-noded.service"
+#      dest: 'tendrl-alertingd.service'
+
+- fail: msg="There is no systemd unit yet, we can't start and enable it"
+  when: not ignore_incomplete_installation
