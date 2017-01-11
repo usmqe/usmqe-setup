@@ -1,0 +1,138 @@
+---
+# ceph-ansible package is not in Epel yet. This playbook expects that
+# ceph-ansible is preinstalled or available in enabled yum repositories.
+# TODO do apt installation
+- name: Install ceph-ansible package
+  yum:
+    name=ceph-ansible
+
+- name: Create directory for keys
+  file: path=/root/ceph-ansible-keys state=directory
+
+- name: Copy sample files
+  copy:
+    src: "/usr/share/ceph-ansible/{{ item.src }}"
+    dest: "/usr/share/ceph-ansible/{{ item.dst }}"
+    remote_src: "True"
+  with_items:
+    - dst: "group_vars/all.yml"
+      src: "group_vars/all.sample"
+    - dst: "group_vars/mons.yml"
+      src: "group_vars/mons.sample"
+    - dst: "group_vars/osds.yml"
+      src: "group_vars/osds.sample"
+    - dst: "site.yml"
+      src: "site.yml.sample"
+
+# edit all.yml file
+
+- name: Set fetch directory
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/all.yml
+    regexp: "^#fetch_directory: fetch/"
+    line: "fetch_directory: /root/ceph-ansible-keys"
+
+- name: Change default Ceph cluster name
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/all.yml
+    regexp: '^#cluster: ceph.*'
+    line: 'cluster: test_name'
+
+- name: Set automated fsid generation
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/all.yml
+    regexp: '^#generate_fsid: true.*'
+    line: 'generate_fsid: true'
+
+- name: Set Ceph origin 'distro' which means that repos are already set on nodes
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/all.yml
+    regexp: "^#ceph_origin: 'upstream'.*"
+    line: "ceph_origin: 'distro'"
+
+- name: Set client authentication
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/all.yml
+    regexp: "^#cephx: true.*"
+    line: 'cephx: true'
+
+- name: Set monitor interface to ansible_default_ipv4['interface']
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/all.yml
+    regexp: "^#monitor_interface: interface.*"
+    line: "monitor_interface: {{ ansible_default_ipv4['interface'] }}"
+
+- name: Set journal_size to 5 GB
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/all.yml
+    regexp: "^#journal_size: 0.*"
+    line: 'journal_size: 5120'
+
+- name: Set public_network to ansible_default_ipv4['address']/16
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/all.yml
+    regexp: "^#public_network: 0.0.0.0/0.*"
+    line: "public_network: {{ ansible_default_ipv4['address'] }}/16"
+
+# edit mons.yml file
+
+- name: Enable calamari on mons
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/mons.yml
+    regexp: '^#calamari: false'
+    line: 'calamari: true'
+
+# edit osds.yml file
+
+- name: Uncomment devices
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/osds.yml
+    regexp: '^#devices:'
+    line: 'devices:'
+  when: "{{ devices }}"
+
+- name: Add devices if they are set
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/osds.yml
+    regexp: "^  - /dev/{{item}}"
+    insertafter: '^devices:'
+    line: "  - /dev/{{item}}"
+  with_items: "{{ devices }}"
+  when: "{{ devices }}"
+
+- name: Use device autodetection if devices are not set
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/osds.yml
+    regexp: "^#osd_auto_discovery: false"
+    line: "osd_auto_discovery: true"
+  when: "{{ not devices }}"
+
+- name: Set collocation journals
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/osds.yml
+    regexp: "^#journal_collocation: false"
+    line: "journal_collocation: true"
+  when: "{{ collocation }}"
+
+- name: Set raw_multi_journal when journals are not collocated
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/osds.yml
+    regexp: "^#raw_multi_journal: false"
+    line: "raw_multi_journal: true"
+  when: "{{ (not collocation) and journal_devices }}"
+
+- name: Uncomment journal devices
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/osds.yml
+    regexp: '^#raw_journal_devices:'
+    line: 'raw_journal_devices:'
+  when: "{{ (not collocation) and journal_devices }}"
+
+- name: Add devices for if they are set
+  lineinfile:
+    dest: /usr/share/ceph-ansible/group_vars/osds.yml
+    insertafter: '^raw_journal_devices:'
+    line: "  - /dev/{{item}}"
+    regexp: "^raw_journal_devices:\\\n.*  - /dev/{{item}}"
+  with_items: "{{ journal_devices }}"
+  when: "{{ (not collocation) and journal_devices }}"

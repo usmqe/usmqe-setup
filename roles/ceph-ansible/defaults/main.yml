@@ -1,0 +1,12 @@
+---
+# list of devices which will be used for Ceph.
+# If it is empty, list is autodetected by ceph-ansible
+devices: []
+
+# use collocated journals? Default to true for simplicity.
+collocation: true
+
+# if collocation is false and journal devices are set,
+# create journals on journal devices.
+# Default is empty because collocation is true.
+journal_devices: []

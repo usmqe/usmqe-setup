@@ -1,0 +1,6 @@
+---
+- name: Install ceph-ansible and install Ceph
+  hosts: usm_server
+  user: root
+  roles:
+    - ceph-ansible
