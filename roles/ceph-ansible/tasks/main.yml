@@ -128,7 +128,7 @@
     line: 'raw_journal_devices:'
   when: "{{ (not collocation) and journal_devices }}"
 
-- name: Add devices for if they are set
+- name: Add devices for journals if they are set
   lineinfile:
     dest: /usr/share/ceph-ansible/group_vars/osds.yml
     insertafter: '^raw_journal_devices:'

@@ -9,4 +9,5 @@ collocation: true
 # if collocation is false and journal devices are set,
 # create journals on journal devices.
 # Default is empty because collocation is true.
+# collocation == false and len(journal_devices) == 0 is not supported!
 journal_devices: []
