@@ -1,18 +1,18 @@
 - name: Directory for git repository
   file:
-    path="{{ tendrl_common_repo }}"
+    path="{{ tendrl_commons_repo }}"
     state=directory
 
 - name: Clone git repository
   git:
-    repo={{ tendrl_common_repo_url }}
-    version={{ tendrl_common_repo_branch }}
-    dest={{ tendrl_common_repo }}
+    repo={{ tendrl_commons_repo_url }}
+    version={{ tendrl_commons_repo_branch }}
+    dest={{ tendrl_commons_repo }}
 
 - name: Installation from source code
   pip:
     name=.
-    chdir="{{ tendrl_common_repo }}"
+    chdir="{{ tendrl_commons_repo }}"
 
 - name: Directory for Tendrl configuration
   file:
@@ -30,7 +30,7 @@
     state=directory
   with_items:
     - /var/log/tendrl
-    - /var/log/tendrl/common
+    - /var/log/tendrl/commons
     - /var/log/tendrl/node_agent
     - /var/log/tendrl/performance_monitoring
     - /var/log/tendrl/alerting
@@ -43,5 +43,5 @@
     dest=/etc/tendrl/{{ item.dest }}
     remote_src=True
   with_items:
-    - src: "{{ tendrl_common_repo }}/etc/samples/logging.yaml.timedrotation.sample"
-      dest: 'common_logging.conf'
+    - src: "{{ tendrl_commons_repo }}/etc/samples/logging.yaml.timedrotation.sample"
+      dest: 'commons_logging.conf'

@@ -1,12 +1,12 @@
 ===============
- Tendrl-common
+ Tendrl-commons
 ===============
 
-This role installs `tendrl-common`_ component.
+This role installs `tendrl-commons`_ component.
 
 When variable ``install_from`` is set to ``packages``, the component is
 installed from rpm packages via ``yum``. On the other hand when the value is
-set to ``source``, tendrl-common is installed from sources from github via
+set to ``source``, tendrl-commons is installed from sources from github via
 ``pip``.
 
 The installation is done according to `installation.rst`_ file with the
@@ -20,5 +20,5 @@ following exceptions:
   be done on packages.
 
 
-.. _`installation.rst`: https://github.com/Tendrl/common/blob/master/doc/source/installation.rst
-.. _`tendrl-common`: https://github.com/Tendrl/common
+.. _`installation.rst`: https://github.com/Tendrl/commons/blob/master/doc/source/installation.rst
+.. _`tendrl-commons`: https://github.com/Tendrl/commons

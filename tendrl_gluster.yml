@@ -19,7 +19,7 @@
     - gluster-centos
     - tendrl-repo
     - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/node_agent/issues/75
-    - tendrl-common
+    - tendrl-commons
     - tendrl-node-agent
     - tendrl-gluster-integration
     - { role: epel, epel_enabled: 0 }
