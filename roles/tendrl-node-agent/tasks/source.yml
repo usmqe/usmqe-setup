@@ -61,5 +61,5 @@
     dest=/etc/systemd/system/{{ item.dest }}
     remote_src=True
   with_items:
-    - src: "{{ tendrl_node_agent_repo }}/tendrl-noded.service"
-      dest: 'tendrl-noded.service'
+    - src: "{{ tendrl_node_agent_repo }}/tendrl-node-agent.service"
+      dest: 'tendrl-node-agent.service'
