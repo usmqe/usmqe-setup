@@ -15,9 +15,9 @@ ignore_incomplete_installation: false
 #
 
 # url of the source repository and the branch to checkout
-tendrl_common_repo_url: 'https://github.com/Tendrl/common'
+tendrl_commons_repo_url: 'https://github.com/Tendrl/commons'
 # note that you need to change the branch in the url as well
-tendrl_common_repo_branch: master
+tendrl_commons_repo_branch: master
 
 # directory where the git repo would be cloned into
-tendrl_common_repo: /opt/tendrl/common
+tendrl_commons_repo: /opt/tendrl/commons

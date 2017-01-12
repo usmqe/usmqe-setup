@@ -1,4 +1,0 @@
-- name: Install tendrl-common
-  yum:
-    name=tendrl-common
-    state=latest

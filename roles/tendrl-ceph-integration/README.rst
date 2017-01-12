@@ -12,7 +12,7 @@ github via ``pip``.
 The installation is based on information from `installation.rst`_ with the
 following exceptions:
 
-- we don't install `tendrl-common` component once again in this role (this
+- we don't install `tendrl-commons` component once again in this role (this
   is handled either by rpm dependencies for ``install_from == packages`` or
   via ansible metadata dependencies when ``install_from == source``)
 - we don't install `/etc/tendrl/tendrl.conf` configuration file, which is owned
