@@ -59,6 +59,15 @@
     - x11vnc
     - firefox
 
+- name: Install systemd service file for Xvfb
+  copy:
+    src=Xvfb@.service
+    dest=/etc/systemd/system/Xvfb@.service
+    mode=0664
+    owner=root
+    group=root
+    setype=systemd_unit_file_t
+
 #
 # other tools
 #

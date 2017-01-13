@@ -1,0 +1,9 @@
+[Unit]
+Description=Xvfb virtual framebuffer X server for X Version 11
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/Xvfb %I -screen 0 1280x1024x16 -noreset
+
+[Install]
+WantedBy=multi-user.target
