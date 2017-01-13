@@ -49,6 +49,17 @@
    - rh-python35-python-jinja2
 
 #
+# support for web tests
+#
+
+- name: Install packages required for web tests
+  yum: name={{ item }} state=present enablerepo=epel
+  with_items:
+    - xorg-x11-server-Xvfb
+    - x11vnc
+    - firefox
+
+#
 # other tools
 #
 
