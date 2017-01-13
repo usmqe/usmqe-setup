@@ -1,0 +1,12 @@
+[Unit]
+Description=x11vnc allows VNC connections to real X11 displays
+# TODO: it's not possible to reference parametrized requirements like that
+# Requires=Xvfb@%I.service
+# After=Xvfb@%I.service
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/x11vnc -display %I -bg -nopw -xkb -forever -shared -logfile /var/log/x11vnc.%I.log
+
+[Install]
+WantedBy=multi-user.target

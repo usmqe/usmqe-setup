@@ -50,3 +50,25 @@ Acknowledgement:
 
 .. _`Xvfb server`: https://en.wikipedia.org/wiki/Xvfb
 .. _`systemd template unit file`: https://fedoramagazine.org/systemd-template-unit-files/
+
+
+x11vnc Service
+==============
+
+Another systemd service installed in this role is ``x11vnc@.service``.
+
+Also note that the role opens tcp port ``5900`` for the vnc server.
+
+Example of usage: under root user account, start both X server and vnc server::
+
+    # systemctl start Xvfb@:0 x11vnc@:0
+
+Then under ``usmqe`` user account, one can just use the diplay::
+
+    $ export DISPLAY=:0
+    $ firefox
+
+To connect to remove X server running on usmqe server machine from local
+workstataion, run::
+
+    $ vncviewer qeserver.usmqe.example.com:5900
