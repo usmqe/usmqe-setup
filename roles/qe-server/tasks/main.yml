@@ -68,6 +68,14 @@
     group=root
     setype=systemd_unit_file_t
 
+- name: Open port for x11vnc server via firewalld
+  firewalld:
+    port=5900/tcp
+    zone=public
+    permanent=true
+    state=enabled
+    immediate=true
+
 #
 # other tools
 #
