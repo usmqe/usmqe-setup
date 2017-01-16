@@ -1,0 +1,11 @@
+[Unit]
+Description=x11vnc provides VNC connections to real X11 displays
+Requires=Xvfb.service
+After=Xvfb.service
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/x11vnc -display :0 -bg -nopw -xkb -forever -shared -logfile /var/log/x11vnc.0.log
+
+[Install]
+WantedBy=multi-user.target

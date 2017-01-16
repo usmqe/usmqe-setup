@@ -68,8 +68,24 @@
     group=root
     setype=systemd_unit_file_t
   with_items:
-    - Xvfb@.service
-    - x11vnc@.service
+    - Xvfb.service
+    - x11vnc.service
+
+- name: Enable both services
+  service:
+    name={{ item }}
+    enabled=true
+  with_items:
+    - Xvfb
+    - x11vnc
+
+- name: Start both services
+  service:
+    name={{ item }}
+    state=started
+  with_items:
+    - Xvfb
+    - x11vnc
 
 - name: Open port for x11vnc server via firewalld
   firewalld:
