@@ -81,7 +81,7 @@
     value="/usr/local/bin/puma -e production --dir {{ tendrl_api_repo }}"
 
 # as documented in README file and deployment.adoc from Tendrl/documentation
-- name: Apache config file for api to run on port 80
+- name: Apache config file for tendrl-api to run on port 80
   copy:
     src="{{ tendrl_api_repo }}/config/apache.vhost.sample"
     dest=/etc/httpd/conf.d/tendlr.conf

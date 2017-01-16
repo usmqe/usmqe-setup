@@ -2,7 +2,7 @@
  Tendrl-api
 ============
 
-This role installs `api`_ component.
+This role installs `tendrl-api`_ component.
 
 When variable ``install_from`` is set to ``packages``, the component is
 installed from rpm packages via ``yum``. On the other hand when the value is
@@ -19,7 +19,7 @@ Tendrl`_ documentation with the following exceptions:
   configuration`_
 
 
-.. _`api`: https://github.com/Tendrl/api
+.. _`tendrl-api`: https://github.com/Tendrl/api
 .. _`README file`: https://github.com/Tendrl/api/blob/master/README.adoc
 .. _`Deploying Tendrl`: https://github.com/Tendrl/documentation/blob/master/deployment.adoc
 .. _`location of tendrl-api configuration`:  https://github.com/Tendrl/tendrl-api/issues/29
