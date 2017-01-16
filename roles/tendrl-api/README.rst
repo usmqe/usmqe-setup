@@ -19,7 +19,7 @@ Tendrl`_ documentation with the following exceptions:
   configuration`_
 
 
-.. _`tendrl-api`: https://github.com/Tendrl/tendrl-api
-.. _`README file`: https://github.com/Tendrl/tendrl-api/blob/master/README.adoc
+.. _`tendrl-api`: https://github.com/Tendrl/api
+.. _`README file`: https://github.com/Tendrl/api/blob/master/README.adoc
 .. _`Deploying Tendrl`: https://github.com/Tendrl/documentation/blob/master/deployment.adoc
 .. _`location of tendrl-api configuration`:  https://github.com/Tendrl/tendrl-api/issues/29
