@@ -49,6 +49,53 @@
    - rh-python35-python-jinja2
 
 #
+# support for web tests
+#
+
+- name: Install packages required for web tests
+  yum: name={{ item }} state=present enablerepo=epel
+  with_items:
+    - xorg-x11-server-Xvfb
+    - x11vnc
+    - firefox
+
+- name: Install systemd service unit file
+  copy:
+    src={{ item }}
+    dest=/etc/systemd/system/{{ item }}
+    mode=0664
+    owner=root
+    group=root
+    setype=systemd_unit_file_t
+  with_items:
+    - Xvfb.service
+    - x11vnc.service
+
+- name: Enable both services
+  service:
+    name={{ item }}
+    enabled=true
+  with_items:
+    - Xvfb
+    - x11vnc
+
+- name: Start both services
+  service:
+    name={{ item }}
+    state=started
+  with_items:
+    - Xvfb
+    - x11vnc
+
+- name: Open port for x11vnc server via firewalld
+  firewalld:
+    port=5900/tcp
+    zone=public
+    permanent=true
+    state=enabled
+    immediate=true
+
+#
 # other tools
 #
 
