@@ -15,11 +15,11 @@ ignore_incomplete_installation: false
 #
 
 # url of the source repository and the branch to checkout
-tendrl_api_repo_url: https://github.com/Tendrl/tendrl-api.git
+tendrl_api_repo_url: https://github.com/Tendrl/api.git
 tendrl_api_repo_branch: master
 
 # directory where the git repo would be cloned into
-tendrl_api_repo: /opt/tendrl/tendrl-api
+tendrl_api_repo: /opt/tendrl/api
 
 # directory for bundler[1] bistub[2] scripts
 # [1] https://bundler.io/v1.12/#getting-started

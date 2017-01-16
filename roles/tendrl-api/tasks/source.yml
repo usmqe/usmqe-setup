@@ -46,7 +46,7 @@
     chdir={{ tendrl_api_repo }}
 
 # we expect configuration to be in `/etc/tendrl/` no matter what
-# https://github.com/Tendrl/tendrl-api/issues/29
+# https://github.com/Tendrl/api/issues/29
 - name: Make sure /etc/tendrl/ directory exists
   file:
     path=/etc/tendrl
@@ -72,7 +72,7 @@
     - src: "{{ tendrl_api_repo }}/tendrl-apid.service"
       dest: 'tendrl-apid.service'
 
-# https://github.com/Tendrl/tendrl-api/issues/41
+# https://github.com/Tendrl/api/issues/41
 - name: Workaround to get service file working with source installation
   ini_file:
     dest=/etc/systemd/system/tendrl-apid.service
@@ -81,14 +81,14 @@
     value="/usr/local/bin/puma -e production --dir {{ tendrl_api_repo }}"
 
 # as documented in README file and deployment.adoc from Tendrl/documentation
-- name: Apache config file for tendrl-api to run on port 80
+- name: Apache config file for api to run on port 80
   copy:
     src="{{ tendrl_api_repo }}/config/apache.vhost.sample"
     dest=/etc/httpd/conf.d/tendlr.conf
     remote_src=True
 
 # as documented in README file
-# related to https://github.com/Tendrl/tendrl-api/issues/42
+# related to https://github.com/Tendrl/api/issues/42
 - name: Enable httpd_can_network_connect SELinux boolean
   seboolean:
     name=httpd_can_network_connect
