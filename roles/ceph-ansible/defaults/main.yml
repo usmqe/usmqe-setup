@@ -1,4 +1,7 @@
 ---
+# home directory which contains copy of files in ceph-ansible package
+home_dir: "{{ ansible_env['WORKSPACE'] | default(ansible_env['HOME']) }}"
+
 # list of devices which will be used for Ceph.
 # If it is empty, list is autodetected by ceph-ansible
 devices: []
@@ -11,3 +14,7 @@ collocation: true
 # Default is empty because collocation is true.
 # collocation == false and len(journal_devices) == 0 is not supported!
 journal_devices: []
+
+
+# path to ansible configuration which overrides default ansible configuration
+ansible_conf: /tmp/ansible.cfg
