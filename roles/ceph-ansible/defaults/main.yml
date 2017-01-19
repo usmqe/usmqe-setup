@@ -1,6 +1,6 @@
 ---
 # home directory which contains copy of files in ceph-ansible package
-home_dir: "{{ ansible_env['WORKSPACE'] | default(ansible_env['HOME']) }}"
+base_dir: "{{ ansible_env['WORKSPACE'] | default(ansible_env['HOME']) }}"
 
 # list of devices which will be used for Ceph.
 # If it is empty, list is autodetected by ceph-ansible
