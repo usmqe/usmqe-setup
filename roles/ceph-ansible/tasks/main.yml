@@ -12,11 +12,11 @@
     remote_src: "True"
   with_items:
     - dst: "group_vars/all.yml"
-      src: "group_vars/all.sample"
+      src: "group_vars/all.yml.sample"
     - dst: "group_vars/mons.yml"
-      src: "group_vars/mons.sample"
+      src: "group_vars/mons.yml.sample"
     - dst: "group_vars/osds.yml"
-      src: "group_vars/osds.sample"
+      src: "group_vars/osds.yml.sample"
     - dst: "site.yml"
       src: "site.yml.sample"
 
