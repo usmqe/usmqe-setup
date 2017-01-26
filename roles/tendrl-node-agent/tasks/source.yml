@@ -46,13 +46,13 @@
 - name: Use example config files as initial configuration (see installation.rst)
   copy:
     src={{ item.src }}
-    dest=/etc/tendrl/{{ item.dest }}
+    dest=/etc/tendrl/node-agent/{{ item.dest }}
     remote_src=True
   with_items:
-    - src: "{{ tendrl_node_agent_repo }}/etc/logging.yaml.timedrotation.sample"
+    - src: "{{ tendrl_node_agent_repo }}/etc/tendrl/node-agent/logging.yaml.timedrotation.sample"
       dest: 'node_agent_logging.yaml'
-    - src: "{{ tendrl_node_agent_repo }}/etc/tendrl/tendrl.conf.sample"
-      dest: 'tendrl.conf'
+    - src: "{{ tendrl_node_agent_repo }}/etc/tendrl/node-agent/node-agent.conf.yaml.sample"
+      dest: 'node-agent.conf.yaml'
 
 # not based on any tednrl documentation
 - name: Install sysmted unit files into /etc/systemd/system/

@@ -12,12 +12,11 @@
 # post installation configuration
 #
 
-- name: Specify etcd_connection in tendrl.conf
-  ini_file:
-    dest=/etc/tendrl/tendrl.conf
-    section=commons
-    option=etcd_connection
-    value="{{ groups['usm_server'][0] }}"
+- name: Specify etcd_connection in node-agent.conf.yaml
+  lineinfile:
+    dest=/etc/tendrl/node-agent/node-agent.conf.yaml
+    regexp='^etcd_connection:*'
+    line="etcd_connection{{ ':' }} {{ groups['usm_server'][0] }}"
 
 - name: Start and enable tendrl-node-agent daemon
   service:
