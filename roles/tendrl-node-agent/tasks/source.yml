@@ -25,8 +25,8 @@
     dest={{ tendrl_node_agent_repo }}
 
 # as documented in README file and installation.rst
-# https://github.com/Tendrl/node_agent/blob/4969c8e9007079ea11005f84f529bccb8a259f09/README.adoc
-# https://github.com/Tendrl/node_agent/blob/4969c8e9007079ea11005f84f529bccb8a259f09/doc/source/installation.rst
+# https://github.com/Tendrl/node-agent/blob/1c1e34e87a7689eb98f5f63c8d2e470098f87aab/README.rst
+# https://github.com/Tendrl/node-agent/blob/1c1e34e87a7689eb98f5f63c8d2e470098f87aab/doc/source/installation.rst
 - name: Installation from source code
   pip:
     name=.
@@ -54,7 +54,7 @@
     - src: "{{ tendrl_node_agent_repo }}/etc/tendrl/node-agent/node-agent-dev.conf.yaml"
       dest: 'node-agent.conf.yaml'
 
-# not based on any tednrl documentation
+# not based on any tendrl documentation
 - name: Install sysmted unit files into /etc/systemd/system/
   copy:
     src={{ item.src }}

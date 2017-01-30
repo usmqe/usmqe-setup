@@ -12,6 +12,7 @@
 # post installation configuration
 #
 
+# according to https://github.com/Tendrl/node-agent/blob/master/doc/source/installation.rst
 - name: Specify etcd_connection in node-agent.conf.yaml
   lineinfile:
     dest=/etc/tendrl/node-agent/node-agent.conf.yaml
