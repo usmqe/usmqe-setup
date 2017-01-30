@@ -34,12 +34,12 @@
 
 - name: Create directory for configuration
   file:
-    path=/etc/tendrl/node_agent
+    path=/etc/tendrl/node-agent
     state=directory
 
 - name: Create directory for logging 
   file:
-    path=/var/log/tendrl/node_agent
+    path=/var/log/tendrl/node-agent
     state=directory
 
 # based on information from installation.rst
@@ -51,7 +51,7 @@
   with_items:
     - src: "{{ tendrl_node_agent_repo }}/etc/tendrl/node-agent/logging.yaml.timedrotation.sample"
       dest: 'node_agent_logging.yaml'
-    - src: "{{ tendrl_node_agent_repo }}/etc/tendrl/node-agent/node-agent.conf.yaml.sample"
+    - src: "{{ tendrl_node_agent_repo }}/etc/tendrl/node-agent/node-agent-dev.conf.yaml"
       dest: 'node-agent.conf.yaml'
 
 # not based on any tednrl documentation
