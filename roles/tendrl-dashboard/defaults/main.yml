@@ -15,8 +15,8 @@ ignore_incomplete_installation: false
 #
 
 # url of the source repository and the branch to checkout
-tendrl_frontend_repo_url: https://github.com/Tendrl/tendrl_frontend.git
-tendrl_frontend_repo_branch: master
+tendrl_dashboard_repo_url: https://github.com/Tendrl/dashboard.git
+tendrl_dashboard_repo_branch: master
 
 # directory where the git repo would be cloned into
-tendrl_frontend_repo: /opt/tendrl/tendrl-frontend
+tendrl_dashboard_repo: /opt/tendrl/dashboard
