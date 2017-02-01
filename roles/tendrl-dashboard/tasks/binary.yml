@@ -1,0 +1,4 @@
+- name: Install tendrl-dashboard
+  yum:
+    name=tendrl-dashboard
+    state=latest
