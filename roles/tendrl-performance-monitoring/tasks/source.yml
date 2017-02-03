@@ -45,7 +45,7 @@
       dest: 'carbon/carbon.conf'
 
 # not based on any tendrl documentation
-- name: Install sysmted unit files into /etc/systemd/system/
+- name: Install systemd unit files into /etc/systemd/system/
   copy:
     src={{ item.src }}
     dest=/etc/systemd/system/{{ item.dest }}
