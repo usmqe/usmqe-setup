@@ -11,3 +11,21 @@
 #
 # post installation configuration
 #
+
+# TODO add configuration related to time_series
+- name: Configure performance monitoring
+  lineinfile:
+    dest=/etc/tendrl/performance-monitoring/performance-monitoring.conf.yaml
+    regexp={{ item.regexp }}
+    line={{ item.line }}
+  with_items:
+    - regexp: '^etcd_connection:*'
+      line: "etcd_connection{{ ':' }} {{ groups['usm_server'][0] }}"
+    - regexp: '^api_server_addr:*'
+      line: "api_server_addr{{ ':' }} {{ groups['usm_server'][0] }}"
+      
+- name: Start and enable tendrl-performance-monitoring daemon
+  service:
+    name=tendrl-performance-monitoring
+    state=started
+    enabled=yes

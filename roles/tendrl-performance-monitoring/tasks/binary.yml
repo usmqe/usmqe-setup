@@ -1,8 +1,4 @@
-# TODO Add when packages are ready
-#- name: Install tendrl-performance-monitoring
-#  yum:
-#    name=tendrl-performance-monitoring
-#    state=latest
-
-- fail: msg="There are no packages yet, we can't start and enable it"
-  when: not ignore_incomplete_installation
+- name: Install tendrl-performance-monitoring
+  yum:
+    name=tendrl-performance-monitoring
+    state=latest

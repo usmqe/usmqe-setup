@@ -18,32 +18,38 @@
     name=.
     chdir={{ tendrl_performance_monitoring_repo }}
 
+- name: Directory for performance monitoring configuration
+  file:
+    path={{ item }}
+    state=directory
+  with_items:
+    - /var/log/tendrl/performance-monitoring
+    - "{{ ansible_env.HOME}}/.tendrl/performance-monitoring"
+    - /etc/tendrl/performance-monitoring
+    
 - name: Use example config files as initial configuration (see installation.rst)
   copy:
     src={{ item.src }}
-    dest=/etc/tendrl/{{ item.dest }}
+    dest=/etc/{{ item.dest }}
     remote_src=True
   with_items:
-    - src: "{{ tendrl_performance_monitoring_repo }}/etc/logging.yaml.timedrotation.sample"
-      dest: 'performance_monitoring_logging.yaml'
+    - src: "{{ tendrl_performance_monitoring_repo }}/etc/tendrl/performance-monitoring/performance-monitoring.conf.yaml.sample"
+      dest: 'tendrl/performance-monitoring/performance-monitoring.conf.yaml'
+    - src: "{{ tendrl_performance_monitoring_repo }}/etc/tendrl/performance-monitoring/logging.yaml.timedrotation.sample"
+      dest: 'tendrl/performance-monitoring/performance-monitoring_logging.yaml'
+    - src: "{{ tendrl_performance_monitoring_repo }}/etc/tendrl/performance-monitoring/monitoring_defaults.yaml"
+      dest: 'tendrl/performance-monitoring/monitoring_defaults.yaml'
+    - src: "{{ tendrl_performance_monitoring_repo }}/etc/tendrl/performance-monitoring/graphite-web.conf.sample"
+      dest: 'httpd/conf.d/graphite-web.conf'
+    - src: "{{ tendrl_performance_monitoring_repo }}/etc/tendrl/performance-monitoring/carbon.conf.sample"
+      dest: 'carbon/carbon.conf'
 
-- name: Specify log_cfg_path in tendrl.conf
-  ini_file:
-    dest=/etc/tendrl/tendrl.conf
-    section=performance_monitoring
-    option=log_cfg_path
-    value="/etc/tendrl/performance_monitoring_logging.yaml"
-
-# TODO add after daemon file is available
 # not based on any tendrl documentation
-#- name: Install sysmted unit files into /etc/systemd/system/
-#  copy:
-#    src={{ item.src }}
-#    dest=/etc/systemd/system/{{ item.dest }}
-#    remote_src=True
-#  with_items:
-#    - src: "{{ tendrl_performance_monitoring_repo }}/tendrl-noded.service"
-#      dest: 'tendrl-noded.service'
-
-- fail: msg="There is no systemd unit yet, we can't start and enable it"
-  when: not ignore_incomplete_installation
+- name: Install systemd unit files into /etc/systemd/system/
+  copy:
+    src={{ item.src }}
+    dest=/etc/systemd/system/{{ item.dest }}
+    remote_src=True
+  with_items:
+    - src: "{{ tendrl_performance_monitoring_repo }}/tendrl-performance-monitoring.service"
+      dest: 'tendrl-performance-monitoring.service'
