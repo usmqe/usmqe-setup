@@ -4,5 +4,6 @@
 # * Configure gluster trusted storage pool and create bricks 
 #   on all available devices on gluster nodes.
 #
+- include: qe_pre_installation_tasks.yml
 - include: tendrl_gluster.yml
 - include: gluster_peers_bricks.yml
