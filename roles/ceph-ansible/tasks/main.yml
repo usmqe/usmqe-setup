@@ -1,6 +1,6 @@
 ---
 - name: Create directory for keys
-  file: path=/root/ceph-ansible-keys state=directory
+  file: path="{{ ansible_env.HOME}}/ceph-ansible-keys" state=directory
 
 - name: Copy ceph ansible files into different location so current user can change it
   shell: cp -R /usr/share/ceph-ansible/ {{ base_dir }}
@@ -26,7 +26,7 @@
   lineinfile:
     dest: "{{ base_dir }}/ceph-ansible/group_vars/all.yml"
     regexp: "^#fetch_directory: fetch/"
-    line: "fetch_directory: /root/ceph-ansible-keys"
+    line: "fetch_directory: {{ ansible_env.HOME}}/ceph-ansible-keys"
 
 - name: Change default Ceph cluster name
   lineinfile:
