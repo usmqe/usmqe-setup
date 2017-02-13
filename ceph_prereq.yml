@@ -1,0 +1,12 @@
+---
+- include: ceph_ansible.yml
+  when: groups.mons is defined
+
+- hosts: ceph_mon:ceph_osd
+  remote_user: root
+  tasks: 
+    - name: Install centos-release-ceph package
+      yum: 
+        name: centos-release-ceph
+        state: present
+      
