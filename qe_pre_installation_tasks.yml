@@ -1,0 +1,12 @@
+---
+#
+# Perform auxiliary tasks before installing Tendrl itself:
+# * update all packages
+#
+- hosts: all
+  remote_user: root
+  tasks:
+    - name: upgrade all packages
+      yum:
+        name: '*'
+        state: latest
