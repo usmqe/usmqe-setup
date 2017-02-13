@@ -94,6 +94,7 @@
     permanent=true
     state=enabled
     immediate=true
+  ignore_errors: yes
 
 #
 # other tools
