@@ -6,6 +6,8 @@ This role setups Ceph-ansible to be able to install Ceph.
 Role can be configured by variables mentioned in ``defaults/main.yml``.
 As it is written in ``tasks/main.yml`` ceph-ansible package should be 
 preinstalled or available in enabled yum repository.
+Also facts from first ceph monitor node have to be available
+to be able to access ``hostvars[groups['mons'][0]].ansible_distribution``.
 
 Example usage of configured ceph-ansible:
 

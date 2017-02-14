@@ -1,4 +1,10 @@
 ---
+- hosts: ceph_mon
+  remote_user: root
+  tasks:
+    - name: gather facts from Ceph Mon nodes
+      setup:
+
 - name: Install ceph-ansible and install Ceph
   hosts: qe_server
   user: root
