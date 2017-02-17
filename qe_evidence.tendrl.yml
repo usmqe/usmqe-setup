@@ -11,7 +11,6 @@
   vars:
     evidence_dirs:
      - /var/log/audit/
-     - /var/log/salt/
      - /etc/yum.repos.d/
     evidence_files:
      - /var/log/messages
