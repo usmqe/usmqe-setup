@@ -1,12 +1,15 @@
 ---
 #
-# Install Tendrl Gluster related stuff.
+# Install Tendrl storage node related stuff (not related to Ceph or Gluster).
 #
-- hosts: gluster
+- hosts: usm_nodes
   remote_user: root
   vars:
     install_from: packages
   roles:
+    - tendrl-repo
     - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/node_agent/issues/75
-    - tendrl-gluster-integration
+    - tendrl-commons
+    - tendrl-node-agent
+    - tendrl-performance-monitoring
     - { role: epel, epel_enabled: 0 }

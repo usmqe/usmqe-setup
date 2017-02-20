@@ -1,0 +1,15 @@
+---
+#
+# Install Tendrl server
+#
+- hosts: usm_server 
+  remote_user: root
+  vars:
+    install_from: packages
+  roles:
+    - etcd
+    - tendrl-repo
+    - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/tendrl-api/issues/25
+    - tendrl-api
+    - tendrl-dashboard
+    - { role: epel, epel_enabled: 0 }

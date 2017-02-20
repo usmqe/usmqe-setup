@@ -1,0 +1,10 @@
+---
+#
+# Install gluster
+#
+- hosts: gluster
+  remote_user: root
+  vars:
+    install_from: packages
+  roles:
+    - gluster-centos
