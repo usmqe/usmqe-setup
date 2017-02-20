@@ -3,7 +3,7 @@
 # Perform auxiliary tasks before installing Tendrl itself:
 # * update all packages
 #
-- hosts: all
+- hosts: usm_server:usm_nodes
   remote_user: root
   tasks:
     - name: upgrade all packages
