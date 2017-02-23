@@ -21,8 +21,33 @@
   with_items:
     - regexp: '^etcd_connection:*'
       line: "etcd_connection{{ ':' }} {{ groups['usm_server'][0] }}"
-    - regexp: '^api_server_addr:*'
-      line: "api_server_addr{{ ':' }} {{ groups['usm_server'][0] }}"
+    - regexp: '^etcd_port:*'
+      line: "etcd_port{{ ':' }} 2379"
+    - regexp: '^time_series_db_server:*'
+      line: "time_series_db_server{{ ':' }} {{ ansible_eth0['ipv4']['address'] }}"
+    - regexp: '^time_series_db_port:*'
+      line: "time_series_db_port{{ ':' }} 10080"
+
+- name: Init graphite-db
+  command: /usr/lib/python2.7/site-packages/graphite/manage.py syncdb --noinput
+
+- name: Allow httpd access to graphite.db
+  file:
+    path: /var/lib/graphite-web/graphite.db
+    owner: apache
+    group: apache
+
+- name: Start and enable carbon-cache daemon
+  service:
+    name=carbon-cache
+    state=started
+    enabled=yes
+      
+- name: Restart and enable httpd daemon
+  service:
+    name=tendrl-performance-monitoring
+    state=restarted
+    enabled=yes
       
 - name: Start and enable tendrl-performance-monitoring daemon
   service:
