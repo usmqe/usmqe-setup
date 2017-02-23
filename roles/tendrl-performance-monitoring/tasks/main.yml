@@ -30,6 +30,8 @@
 
 - name: Init graphite-db
   command: /usr/lib/python2.7/site-packages/graphite/manage.py syncdb --noinput
+  args:
+    creates: /var/lib/graphite-web/graphite.db
 
 - name: Allow httpd access to graphite.db
   file:
