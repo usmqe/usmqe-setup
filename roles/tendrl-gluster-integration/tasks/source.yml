@@ -39,5 +39,5 @@
     dest=/etc/systemd/system/{{ item.dest }}
     remote_src=True
   with_items:
-    - src: "{{ tendrl_gluster_integration_repo }}/tendrl-glusterd.service"
-      dest: 'tendrl-glusterd.service'
+    - src: "{{ tendrl_gluster_integration_repo }}/tendrl-gluster-integration.service"
+      dest: 'tendrl-gluster-integration.service'
