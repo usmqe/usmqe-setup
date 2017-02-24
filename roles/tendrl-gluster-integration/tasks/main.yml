@@ -16,4 +16,3 @@
 
 - include: binary.yml
   when: install_from == "packages"
-
