@@ -8,12 +8,3 @@
 - include: binary.yml
   when: install_from == "packages"
 
-#
-# post installation configuration
-#
-
-- name: Start and enable tendrl-gluster-integration service
-  service:
-    name=tendrl-gluster-integration
-    state=started
-    enabled=yes
