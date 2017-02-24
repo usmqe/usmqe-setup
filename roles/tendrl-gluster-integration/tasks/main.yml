@@ -1,4 +1,13 @@
 #
+# workaround for https://github.com/Tendrl/gluster-integration/issues/151
+# TODO: remove gstatus installation after the issue is resolved
+#
+
+- name: Install gstatus
+  yum:
+    name: https://github.com/gluster/gstatus/raw/master/rpms/gstatus-0.64-3.el7.x86_64.rpm
+
+#
 # installation
 #
 
