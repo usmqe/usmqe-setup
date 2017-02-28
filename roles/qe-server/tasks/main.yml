@@ -16,6 +16,14 @@
     comment="USM QE test user account"
     state=present
 
+- name: Allow usmqe group to do anything via sudo
+  copy:
+    src=20_usmqe_sudoers
+    dest=/etc/sudoers.d/20_usmqe_sudoers
+    mode=440
+    owner=root
+    group=root
+
 #
 # ansible
 #

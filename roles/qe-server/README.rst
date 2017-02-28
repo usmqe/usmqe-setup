@@ -4,6 +4,26 @@
 
 This role configures the machine for execution of usmqe integration tests.
 
+Sudoers configuration
+=====================
+
+This role configures sudo to allow ``usmqe`` unix group (which is created along
+with user account of the same name in this role) to do anything as root, see
+``20_usmqe_sudoers`` file.
+
+Here is an example of ansible playbook which runs locally and switches to root
+user account via sudo::
+
+     - name: Do something as root on usmqe server locally
+       hosts: localhost
+       connection: local
+       become: yes
+       become_user: root
+       become_method: sudo
+
+       ...
+
+
 Xvfb Service
 ============
 
