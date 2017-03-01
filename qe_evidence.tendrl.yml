@@ -26,6 +26,7 @@
   vars:
     evidence_dirs:
      - /var/log/httpd/
+     - /etc/tendrl/
     evidence_files:
      - /etc/etcd/etcd.conf
   roles:
