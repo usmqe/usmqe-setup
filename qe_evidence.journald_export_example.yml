@@ -1,0 +1,13 @@
+---
+
+# Example usage of qe-evidence-probe-journald role.
+
+- name: Export journald logs for given services
+  hosts: all
+  user: root
+  vars:
+    evidence_journald_services:
+      - sshd
+      - auditd
+  roles:
+    - qe-evidence-probe-journald

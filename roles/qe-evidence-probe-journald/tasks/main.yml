@@ -1,0 +1,55 @@
+---
+
+- name: Fail if evidence_target variable is not defined
+  fail: msg="You need to define evidence target variable"
+  when: evidence_target is undefined
+  delegate_to: localhost
+
+# First of all, we need to create remote temporary directory, where we are
+# going to dump results of the probe.
+
+- name: Create temporary journald export directory
+  file: path=/tmp/journald-export/ state=directory
+
+# We also need to create a local directory for each remote machine (we are
+# going to rsync data from remote machines there).
+
+- name: Create local target directories
+  file:
+    path={{ evidence_target }}/{{ inventory_hostname }}/tmp/journald-export/
+    state=directory
+  delegate_to: localhost
+
+# Make sure that tools required for the probe are installed
+
+- name: Make sure systemd is installed
+  yum: name={{ item }} state=present
+  with_items:
+   - systemd
+
+# So that we can export data from journal database
+
+- name: Export journald logs
+  shell: 'journalctl -u {{ item }} -o export > {{ item }}.export'
+  args:
+    chdir: /tmp/journald-export/
+  with_items: '{{ evidence_journald_services }}'
+
+- name: Export list of boots
+  shell: 'journalctl --list-boots > list-boots'
+  args:
+    chdir: /tmp/journald-export/
+
+# Now rsync all the data dumps from remote machines.
+
+- name: Rsync result of the probe into local machine
+  synchronize:
+    src=/tmp/journald-export/
+    dest={{ evidence_target }}/{{ inventory_hostname }}/tmp/journald-export/
+    mode=pull
+    archive=yes
+
+# The last step: remove journald export directory
+
+- name: Remove temporary journald export directory
+  file: path=/tmp/journald-export/ state=absent
