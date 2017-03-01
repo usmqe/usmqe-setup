@@ -1,0 +1,3 @@
+---
+# List of services for which we export journal logs.
+evidence_journald_services: []
