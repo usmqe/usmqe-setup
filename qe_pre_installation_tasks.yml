@@ -10,3 +10,7 @@
       yum:
         name: '*'
         state: latest
+    - name: WORKAROUND configure selinux to permissive mode
+      selinux:
+        state: permissive
+        policy: targeted
