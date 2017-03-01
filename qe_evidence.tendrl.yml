@@ -1,0 +1,53 @@
+---
+
+# This playbook tries to download configuration and log files related to Tendrl
+# only instead of just downloading everything. This can be also useful when
+# one needs to tweak the list further - copy this into new playbook and just
+# comment out or add directories or files as you like.
+
+- name: Download evidence available on all machines
+  hosts: all
+  user: root
+  vars:
+    evidence_dirs:
+     - /var/log/audit/
+     - /etc/yum.repos.d/
+    evidence_files:
+     - /var/log/messages
+     - /proc/cpuinfo
+     - /proc/meminfo
+  roles:
+    - qe-evidence
+    - qe-evidence-probe
+
+- name: Download evidence from Tendrl server machine
+  hosts: usm_server
+  user: root
+  vars:
+    evidence_dirs:
+     - /var/log/httpd/
+     - /etc/tendrl/
+    evidence_files:
+     - /etc/etcd/etcd.conf
+  roles:
+    - role: qe-evidence
+
+- name: Download logs from Gluster Storage machines
+  hosts: gluster
+  user: root
+  vars:
+    evidence_dirs:
+     - /etc/tendrl/
+     - /etc/glusterfs/
+     - /var/log/tendrl/
+     - /var/log/glusterfs/
+  roles:
+   - role: qe-evidence
+
+#- name: Download logs from Ceph Storage machines
+#  hosts: ceph
+#  user: root
+#  vars:
+#    evidence_dirs:
+#  roles:
+#   - role: qe-evidence
