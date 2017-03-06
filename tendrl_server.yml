@@ -12,4 +12,5 @@
     - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/tendrl-api/issues/25
     - tendrl-api
     - tendrl-dashboard
+    - tendrl-performance-monitoring
     - { role: epel, epel_enabled: 0 }

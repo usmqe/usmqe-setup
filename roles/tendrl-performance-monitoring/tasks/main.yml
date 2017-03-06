@@ -12,7 +12,6 @@
 # post installation configuration
 #
 
-# TODO add configuration related to time_series
 - name: Configure performance monitoring
   lineinfile:
     dest=/etc/tendrl/performance-monitoring/performance-monitoring.conf.yaml
