@@ -8,6 +8,5 @@
 - name: Install ceph-ansible and install Ceph
   hosts: localhost
   connection: local
-  user: root
   roles:
     - ceph-ansible
