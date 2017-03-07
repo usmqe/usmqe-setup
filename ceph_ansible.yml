@@ -6,7 +6,7 @@
       setup:
 
 - name: Install ceph-ansible and install Ceph
-  hosts: qe_server
-  user: root
+  hosts: localhost
+  connection: local
   roles:
     - ceph-ansible
