@@ -1,0 +1,4 @@
+- name: Install tendrl-node-monitoring
+  yum:
+    name=tendrl-node-monitoring
+    state=latest
