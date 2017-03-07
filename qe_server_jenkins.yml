@@ -10,6 +10,11 @@
    - epel
    - rh-python35
    - qe-server
+  tasks:
+   - name: Add jenkins user into usmqe group
+     user:
+       name=jenkins
+       groups=usmqe
 
 - name: Prepare test environment of jenkins user
   hosts: qe_server
