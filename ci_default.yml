@@ -25,3 +25,22 @@
   when: groups.ceph_osd is defined and groups.ceph_mon is defined
 - include: tendrl_ceph.yml
   when: groups.ceph_osd is defined and groups.ceph_mon is defined
+
+# workaround according to https://github.com/Tendrl/api/issues/86#issuecomment-285063914
+# TODO: delete after resolving
+- hosts: usm_nodes
+  remote_user: root
+  tasks:
+    - name: Stop tendrl-node-agent daemon
+      service:
+        name=tendrl-node-agent
+        state=stopped
+
+    # immediate restart doesn't work
+    - pause:
+        seconds: 20
+  
+    - name: Start tendrl-node-agent daemon
+      service:
+        name=tendrl-node-agent
+        state=started
