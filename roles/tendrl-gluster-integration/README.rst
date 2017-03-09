@@ -21,7 +21,6 @@ following exceptions:
 Open issues:
 
 * https://github.com/Tendrl/gluster_integration/issues/86
-* https://github.com/Tendrl/gluster_integration/issues/87
 * https://github.com/Tendrl/node_agent/issues/99
 
  
