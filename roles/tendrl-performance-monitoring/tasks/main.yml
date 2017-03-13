@@ -46,7 +46,7 @@
       
 - name: Restart and enable httpd daemon
   service:
-    name=tendrl-performance-monitoring
+    name=httpd
     state=restarted
     enabled=yes
       
