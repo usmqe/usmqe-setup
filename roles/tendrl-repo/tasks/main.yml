@@ -1,9 +1,23 @@
-- name: Add tendrl repo
+- name: Add tendrl master repo
   yum_repository:
     name: tendrl
     description: Copr repo for tendrl owned by tendrl
     baseurl: "https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl/epel-7-x86_64/"
+  when: enable_master_repo
 
-- name: Add public key
+- name: Add public key for master repo
   rpm_key:
     key="https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl/pubkey.gpg"
+  when: enable_master_repo
+
+- name: Add tendrl devel repo
+  yum_repository:
+    name: tendrl-devel
+    description: Copr repo for tendrl owned by tendrl
+    baseurl: "https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl-develop/epel-7-x86_64/"
+  when: enable_devel_repo
+
+- name: Add public key for devel repo
+  rpm_key:
+    key="https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl-develop/pubkey.gpg"
+  when: enable_devel_repo
