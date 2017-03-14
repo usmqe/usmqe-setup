@@ -1,0 +1,31 @@
+---
+#
+# Reboot all machines (usm_server,usm_nodes) and wait till they boot up
+#
+- name: Reboot all servers
+  hosts: "usm_server:usm_nodes"
+  remote_user: root
+  tasks:
+    - name: install package at
+      package:
+        name: at
+        state: latest
+    - name: start atd
+      service:
+        name: atd
+        state: started
+    - name: reboot
+      shell: "echo reboot | at now"
+
+- name: Wait for all servers to boot up
+  hosts: "usm_server:usm_nodes"
+  gather_facts: no
+  remote_user: root
+  tasks:
+    - name: Wait for all servers
+      local_action: wait_for host={{ inventory_hostname }} port=22
+        state=started timeout=7200 delay=60
+    - pause: seconds=15
+    - name: Ping
+      ping:
+      any_errors_fatal: True

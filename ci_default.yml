@@ -10,6 +10,8 @@
 # * Preconfigure ceph-ansible.
 - include: qe_pre_installation_tasks.yml
 
+- include: qe_reboot.yml
+
 - include: tendrl_server.yml
 
 - include: tendrl_node.yml
