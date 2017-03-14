@@ -10,6 +10,10 @@
       package:
         name: at
         state: latest
+    - name: start atd
+      service:
+        name: atd
+        state: started
     - name: reboot
       shell: "echo reboot | at now"
 
