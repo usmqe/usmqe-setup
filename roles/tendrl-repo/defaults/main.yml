@@ -1,0 +1,5 @@
+---
+# add yum repository and public key for master tendrl repo
+enable_master_repo: true
+# add yum repository and public key for develop tendrl repo
+enable_develop_repo: false
