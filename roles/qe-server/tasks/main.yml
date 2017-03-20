@@ -116,3 +116,5 @@
    - tmux
    - htop
    - tree
+   - rpmlint
+   - rpmdeplint
