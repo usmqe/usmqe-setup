@@ -1,0 +1,9 @@
+
+- hosts: usm_server 
+  remote_user: root
+  tasks:
+    - name: Create user admin with password admin
+      tendrl_user:
+      register: result
+
+    - debug: var=result  
