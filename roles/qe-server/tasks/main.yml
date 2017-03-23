@@ -118,3 +118,4 @@
    - tree
    - rpmlint
    - rpmdeplint
+   - yum-utils
