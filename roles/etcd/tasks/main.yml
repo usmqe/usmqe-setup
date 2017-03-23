@@ -26,6 +26,18 @@
     regexp="^(\#*)ETCD_ADVERTISE_CLIENT_URLS(.*)"
     line="ETCD_ADVERTISE_CLIENT_URLS=\"http://{{ inventory_hostname }}:2379\""
 
+- name: Configure etcd.conf ETCD_INITIAL_ADVERTISE_PEER_URLS
+  lineinfile:
+    dest=/etc/etcd/etcd.conf
+    regexp="^(\#*)ETCD_INITIAL_ADVERTISE_PEER_URLS(.*)"
+    line="ETCD_INITIAL_ADVERTISE_PEER_URLS=\"http://{{ inventory_hostname }}:2380\""
+
+- name: Configure etcd.conf ETCD_INITIAL_CLUSTER
+  lineinfile:
+    dest=/etc/etcd/etcd.conf
+    regexp="^(\#*)ETCD_INITIAL_CLUSTER(.*)"
+    line="ETCD_INITIAL_CLUSTER=\"default=http://{{ inventory_hostname }}:2380\""
+
 - name: Start etcd
   service:
     name=etcd
