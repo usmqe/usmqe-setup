@@ -1,4 +1,4 @@
-
+---
 - hosts: usm_server 
   remote_user: root
   tasks:
