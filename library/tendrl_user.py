@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 ANSIBLE_METADATA = {'metadata_version': '1.0',
                     'status': ['preview'],
                     'supported_by': 'community'}
@@ -34,7 +33,7 @@ def generate_user():
     return os.popen("RACK_ENV=production rake etcd:load_admin").read()
 
 
-def parse_password(string, module):
+def parse_password(string):
     """Gets password from user_info. If there is none then it tries to login
     with default password."""
 
@@ -89,7 +88,7 @@ def change_password(username, password, token):
 def main():
     username = "admin"
     user_info = str(generate_user())
-    password = parse_password(user_info, module)
+    password = parse_password(user_info)
     token = login(username, password)["access_token"]
     result = change_password(username, new_password, token)
     response = {"result": result}
