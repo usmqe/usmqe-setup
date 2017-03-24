@@ -2,7 +2,7 @@
 - hosts: usm_server 
   remote_user: root
   tasks:
-    - name: Create user admin with password admin
+    - name: Create user admin with password admin123
       tendrl_user:
       register: result
 
