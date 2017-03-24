@@ -1,0 +1,19 @@
+---
+#
+# Install useful and auxiliary tools
+#
+- hosts: usm_server:usm_nodes
+  remote_user: root
+  tasks:
+    - name: Install useful tools
+      yum: name={{ item }} state=installed
+      with_items:
+        - bash-completion
+        - bind-utils
+        - git
+        - psmisc
+        - screen
+        - tmux
+        - tree
+        - vim
+      ignore_errors: yes

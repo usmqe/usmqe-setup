@@ -2,6 +2,7 @@
 #
 # Perform auxiliary tasks before installing Tendrl itself:
 # * update all packages
+# * WORKAROUND: set selinux to permissive mode
 #
 - hosts: usm_server:usm_nodes
   remote_user: root
