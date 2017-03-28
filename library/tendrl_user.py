@@ -12,11 +12,6 @@ version_added: "1.0"
 author: "fbalak@redhat.com", "mkudlej@redhat.com"
 '''
 
-import json
-import ConfigParser
-import requests
-from ansible.module_utils.basic import AnsibleModule
-
 ANSIBLE_METADATA = {'metadata_version': '1.0',
                     'status': ['preview'],
                     'supported_by': 'community'}
@@ -33,6 +28,11 @@ version_added: "1.0"
     - Usage: ansible -i _inventory_ -m tendrl_user -a "conf_path='_usm.ini.path_'" localhost
 author: "fbalak@redhat.com", "mkudlej@redhat.com"
 '''
+
+import json
+import ConfigParser
+import requests
+from ansible.module_utils.basic import AnsibleModule
 
 MODULE = AnsibleModule(
     argument_spec=dict(
