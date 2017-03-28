@@ -7,6 +7,5 @@
 - include: qe_pre_installation_tasks.yml
 - include: tendrl_server.yml
 - include: tendrl_node.yml
-- include: tendrl_gluster.yml
 - include: gluster.yml
 - include: gluster_peers_bricks.yml
