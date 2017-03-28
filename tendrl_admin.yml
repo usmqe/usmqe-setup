@@ -1,9 +1,5 @@
 ---
-- hosts: usm_server 
-  remote_user: root
+- hosts: localhost
   tasks:
-    - name: Create user admin with password admin123
-      tendrl_user:
-      register: result
-
-    - debug: var=result  
+    - name: Change admin password to admin123
+      tendrl_user: conf_path="usm.ini" new_password="admin123"
