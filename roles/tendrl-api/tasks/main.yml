@@ -37,3 +37,18 @@
     name=httpd
     state=started
     enabled=yes
+
+#https://github.com/Tendrl/api/blob/master/docs/users.adoc#create-admin-user
+- name: Load admin user to etcd
+  shell: RACK_ENV=production rake etcd:load_admin
+  args:
+    chdir: /usr/share/tendrl-api
+  register: rake_result
+  changed_when: 
+    - "'User named admin already exists.' not in rake_result.stdout"
+  failed_when:
+    - "rake_result.rc != 0"
+
+- name: Store password to file
+  shell: echo "{{rake_result.stdout_lines[3] | regex_replace('^.*\"Password:\s*(.*)\".*$','\1')}}" | tee /root/password
+  register: admin_password
