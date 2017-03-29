@@ -52,3 +52,4 @@
 - name: Store password to file
   shell: echo "{{rake_result.stdout_lines[3] | regex_replace('^.*\"Password:\s*(.*)\".*$','\1')}}" | tee /root/password
   register: admin_password
+  when: rake_result|succeeded

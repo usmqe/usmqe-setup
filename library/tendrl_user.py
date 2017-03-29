@@ -1,15 +1,6 @@
 #!/usr/bin/python
 '''
-module: test_user
-short_description: Changes 'usm_username' user password to _password_from_module_argument_
-via Tendrl API.
-description:
-    - Module reads from confile(module argument 'conf_path') 'usm_username',
-      'usm_password' and 'usm_api_url'.
-    - There must be installed tendrl-api on the machine where this is ran.
-    - Usage: ansible -i _inventory_ -m tendrl_user -a "conf_path='_usm.ini.path_'" localhost
-version_added: "1.0"
-author: "fbalak@redhat.com", "mkudlej@redhat.com"
+See DOCUMENTATION constant.
 '''
 
 ANSIBLE_METADATA = {'metadata_version': '1.0',
@@ -17,7 +8,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.0',
                     'supported_by': 'community'}
 
 DOCUMENTATION = '''
-module: test_user
+module: tendrl_user
 short_description: Changes 'usm_username' user password to _password_from_module_argument_
 via Tendrl API.
 description:
@@ -25,8 +16,13 @@ description:
       'usm_password' and 'usm_api_url'.
     - There must be installed tendrl-api on the machine where this is ran.
 version_added: "1.0"
-    - Usage: ansible -i _inventory_ -m tendrl_user -a "conf_path='_usm.ini.path_'" localhost
-author: "fbalak@redhat.com", "mkudlej@redhat.com"
+author: 
+    - "fbalak@redhat.com"
+    - "mkudlej@redhat.com"
+'''
+
+EXAMPLES = '''
+    ansible -i _inventory_ -m tendrl_user -a "conf_path='_usm.ini.path_'" localhost
 '''
 
 import json

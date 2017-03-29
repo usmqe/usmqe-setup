@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Change admin password to admin123 in config file in conf_path param
+      tendrl_user: conf_path="usm.ini" new_password="admin123"
+
+- hosts: usm_server
+  tasks:
+    shell: echo "admin123" > /root/password
