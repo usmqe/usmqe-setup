@@ -1,0 +1,17 @@
+---
+- name: Change password of tendrl admin (usm_username from conf_path ini file)
+  hosts: usm_server
+  vars:
+    new_password: "admin123"
+
+  tasks:
+
+    - name: Change admin password in Tendrl and config_path ini file
+      local_action: tendrl_user
+        conf_path="usm.ini"
+        new_password="{{ new_password }}"
+
+    - name: Change password in /root/password file
+      copy:
+        content="{{ new_password }}"
+        dest=/root/password
