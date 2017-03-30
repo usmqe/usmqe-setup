@@ -1,6 +1,7 @@
 ---
 # Perform following tasks, when applicable
 # (e.g. there are nodes in gluster or ceph_* group)
+# * Configure firewall
 # * Install Tendrl server.
 # * Install Tendrl storage nodes.
 # * Install Gluster nodes.
@@ -9,6 +10,9 @@
 # * Install Ceph nodes.
 # * Preconfigure ceph-ansible.
 - include: qe_pre_installation_tasks.yml
+
+# configure firewall
+- include: firewall_tendrl.yml
 
 - include: qe_reboot.yml
 
