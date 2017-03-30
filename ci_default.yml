@@ -13,6 +13,7 @@
 
 # configure firewall
 - include: firewall_tendrl.yml
+- include: firewall_tendrl_workaround.yml
 
 - include: qe_reboot.yml
 
