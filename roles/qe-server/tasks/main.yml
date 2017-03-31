@@ -126,13 +126,13 @@
 - name: Install other useful tools
   yum: name={{ item }} state=installed enablerepo=epel
   with_items:
-   - git
-   - vim
-   - tmux
-   - htop
-   - tree
-   - rpmlint
-   - rpmdeplint
-   - yum-utils
-   - wget
    - createrepo
+   - git
+   - htop
+   - rpmdeplint
+   - rpmlint
+   - tmux
+   - tree
+   - vim
+   - wget
+   - yum-utils
