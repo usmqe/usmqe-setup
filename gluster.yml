@@ -7,4 +7,5 @@
   vars:
     install_from: packages
   roles:
+    - gluster-centos-repo
     - gluster-centos

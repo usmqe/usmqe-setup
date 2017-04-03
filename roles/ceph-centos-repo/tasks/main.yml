@@ -1,0 +1,5 @@
+---
+- name: Add Ceph YUM repo (install centos-release-ceph package)
+  yum:
+    name: "{{ centos_ceph_version_package }}"
+    state: present

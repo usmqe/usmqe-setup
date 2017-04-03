@@ -2,11 +2,8 @@
 - include: ceph_ansible.yml
   when: groups.mons is defined
 
+# Install centos-release-ceph package with Ceph Repos
 - hosts: ceph_mon:ceph_osd
   remote_user: root
-  tasks: 
-    - name: Install centos-release-ceph package
-      yum: 
-        name: centos-release-ceph
-        state: present
-      
+  roles:
+    - ceph-centos-repo
