@@ -1,0 +1,5 @@
+---
+- name: Install ceph-installer
+  yum:
+    name="ceph-installer"
+    state=latest
