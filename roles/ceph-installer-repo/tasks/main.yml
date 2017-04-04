@@ -1,0 +1,27 @@
+---
+- name: Add ceph-installer repo
+  yum_repository:
+    name: ceph-installer
+    description: "Ceph-installer repo"
+    baseurl: "https://shaman.ceph.com/api/repos/ceph-installer/master/latest/centos/7/noarch/noarch"
+    gpgcheck: no
+
+- name: Add ceph-ansible repo
+  yum_repository:
+    name: ceph-ansible
+    description: "Ceph-ansible repo"
+    baseurl: "https://shaman.ceph.com/api/repos/ceph-ansible/master/latest/centos/7/noarch/noarch"
+    gpgcheck: no
+
+
+- name: Add ktdreyer-ceph-installer repo
+  yum_repository:
+    name: ktdreyer-ceph-installer
+    description: "Copr repo for ceph-installer owned by ktdreyer"
+    baseurl: "https://copr-be.cloud.fedoraproject.org/results/ktdreyer/ceph-installer/epel-7-x86_64/"
+    gpgcheck: yes
+    skip_if_unavailable: yes
+
+- name: Add public key for ktdreyer-ceph-installer repo
+  rpm_key:
+    key="https://copr-be.cloud.fedoraproject.org/results/ktdreyer/ceph-installer/pubkey.gpg"

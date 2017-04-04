@@ -19,6 +19,14 @@
     regexp='^etcd_connection:*'
     line="etcd_connection{{ ':' }} {{ groups['usm_server'][0] }}"
 
+# https://github.com/Tendrl/documentation/wiki/Tendrl-release-v1.2.2
+- name: Add provisioner/ceph tag in node-agent.conf.yaml (on tendrl-server)
+  lineinfile:
+    dest=/etc/tendrl/node-agent/node-agent.conf.yaml
+    insertafter='^tags:$'
+    line="  - provisioner/ceph"
+  when: "'usm_server' in group_names"
+
 - name: Start and enable tendrl-node-agent daemon
   service:
     name=tendrl-node-agent
