@@ -16,7 +16,6 @@
     - ceph-installer
     - tendrl-dashboard
     - tendrl-performance-monitoring
-    - { role: epel, epel_enabled: 0 }
 
   post_tasks:
     - debug: var=hostvars[groups['usm_server'][0]]['admin_password']

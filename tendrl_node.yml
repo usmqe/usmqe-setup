@@ -12,4 +12,3 @@
     - tendrl-commons
     - tendrl-node-agent
     - tendrl-node-monitoring
-    - { role: epel, epel_enabled: 0 }
