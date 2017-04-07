@@ -56,6 +56,6 @@
 
 - name: Store admin password to /root/password file
   copy:
-    content="{{ admin_password.stdout }}"
+    content="{{ admin_password.stdout }}\n"
     dest=/root/password
   when: admin_password.changed
