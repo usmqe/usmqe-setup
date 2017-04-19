@@ -23,6 +23,7 @@
   remote_user: root
   roles:
     - gluster-centos-repo
+    - gluster-gdeploy-repo
 
 # Install centos-release-ceph package with Ceph Repos
 - hosts: ceph_mon:ceph_osd
