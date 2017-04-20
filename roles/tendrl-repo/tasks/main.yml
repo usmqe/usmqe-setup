@@ -5,9 +5,15 @@
     baseurl: "https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl/epel-7-x86_64/"
   when: enable_master_repo
 
+- name: Copy rpm-gpg key first (hack)
+  copy:
+    src='rpm-tendrl-pubkey.gpg'
+    dest=/root
+  when: enable_master_repo
+
 - name: Add public key for master repo
   rpm_key:
-    key="https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl/pubkey.gpg"
+    key="/root/rpm-tendrl-pubkey.gpg"
   when: enable_master_repo
 
 - name: Add tendrl develop repo
@@ -17,9 +23,15 @@
     baseurl: "https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl-develop/epel-7-x86_64/"
   when: enable_develop_repo
 
+- name: Copy rpm-gpg key first (hack)
+  copy:
+    src='rpm-tendrl-develop-pubkey.gpg'
+    dest=/root
+  when: enable_develop_repo
+
 - name: Add public key for develop repo
   rpm_key:
-    key="https://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl-develop/pubkey.gpg"
+    key="/root/rpm-tendrl-develop-pubkey.gpg"
   when: enable_develop_repo
 
 - name: Add tendrl dependencies repo
@@ -28,6 +40,11 @@
     description: Copr repo for tendrl dependencies owned by tendrl
     baseurl: "https://copr-be.cloud.fedoraproject.org/results/tendrl/dependencies/epel-7-x86_64/"
 
+- name: Copy rpm-gpg key first (hack)
+  copy:
+    src='rpm-tendrl-dependencies-pubkey.gpg'
+    dest=/root
+
 - name: Add public key for dependencies repo
   rpm_key:
-    key="https://copr-be.cloud.fedoraproject.org/results/tendrl/dependencies/pubkey.gpg"
+    key="/root/rpm-tendrl-dependencies-pubkey.gpg"
