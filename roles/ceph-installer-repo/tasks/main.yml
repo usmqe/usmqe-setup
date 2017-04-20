@@ -18,7 +18,7 @@
   yum_repository:
     name: ktdreyer-ceph-installer
     description: "Copr repo for ceph-installer owned by ktdreyer"
-    baseurl: "https://copr-be.cloud.fedoraproject.org/results/ktdreyer/ceph-installer/epel-7-x86_64/"
+    baseurl: "http://copr-be.cloud.fedoraproject.org/results/ktdreyer/ceph-installer/epel-7-x86_64/"
     gpgcheck: yes
     skip_if_unavailable: yes
 
