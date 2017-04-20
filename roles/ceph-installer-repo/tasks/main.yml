@@ -22,6 +22,11 @@
     gpgcheck: yes
     skip_if_unavailable: yes
 
+- name: Copy rpm-gpg key first (hack)
+  copy:
+    src='rpm-ktdreyer-ceph-installer-pubkey.gpg'
+    dest=/root
+
 - name: Add public key for ktdreyer-ceph-installer repo
   rpm_key:
-    key="https://copr-be.cloud.fedoraproject.org/results/ktdreyer/ceph-installer/pubkey.gpg"
+    key="/root/rpm-ktdreyer-ceph-installer-pubkey.gpg"
