@@ -19,7 +19,7 @@
 
 - name: Install EPEL repo
   yum:
-    name='https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version  }}.noarch.rpm'
+    name='http://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version  }}.noarch.rpm'
     state=present
   register: task_result
   until: task_result|success
