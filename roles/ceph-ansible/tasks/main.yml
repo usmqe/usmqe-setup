@@ -92,7 +92,7 @@
   lineinfile:
     dest: "{{ base_dir }}/ceph-ansible/group_vars/all.yml"
     regexp: "^#monitor_interface: interface.*"
-    line: "monitor_interface: {{ ansible_default_ipv4['interface'] }}"
+    line: "monitor_interface: {{ hostvars[groups['mons'][0]].ansible_default_ipv4['interface'] }}"
 
 - name: Set journal_size to 5 GB
   lineinfile:
@@ -100,11 +100,16 @@
     regexp: "^#journal_size: 0.*"
     line: 'journal_size: 5120'
 
+- name: calculate network prefix
+  shell: "ipcalc -p 0.0.0.0 {{ hostvars[groups['mons'][0]].ansible_default_ipv4['netmask'] }} | sed 's|PREFIX=||'"
+  register: net_prefix
+  changed_when: false
+
 - name: Set public_network to ansible_default_ipv4['address']/16
   lineinfile:
     dest: "{{ base_dir }}/ceph-ansible/group_vars/all.yml"
     regexp: "^#public_network: 0.0.0.0/0.*"
-    line: "public_network: {{ ansible_default_ipv4['address'] }}/16"
+    line: "public_network: {{ hostvars[groups['mons'][0]].ansible_default_ipv4['network'] }}/{{ net_prefix.stdout }}"
 
 # edit mons.yml file
 
