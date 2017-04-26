@@ -29,6 +29,10 @@
    - policycoreutils
    - policycoreutils-python
    - lsof
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
 # So that we can run few data dumps/probes and store results into /tmp/usmqe/
 

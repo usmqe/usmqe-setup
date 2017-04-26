@@ -7,6 +7,10 @@
     - ruby
     - ruby-devel
     - rubygem-bundler
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
 - name: Install other dependencies
   yum:
@@ -14,6 +18,10 @@
     state=present
   with_items:
     - httpd
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
 #
 # Installation

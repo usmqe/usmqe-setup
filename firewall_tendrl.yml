@@ -9,6 +9,10 @@
       yum:
         name: 'firewalld'
         state: present
+      register: task_result
+      until: task_result|success
+      retries: 5
+      delay: 5
 
 # TODO: firewall-tendrl-server role
 #- name: Configure firewall on Tendrl server

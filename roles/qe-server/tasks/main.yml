@@ -30,6 +30,10 @@
 
 - name: Install ansible
   yum: name=ansible state=present enablerepo=epel
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
 - name: Configure ansible forks option
   ini_file:

@@ -3,3 +3,7 @@
   yum:
     name: "{{ centos_ceph_version_package }}"
     state: present
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
