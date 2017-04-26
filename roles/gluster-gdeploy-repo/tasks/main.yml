@@ -3,9 +3,9 @@
   yum_repository:
     name: gdeploy
     description: "GDeploy repo"
-    baseurl: "https://copr-be.cloud.fedoraproject.org/results/sac/gdeploy/epel-7-x86_64/"
+    baseurl: "http://copr-be.cloud.fedoraproject.org/results/sac/gdeploy/epel-7-x86_64/"
     gpgcheck: yes
 
 - name: Add public key for gdeploy repo
   rpm_key:
-    key="https://copr-be.cloud.fedoraproject.org/results/sac/gdeploy/pubkey.gpg"
+    key="http://copr-be.cloud.fedoraproject.org/results/sac/gdeploy/pubkey.gpg"
