@@ -30,6 +30,10 @@
     state=present
   with_items:
     - fontconfig
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
     
 - name: Run gulp compile command
   command: gulp

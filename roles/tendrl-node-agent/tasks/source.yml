@@ -8,6 +8,10 @@
   with_items:
     - libffi-devel
     - openssl-devel
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
 #
 # Installation

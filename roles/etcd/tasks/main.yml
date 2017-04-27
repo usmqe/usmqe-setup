@@ -2,6 +2,10 @@
   yum:
     name=etcd
     state=present
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
 - name: Directory for etcd api_jobs
   file:

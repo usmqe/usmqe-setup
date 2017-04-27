@@ -22,6 +22,10 @@
     - glusterfs-client-xlators
     - glusterfs-extra-xlators
     - glusterfs-geo-replication
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
 - name: Run glusterd service
   service:
