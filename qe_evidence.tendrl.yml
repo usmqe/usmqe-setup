@@ -56,35 +56,41 @@
     - qe-evidence
     - qe-evidence-probe-journald
 
+- name: Download logs from Storage machines
+  hosts: usm_nodes
+  user: root
+  vars:
+    evidence_dirs:
+      - /etc/tendrl/
+    evidence_journald_services:
+      - tendrl-node-agent
+      - tendrl-node-monitoring
+  roles:
+    - role: qe-evidence
+    - qe-evidence-probe-journald
+
 - name: Download logs from Gluster Storage machines
   hosts: gluster
   user: root
   vars:
     evidence_dirs:
-      - /etc/tendrl/
       - /etc/glusterfs/
       - /var/log/glusterfs/
     evidence_journald_services:
       - tendrl-gluster-integration
-      - tendrl-node-agent
-      - tendrl-node-monitoring
   roles:
     - qe-evidence
     - qe-evidence-probe-journald
 
 - name: Download logs from Ceph Storage machines
-  hosts: ceph_osd:ceph_mon
+  hosts: ceph_osd ceph_mon
   user: root
   vars:
     evidence_dirs:
-      - /etc/tendrl/
       - /etc/ceph/
-      - /var/log/tendrl/
-      - /var/log/ceph/
+      - /var/log/ceph
     evidence_journald_services:
       - tendrl-ceph-integration
-      - tendrl-node-agent
-      - tendrl-performance-monitoring
   roles:
-   - qe-evidence
+   - role: qe-evidence
    - qe-evidence-probe-journald
