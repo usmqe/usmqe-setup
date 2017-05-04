@@ -100,16 +100,15 @@
     regexp: "^#journal_size: 0.*"
     line: 'journal_size: 5120'
 
-- name: calculate network prefix
-  shell: "ipcalc -p 0.0.0.0 {{ hostvars[groups['mons'][0]].ansible_default_ipv4['netmask'] }} | sed 's|PREFIX=||'"
-  register: net_prefix
-  changed_when: false
+- set_fact:
+    pub_network: "{{ hostvars[groups['mons'][0]].ansible_default_ipv4.network }}"
+    pub_prefix: "{{ ['0.0.0.0/', hostvars[groups['mons'][0]].ansible_default_ipv4.netmask] | join('') | ipaddr('prefix') }}"
 
-- name: Set public_network to ansible_default_ipv4['address']/16
+- name: Set public_network to ansible_default_ipv4['network']/prefix
   lineinfile:
     dest: "{{ base_dir }}/ceph-ansible/group_vars/all.yml"
     regexp: "^#public_network: 0.0.0.0/0.*"
-    line: "public_network: {{ hostvars[groups['mons'][0]].ansible_default_ipv4['network'] }}/{{ net_prefix.stdout }}"
+    line: "public_network: {{ pub_network }}/{{ pub_prefix }}"
 
 # edit mons.yml file
 
