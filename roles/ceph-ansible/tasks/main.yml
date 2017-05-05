@@ -100,16 +100,53 @@
     regexp: "^#journal_size: 0.*"
     line: 'journal_size: 5120'
 
-- name: calculate network prefix
-  shell: "ipcalc -p 0.0.0.0 {{ hostvars[groups['mons'][0]].ansible_default_ipv4['netmask'] }} | sed 's|PREFIX=||'"
-  register: net_prefix
-  changed_when: false
+# look for the default (public) network on MON node
+- set_fact:
+    pub_network: "{{ hostvars[groups['mons'][0]].ansible_default_ipv4.network }}"
+    pub_prefix: "{{ ['0.0.0.0/', hostvars[groups['mons'][0]].ansible_default_ipv4.netmask] | join('') | ipaddr('prefix') }}"
 
-- name: Set public_network to ansible_default_ipv4['address']/16
+- name: Set public_network to ansible default ipv4 network/prefix
   lineinfile:
     dest: "{{ base_dir }}/ceph-ansible/group_vars/all.yml"
     regexp: "^#public_network: 0.0.0.0/0.*"
-    line: "public_network: {{ hostvars[groups['mons'][0]].ansible_default_ipv4['network'] }}/{{ net_prefix.stdout }}"
+    line: "public_network: {{ pub_network }}/{{ pub_prefix }}"
+
+# look for the cluster (data) network on OSD node (as it is available only on OSD nodes)
+- name: Filter additional NICs (exclude ansible default interface and lo)
+  set_fact:
+    additional_network_interfaces: "{{ hostvars[groups['osds'][0]].ansible_interfaces | difference(['lo', hostvars[groups['osds'][0]].ansible_default_ipv4.interface]) }}"
+
+- name: Prepare empty list for additional_networks
+  set_fact:
+    additional_networks: []
+
+- name: Filter configured additional interfaces
+  set_fact:
+    additional_networks: "{{ additional_networks }} + [ {{ hostvars[groups['osds'][0]]['ansible_'+item].ipv4 }} ]"
+  when:
+   - "hostvars[groups['osds'][0]]['ansible_'+item] is defined"
+   - "hostvars[groups['osds'][0]]['ansible_'+item].ipv4 is defined"
+  with_items: "{{ additional_network_interfaces }}"
+
+- debug: var=additional_networks
+
+- name: Use first additional interface as data_network/data_prefix
+  set_fact:
+    data_network: "{{ additional_networks.0.network }}"
+    data_prefix: "{{ ['0.0.0.0/', additional_networks.0.netmask] | join('') | ipaddr('prefix') }}"
+  when: additional_networks.0 is defined
+
+- debug: var=data_network
+- debug: var=data_prefix
+
+- name: Set cluster_network to second NIC (if available and configured on OSD nodes)
+  lineinfile:
+    dest: "{{ base_dir }}/ceph-ansible/group_vars/all.yml"
+    regexp: "^#cluster_network: .*"
+    line: "cluster_network: {{ data_network }}/{{ data_prefix }}"
+  when:
+    - "data_network is defined"
+    - "data_prefix is defined"
 
 # edit mons.yml file
 

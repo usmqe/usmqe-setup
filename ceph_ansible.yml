@@ -1,8 +1,8 @@
 ---
-- hosts: ceph_mon
+- hosts: ceph_mon:ceph_osd
   remote_user: root
   tasks:
-    - name: gather facts from Ceph Mon nodes
+    - name: gather facts from Ceph nodes
       setup:
 
 - name: Install ceph-ansible and install Ceph
