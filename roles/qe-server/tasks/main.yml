@@ -127,12 +127,13 @@
 # other tools
 #
 
-- name: Install other useful tools
+- name: Install other dependencies and useful tools
   yum: name={{ item }} state=installed enablerepo=epel
   with_items:
    - createrepo
    - git
    - htop
+   - python-netaddr
    - rpmdeplint
    - rpmlint
    - tmux
