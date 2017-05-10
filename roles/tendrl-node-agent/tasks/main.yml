@@ -25,6 +25,7 @@
     insertafter='^tags:$'
     line="  - provisioner/gluster"
   when: "'gluster' in group_names"
+  run_once: true
 
 # https://github.com/Tendrl/documentation/wiki/Tendrl-release-v1.2.2
 - name: Add provisioner/ceph tag in node-agent.conf.yaml (on tendrl-server)
