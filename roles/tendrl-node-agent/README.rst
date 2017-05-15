@@ -16,7 +16,6 @@ with the following exceptions:
 
 Open issues:
 
-* https://github.com/Tendrl/node_agent/issues/87
 * https://github.com/Tendrl/node_agent/issues/88
 * https://github.com/Tendrl/node_agent/issues/89
 
