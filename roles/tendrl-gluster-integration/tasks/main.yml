@@ -2,8 +2,11 @@
 # installation
 #
 
-- include: source.yml
-  when: install_from == "source"
-
-- include: binary.yml
-  when: install_from == "packages"
+- name: Install tendrl-gluster-integration
+  yum:
+    name=tendrl-gluster-integration
+    state=latest
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
