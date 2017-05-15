@@ -2,11 +2,14 @@
 # installation
 #
 
-- include: source.yml
-  when: install_from == "source"
+# TODO Add when packages are ready
+#- name: Install tendrl-alerting
+#  yum:
+#    name=tendrl-alerting
+#    state=latest
 
-- include: binary.yml
-  when: install_from == "packages"
+- fail: msg="There are no packages yet, we can't start and enable it"
+  when: not ignore_incomplete_installation
 
 #
 # post installation configuration

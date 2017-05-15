@@ -1,5 +1,0 @@
----
-dependencies:
-  # make sure commons devel packages are installed for installation from sources
-  - role: tendrl-devel
-    when: install_from == "source"

@@ -2,12 +2,7 @@
  Tendrl-alerting
 =================
 
-This role installs `tendrl-alerting`_ component.
-
-When variable ``install_from`` is set to ``packages``, the component is
-installed from rpm packages via ``yum``. On the other hand when the value is
-set to ``source``, tendrl-alerting is installed from sources
-from github via ``pip``.
+This role installs `tendrl-alerting`_ component from packages.
 
 The installation is based on information from `installation documentation`_.
 
