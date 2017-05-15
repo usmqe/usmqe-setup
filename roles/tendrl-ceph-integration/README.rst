@@ -9,7 +9,6 @@ of this component is handled by `node-agent`_ as mentioned `here`_.
 
 Open issues:
 
-* https://github.com/Tendrl/node_agent/issues/99
 * https://github.com/Tendrl/ceph_integration/issues/57
 
 
