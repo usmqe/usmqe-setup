@@ -2,21 +2,10 @@
  Tendrl-ceph-integration
 =========================
 
-This role installs `tendrl-ceph-integration`_ component.
+This role installs `tendrl-ceph-integration`_ component from packages.
 
-When variable ``install_from`` is set to ``packages``, the component is
-installed from rpm packages via ``yum``. On the other hand when the value is
-set to ``source``, tendrl-ceph-integration is installed from sources from
-github via ``pip``.
-
-The installation is based on information from `installation.rst`_ with the
-following exceptions:
-
-- we don't install `tendrl-commons` component once again in this role (this
-  is handled either by rpm dependencies for ``install_from == packages`` or
-  via ansible metadata dependencies when ``install_from == source``)
-- we don't install `/etc/tendrl/tendrl.conf` configuration file, which is owned
-  by `tendrl-node-agent` component
+This role should not be used in production playbooks because installation
+of this component is handled by `node-agent`_ as mentioned `here`_.
 
 Open issues:
 
@@ -25,4 +14,5 @@ Open issues:
 
 
 .. _`tendrl-ceph-integration`: https://github.com/Tendrl/ceph_integration
-.. _`installation.rst`: https://github.com/Tendrl/ceph_integration/blob/master/doc/source/installation.rst
+.. _`node-agent`: https://github.com/Tendrl/node_agent
+.. _`here`: https://github.com/Tendrl/gluster-integration/issues/145#issuecomment-281998498

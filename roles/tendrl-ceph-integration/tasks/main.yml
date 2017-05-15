@@ -2,11 +2,14 @@
 # installation
 #
 
-- include: source.yml
-  when: install_from == "source"
-
-- include: binary.yml
-  when: install_from == "packages"
+- name: Install tendrl-ceph-integration
+  yum:
+    name=tendrl-ceph-integration
+    state=latest
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
 #
 # post installation configuration
