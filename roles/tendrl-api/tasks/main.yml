@@ -2,11 +2,32 @@
 # installation
 #
 
-- include: source.yml
-  when: install_from == "source"
+- name: Install tendrl-api
+  yum:
+    name=tendrl-api
+    state=latest
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
-- include: binary.yml
-  when: install_from == "packages"
+- name: Install tendrl-api-httpd
+  yum:
+    name=tendrl-api-httpd
+    state=latest
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
+
+- name: Install tendrl-api-doc
+  yum:
+    name=tendrl-api-doc
+    state=latest
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
 #
 # post installation configuration
