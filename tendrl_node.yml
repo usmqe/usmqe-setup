@@ -9,6 +9,5 @@
   roles:
     - tendrl-repo
     - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/node_agent/issues/75
-    - tendrl-commons
     - tendrl-node-agent
     - tendrl-node-monitoring
