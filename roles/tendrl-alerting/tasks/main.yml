@@ -2,15 +2,35 @@
 # installation
 #
 
-# TODO Add when packages are ready
-#- name: Install tendrl-alerting
-#  yum:
-#    name=tendrl-alerting
-#    state=latest
-
-- fail: msg="There are no packages yet, we can't start and enable it"
-  when: not ignore_incomplete_installation
+- name: Install tendrl-alerting
+  yum:
+    name=tendrl-alerting
+    state=latest
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
 
 #
 # post installation configuration
 #
+
+- name: Configure tendrl-alerting
+  lineinfile:
+    dest=/etc/tendrl/alerting/alerting.conf.yaml
+    regexp={{ item.regexp }}
+    line={{ item.line }}
+  with_items:
+    - regexp: '^etcd_connection:*'
+      line: "etcd_connection{{ ':' }} {{ groups['usm_server'][0] }}"
+    - regexp: '^etcd_port:*'
+      line: "etcd_port{{ ':' }} 2379"
+
+# TODO Configure email source
+# https://github.com/Tendrl/alerting/blob/master/doc/source/installation.rst
+      
+- name: Start and enable tendrl-alerting daemon
+  service:
+    name=tendrl-alerting
+    state=started
+    enabled=yes
