@@ -43,7 +43,7 @@
   replace:
     dest=/etc/tendrl/etcd.yml
     regexp="^  {{ ":" }}host{{ ":" }} .*"
-    replace="  {{ ":" }}host{{ ":" }} \'{{ hostvars[groups['usm_server'][0]]['ansible_eth0']['ipv4']['address'] }}\'"
+    replace="  {{ ":" }}host{{ ":" }} \'{{ hostvars[groups['usm_server'][0]]['ansible_default_ipv4']['address'] }}\'"
 
 # as documented in README file and deployment.adoc from Tendrl/documentation
 - name: Start and enable tendrl-api
