@@ -1,8 +1,0 @@
-- name: Install tendrl-commons
-  yum:
-    name=tendrl-commons
-    state=latest
-  register: task_result
-  until: task_result|success
-  retries: 5
-  delay: 5
