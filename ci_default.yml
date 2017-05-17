@@ -19,8 +19,6 @@
 
 - include: tendrl_server.yml
 
-- include: tendrl_node.yml
-
 - include: gluster.yml
   when: groups.gluster is defined
 - include: gluster_peers_bricks.yml
@@ -28,6 +26,8 @@
 
 - include: ceph_prereq.yml
   when: groups.ceph_osd is defined and groups.ceph_mon is defined
+
+- include: tendrl_node.yml
 
 # workaround according to https://github.com/Tendrl/api/issues/86#issuecomment-285063914
 # TODO: delete after resolving
