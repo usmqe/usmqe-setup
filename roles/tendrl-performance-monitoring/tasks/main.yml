@@ -26,7 +26,7 @@
     - regexp: '^etcd_port:*'
       line: "etcd_port{{ ':' }} 2379"
     - regexp: '^time_series_db_server:*'
-      line: "time_series_db_server{{ ':' }} {{ ansible_eth0['ipv4']['address'] }}"
+      line: "time_series_db_server{{ ':' }} {{ ansible_default_ipv4['address'] }}"
     - regexp: '^time_series_db_port:*'
       line: "time_series_db_port{{ ':' }} 10080"
 
