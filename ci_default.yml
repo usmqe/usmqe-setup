@@ -4,11 +4,8 @@
 # * Configure firewall
 # * Install Tendrl server.
 # * Install Tendrl storage nodes.
-# * Install Gluster nodes.
-# * Configure gluster trusted storage pool and create bricks 
-#   on all available devices on gluster nodes.
-# * Install Ceph nodes.
-# * Preconfigure ceph-ansible.
+# * Add Gluster repo.
+# * Add Ceph repos.
 - include: qe_pre_installation_tasks.yml
 
 # configure firewall
@@ -19,15 +16,20 @@
 
 - include: tendrl_server.yml
 
-- include: gluster.yml
-  when: groups.gluster is defined
-- include: gluster_peers_bricks.yml
-  when: groups.gluster is defined
-
-- include: ceph_prereq.yml
-  when: groups.ceph_osd is defined and groups.ceph_mon is defined
-
 - include: tendrl_node.yml
+
+# Add Centos Gluster YUM repo
+- hosts: gluster
+  remote_user: root
+  roles:
+    - gluster-centos-repo
+    - gluster-gdeploy-repo
+
+# Install centos-release-ceph package with Ceph Repos
+- hosts: ceph_mon:ceph_osd
+  remote_user: root
+  roles:
+    - ceph-centos-repo
 
 # workaround according to https://github.com/Tendrl/api/issues/86#issuecomment-285063914
 # TODO: delete after resolving
@@ -42,7 +44,7 @@
     # immediate restart doesn't work
     - pause:
         seconds: 20
-  
+
     - name: Start tendrl-node-agent daemon
       service:
         name=tendrl-node-agent
