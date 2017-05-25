@@ -106,16 +106,6 @@
     regexp: "^#public_network: 0.0.0.0/0.*"
     line: "public_network: {{ ansible_default_ipv4['address'] }}/16"
 
-# edit mons.yml file
-
-# Disabled on CentOS because calamari is not available in SIG
-- name: Enable calamari on mons
-  lineinfile:
-    dest: "{{ base_dir }}/ceph-ansible/group_vars/mons.yml"
-    regexp: '^#calamari: false'
-    line: 'calamari: true'
-  when: hostvars[groups['mons'][0]].ansible_distribution != 'CentOS'
-
 # edit osds.yml file
 
 - name: Uncomment devices
