@@ -1,50 +1,34 @@
-- name: Add tendrl master repo
+---
+- name: Add tendrl main repo (signed)
   yum_repository:
     name: tendrl
-    description: Copr repo for tendrl owned by tendrl
-    baseurl: "http://copr-be.cloud.fedoraproject.org/results/tendrl/release/epel-7-x86_64/"
-  when: enable_master_repo
+    description: Tendrl main repository
+    baseurl: "{{ tendrl_repo_url }}"
+    gpgkey: "{{ tendrl_repo_gpgkey_url }}"
+    gpgcheck: "yes"
+  when: "'{{ tendrl_repo_gpgkey_url }}' != ''"
 
-- name: Copy rpm-gpg key first (hack)
-  copy:
-    src='rpm-tendrl-pubkey.gpg'
-    dest=/root
-  when: enable_master_repo
-
-- name: Add public key for master repo
-  rpm_key:
-    key="/root/rpm-tendrl-pubkey.gpg"
-  when: enable_master_repo
-
-- name: Add tendrl develop repo
+- name: Add tendrl main repo (unsigned)
   yum_repository:
-    name: tendrl-develop
-    description: Copr repo for tendrl owned by tendrl
-    baseurl: "http://copr-be.cloud.fedoraproject.org/results/tendrl/tendrl-develop/epel-7-x86_64/"
-  when: enable_develop_repo
+    name: tendrl
+    description: Tendrl main repository
+    baseurl: "{{ tendrl_repo_url }}"
+    gpgcheck: "no"
+  when: "'{{ tendrl_repo_gpgkey_url }}' == ''"
 
-- name: Copy rpm-gpg key first (hack)
-  copy:
-    src='rpm-tendrl-develop-pubkey.gpg'
-    dest=/root
-  when: enable_develop_repo
-
-- name: Add public key for develop repo
-  rpm_key:
-    key="/root/rpm-tendrl-develop-pubkey.gpg"
-  when: enable_develop_repo
-
-- name: Add tendrl dependencies repo
+- name: Add tendrl dependencies repo (signed)
   yum_repository:
     name: tendrl-dependencies
-    description: Copr repo for tendrl dependencies owned by tendrl
-    baseurl: "http://copr-be.cloud.fedoraproject.org/results/tendrl/dependencies/epel-7-x86_64/"
+    description: Tendrl dependencies repository
+    baseurl: "{{ tendrl_dependencies_repo_url }}"
+    gpgkey: "{{ tendrl_dependencies_repo_gpgkey_url }}"
+    gpgcheck: "yes"
+  when: "'{{ tendrl_dependencies_repo_gpgkey_url }}' != ''"
 
-- name: Copy rpm-gpg key first (hack)
-  copy:
-    src='rpm-tendrl-dependencies-pubkey.gpg'
-    dest=/root
-
-- name: Add public key for dependencies repo
-  rpm_key:
-    key="/root/rpm-tendrl-dependencies-pubkey.gpg"
+- name: Add tendrl dependencies repo (unsigned)
+  yum_repository:
+    name: tendrl-dependencies
+    description: Tendrl dependencies repository
+    baseurl: "{{ tendrl_dependencies_repo_url }}"
+    gpgcheck: "no"
+  when: "'{{ tendrl_dependencies_repo_gpgkey_url }}' == ''"
