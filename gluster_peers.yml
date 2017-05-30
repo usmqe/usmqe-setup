@@ -1,0 +1,9 @@
+---
+#
+# Create gluster trusted storage pool.
+#
+
+- hosts: gluster
+  remote_user: root
+  roles:
+    - qe-gluster-peers
