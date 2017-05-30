@@ -1,6 +1,6 @@
-=============
- Tendrl-repo
-=============
+================
+ QE-Tendrl-repo
+================
 
 This role enables `tendrl/tendrl copr`_ and `tendrl/dependencies copr`_
 repositories and installs their public gpg rpm keys. It can be also used
