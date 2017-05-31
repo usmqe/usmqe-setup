@@ -148,16 +148,6 @@
     - "data_network is defined"
     - "data_prefix is defined"
 
-# edit mons.yml file
-
-# Disabled on CentOS because calamari is not available in SIG
-- name: Enable calamari on mons
-  lineinfile:
-    dest: "{{ base_dir }}/ceph-ansible/group_vars/mons.yml"
-    regexp: '^#calamari: false'
-    line: 'calamari: true'
-  when: hostvars[groups['mons'][0]].ansible_distribution != 'CentOS'
-
 # edit osds.yml file
 
 - name: Uncomment devices
