@@ -39,7 +39,7 @@
 
 # WORKAROUND for https://bugzilla.redhat.com/show_bug.cgi?id=1456552#c5
 # TODO: delete after resolving
-- hosts: all
+- hosts: "usm_server:usm_nodes"
   remote_user: root
   tasks:
     - name: Add user tendrl-user
