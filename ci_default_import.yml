@@ -35,3 +35,13 @@
   tasks:
     - name: Run partprobe
       shell: partprobe || true
+
+# WORKAROUND for https://bugzilla.redhat.com/show_bug.cgi?id=1456552#c5
+# TODO: delete after resolving
+- hosts: "usm_server:usm_nodes"
+  remote_user: root
+  tasks:
+    - name: Add user tendrl-user
+      user:
+        name: tendrl-user
+        group: tendrl
