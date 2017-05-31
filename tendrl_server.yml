@@ -16,6 +16,7 @@
     - ceph-installer
     - tendrl-dashboard
     - tendrl-performance-monitoring
+    - tendrl-alerting
 
   post_tasks:
     - debug: var=hostvars[groups['usm_server'][0]]['admin_password']
