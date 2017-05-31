@@ -8,7 +8,7 @@
     install_from: packages
   roles:
     - etcd
-    - tendrl-repo
+    - qe-tendrl-repo
     - ceph-installer-repo
     - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/tendrl-api/issues/25
     - tendrl-api

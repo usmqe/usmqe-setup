@@ -1,0 +1,34 @@
+---
+- name: Add tendrl main repo (signed)
+  yum_repository:
+    name: tendrl
+    description: Tendrl main repository
+    baseurl: "{{ tendrl_repo_url }}"
+    gpgkey: "{{ tendrl_repo_gpgkey_url }}"
+    gpgcheck: "yes"
+  when: "'{{ tendrl_repo_gpgkey_url }}' != ''"
+
+- name: Add tendrl main repo (unsigned)
+  yum_repository:
+    name: tendrl
+    description: Tendrl main repository
+    baseurl: "{{ tendrl_repo_url }}"
+    gpgcheck: "no"
+  when: "'{{ tendrl_repo_gpgkey_url }}' == ''"
+
+- name: Add tendrl dependencies repo (signed)
+  yum_repository:
+    name: tendrl-dependencies
+    description: Tendrl dependencies repository
+    baseurl: "{{ tendrl_dependencies_repo_url }}"
+    gpgkey: "{{ tendrl_dependencies_repo_gpgkey_url }}"
+    gpgcheck: "yes"
+  when: "'{{ tendrl_dependencies_repo_gpgkey_url }}' != ''"
+
+- name: Add tendrl dependencies repo (unsigned)
+  yum_repository:
+    name: tendrl-dependencies
+    description: Tendrl dependencies repository
+    baseurl: "{{ tendrl_dependencies_repo_url }}"
+    gpgcheck: "no"
+  when: "'{{ tendrl_dependencies_repo_gpgkey_url }}' == ''"
