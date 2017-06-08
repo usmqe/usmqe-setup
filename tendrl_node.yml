@@ -6,8 +6,7 @@
   remote_user: root
   vars:
     install_from: packages
+    etcd_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}" # TODO: ops, would that work?
   roles:
     - qe-tendrl-repo
-    - { role: epel, epel_enabled: 1 } # based on https://github.com/Tendrl/node_agent/issues/75
-    - tendrl-node-agent
-    - tendrl-node-monitoring
+    - tendrl-storage-node
