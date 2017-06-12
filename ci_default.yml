@@ -14,16 +14,14 @@
 
 - include: qe_reboot.yml
 
-- include: tendrl_server.yml
-
-- include: tendrl_node.yml
+- include: tendrl.yml
 
 # Add Centos Gluster YUM repo
 - hosts: gluster
   remote_user: root
   roles:
     - gluster-centos-repo
-    - gluster-gdeploy-repo
+    - gluster-gdeploy-copr
 
 # Install centos-release-ceph package with Ceph Repos
 - hosts: ceph_mon:ceph_osd

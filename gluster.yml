@@ -8,5 +8,5 @@
     install_from: packages
   roles:
     - gluster-centos-repo
-    - gluster-gdeploy-repo
+    - gluster-gdeploy-copr
     - gluster-centos

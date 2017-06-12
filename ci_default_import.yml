@@ -16,8 +16,6 @@
 
 - include: qe_reboot.yml
 
-- include: tendrl_server.yml
-
 - include: gluster.yml
   when: groups.gluster is defined
 - include: gluster_peers.yml
@@ -26,7 +24,7 @@
 - include: ceph_prereq.yml
   when: groups.ceph_osd is defined and groups.ceph_mon is defined
 
-- include: tendrl_node.yml
+- include: tendrl.yml
 
 # WORKAROUND for https://github.com/ceph/ceph-ansible/issues/1403
 # TODO: delete after resolving

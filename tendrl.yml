@@ -1,24 +1,33 @@
 ---
+
 #
 # Install Tendrl server
 #
+
 - hosts: usm_server
   remote_user: root
   vars:
-    install_from: packages
     etcd_ip_address: "{{ ansible_default_ipv4.address }}"
     tendrl_api_ip_address: "{{ etcd_ip_address }}"
   roles:
     - qe-tendrl-repo
-    - ceph-installer-repo
-    - ceph-installer # TODO: there is a clash with tendrl-installer roles, we need to reuse just tenrl-* roles from there
+    - ceph-installer # TODO: make it optional (when we don't deploy ceph)
     - tendrl-server
     - tendrl-performance-monitoring
-
   post_tasks:
-    # TODO: ops, this is not possible, because password is not stored in a
-    # variable anymore
     - debug: var=hostvars[groups['usm_server'][0]]['admin_password']
     - name: Copy usm.ini template
       local_action: template src=./templates/usm.ini.j2 dest=./usm.ini
       when: hostvars[groups['usm_server'][0]]['admin_password'].changed
+
+#
+# Install Tendrl storage node related stuff (not related to Ceph or Gluster).
+#
+
+- hosts: usm_nodes
+  remote_user: root
+  vars:
+    etcd_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
+  roles:
+    - qe-tendrl-repo
+    - tendrl-storage-node
