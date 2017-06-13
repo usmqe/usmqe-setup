@@ -10,6 +10,7 @@
     etcd_ip_address: "{{ ansible_default_ipv4.address }}"
     tendrl_api_ip_address: "{{ etcd_ip_address }}"
   roles:
+    - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
     - ceph-installer # TODO: make it optional (when we don't deploy ceph)
     - tendrl-server
@@ -29,5 +30,6 @@
   vars:
     etcd_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
   roles:
+    - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
     - tendrl-storage-node
