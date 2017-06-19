@@ -17,6 +17,7 @@
       - /proc/cpuinfo
       - /proc/meminfo
       - /etc/hosts
+      - /etc/machine-id
   roles:
     - qe-evidence
     - qe-evidence-probe
