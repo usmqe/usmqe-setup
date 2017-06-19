@@ -26,9 +26,11 @@
   yum: name={{ item }} state=present
   with_items:
    - psmisc
+   - procps-ng
    - policycoreutils
    - policycoreutils-python
    - lsof
+   - net-tools
   register: task_result
   until: task_result|success
   retries: 5
@@ -47,6 +49,7 @@
    - { cmd: 'hostname', out: 'hostname' }
    - { cmd: 'lsblk', out: 'lsblk' }
    - { cmd: 'pstree -aplZ', out: 'pstree' }
+   - { cmd: 'ps aufx', out: 'ps-aufx' }
    - { cmd: 'systemctl status', out: 'systemctl-status' }
    - { cmd: 'sestatus', out: 'sestatus' }
    - { cmd: 'semanage permissive -l', out: 'semanage-permissive' }
@@ -54,6 +57,7 @@
    - { cmd: 'ip route s', out: 'ip-route-show' }
    - { cmd: 'iptables -nvL', out: 'iptables-nvL' }
    - { cmd: 'lsof -i', out: 'lsof-i' }
+   - { cmd: 'netstat -ntlp', out: 'netstat-ntlp' }
 
 # Now rsync all the data dumps from remote machines.
 
