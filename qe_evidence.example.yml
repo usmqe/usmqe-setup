@@ -3,6 +3,9 @@
 # Instead of listing all configuration and log files to be fetched,
 # this playbook just downloads almost everything and then runs the probe.
 
+# For reference how to use evidence playbooks, see README file in qe-evidence
+# role: roles/qe-evidence/README.rst
+
 - name: Download all logs and all configuration from all machines
   hosts: all
   user: root
