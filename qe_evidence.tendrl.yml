@@ -16,6 +16,7 @@
       - /var/log/messages
       - /proc/cpuinfo
       - /proc/meminfo
+      - /etc/hosts
   roles:
     - qe-evidence
     - qe-evidence-probe
