@@ -36,6 +36,14 @@
   retries: 5
   delay: 5
 
+# Transfer tendrl-devel-debug.py script
+
+- name: Copy tendrl-devel-debug.py into /tmp/usmqe
+  copy:
+    src=tendrl-devel-debug.py
+    dest=/tmp/usmqe/tendrl-devel-debug.py
+    mode=555
+
 # So that we can run few data dumps/probes and store results into /tmp/usmqe/
 
 - name: Probe remote machine
@@ -58,6 +66,7 @@
    - { cmd: 'iptables -nvL', out: 'iptables-nvL' }
    - { cmd: 'lsof -i', out: 'lsof-i' }
    - { cmd: 'netstat -ntlp', out: 'netstat-ntlp' }
+   - { cmd: '/tmp/usmqe/tendrl-devel-debug.py', out: 'tendrl-devel-debug' }
 
 # Gluster only checks
 
