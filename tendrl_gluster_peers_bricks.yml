@@ -5,7 +5,6 @@
 # on all available devices on gluster nodes.
 #
 - include: qe_pre_installation_tasks.yml
-- include: tendrl_server.yml
-- include: tendrl_node.yml
+- include: tendrl.yml
 - include: gluster.yml
 - include: gluster_peers_bricks.yml
