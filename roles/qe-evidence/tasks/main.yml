@@ -35,4 +35,5 @@
     src={{ item }}
     dest={{ evidence_target }}/
     fail_on_missing=no
+    validate_checksum=no
   with_items: '{{ evidence_files }}'

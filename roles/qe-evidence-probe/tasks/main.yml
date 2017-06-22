@@ -26,13 +26,23 @@
   yum: name={{ item }} state=present
   with_items:
    - psmisc
+   - procps-ng
    - policycoreutils
    - policycoreutils-python
    - lsof
+   - net-tools
   register: task_result
   until: task_result|success
   retries: 5
   delay: 5
+
+# Transfer tendrl-devel-debug.py script
+
+- name: Copy tendrl-devel-debug.py into /tmp/usmqe
+  copy:
+    src=tendrl-devel-debug.py
+    dest=/tmp/usmqe/tendrl-devel-debug.py
+    mode=555
 
 # So that we can run few data dumps/probes and store results into /tmp/usmqe/
 
@@ -47,6 +57,7 @@
    - { cmd: 'hostname', out: 'hostname' }
    - { cmd: 'lsblk', out: 'lsblk' }
    - { cmd: 'pstree -aplZ', out: 'pstree' }
+   - { cmd: 'ps aufx', out: 'ps-aufx' }
    - { cmd: 'systemctl status', out: 'systemctl-status' }
    - { cmd: 'sestatus', out: 'sestatus' }
    - { cmd: 'semanage permissive -l', out: 'semanage-permissive' }
@@ -54,6 +65,27 @@
    - { cmd: 'ip route s', out: 'ip-route-show' }
    - { cmd: 'iptables -nvL', out: 'iptables-nvL' }
    - { cmd: 'lsof -i', out: 'lsof-i' }
+   - { cmd: 'netstat -ntlp', out: 'netstat-ntlp' }
+   - { cmd: '/tmp/usmqe/tendrl-devel-debug.py', out: 'tendrl-devel-debug' }
+
+# Gluster only checks
+
+- name: Check if gluster is installed
+  command: rpm -q glusterfs-cli
+  register: rpm_q_glusterfs_cli
+  changed_when: False
+  failed_when: rpm_q_glusterfs_cli.rc > 1
+
+- name: Probe remote machine if gluster is installed
+  shell: '{{ item.cmd }} > {{ item.out }}'
+  args:
+    chdir: /tmp/usmqe/
+    # creates: /tmp/usmqe/{{ item.out }}
+  when: rpm_q_glusterfs_cli.rc == 0
+  with_items:
+   - { cmd: 'gluster peer status', out: 'gluster-peer-status' }
+   - { cmd: 'gluster pool list', out: 'gluster-pool-list' }
+   - { cmd: 'gluster volume list', out: 'gluster-volume-list' }
 
 # Now rsync all the data dumps from remote machines.
 
