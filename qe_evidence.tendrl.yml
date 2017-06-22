@@ -40,11 +40,11 @@
       - /etc/carbon/
       - /etc/graphite-web/
       - /etc/ceph-installer/
-      - /var/log/tendrl
+      - /var/log/tendrl/
       - /var/log/httpd/
       - /var/log/carbon/
       - /var/log/graphite-web/
-      - /var/log/rabbitmq
+      - /var/log/rabbitmq/
     evidence_files:
       - /etc/collectd.conf
     evidence_journald_services:
