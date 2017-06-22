@@ -74,7 +74,7 @@
     - qe-evidence-probe-journald
 
 - name: Download logs from Ceph Storage machines
-  hosts: ceph
+  hosts: ceph_osd:ceph_mon
   user: root
   vars:
     evidence_dirs:
