@@ -22,13 +22,23 @@
       when: hostvars[groups['usm_server'][0]]['admin_password'].changed
 
 #
-# Install Tendrl storage node related stuff (not related to Ceph or Gluster).
+# Install Tendrl on storage nodes
 #
 
-- hosts: usm_nodes
+- hosts: ceph_osd:ceph_mon
   remote_user: root
   vars:
     etcd_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
+  roles:
+    - { role: epel, epel_enabled: 1 }
+    - qe-tendrl-repo
+    - tendrl-storage-node
+
+- hosts: gluster
+  remote_user: root
+  vars:
+    etcd_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
+    tendrl_gluster_provisioning_support: True
   roles:
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
