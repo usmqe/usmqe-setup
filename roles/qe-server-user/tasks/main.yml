@@ -20,6 +20,9 @@
    - name: 'ansible-gluster'
      repo: "{{ ansible_gluster_repo }}"
      version: "{{ ansible_gluster_version }}"
+   - name: 'tendrl-ansible'
+     repo: "{{ tendrl_ansible_repo }}"
+     version: "{{ tendrl_ansible_version }}"
 
 # Install all requirements of usmqe-tests repository via pip from PyPI
 # locally for usmqe user and rh-python35 software collection only.
