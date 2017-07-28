@@ -107,7 +107,7 @@ Distributed under the terms of the `Apache License 2.0`_ license.
 
 
 .. _`Tendrl project`: http://tendrl.org/
-.. _`usm qe integration tests`: https://github.com/Tendrl/usmqe-tests/
+.. _`usm qe integration tests`: https://github.com/usmqe/usmqe-tests/
 .. _`usm qe documentation`: https://usmqe-tests.readthedocs.io/en/latest/
 .. _`ansible best practices`: https://docs.ansible.com/ansible/playbooks_best_practices.html
 .. _`ansible group variables`: https://docs.ansible.com/ansible/intro_inventory.html#splitting-out-vars
@@ -117,5 +117,5 @@ Distributed under the terms of the `Apache License 2.0`_ license.
 .. _`yamllint`: https://yamllint.readthedocs.io/en/latest/
 .. _`yamllint configuration of ansible project`: https://github.com/ansible/ansible/blob/devel/.yamllint
 .. _`Fedora/CentOS yamllint packages`: https://apps.fedoraproject.org/packages/yamllint
-.. _`usmqe-setup Travis CI job`: https://travis-ci.org/Tendrl/usmqe-setup
+.. _`usmqe-setup Travis CI job`: https://travis-ci.org/usmqe/usmqe-setup
 .. _`tendrl-ansible`: https://github.com/Tendrl/tendrl-ansible
