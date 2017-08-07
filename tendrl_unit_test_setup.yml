@@ -1,7 +1,7 @@
 ---
 # Sets up machine so there can be performed Tendrl unit tests
 # Installs all tendrl packages and pytest
-- hosts: usm_test
+- hosts: unittest_node
   remote_user: root
   pre_tasks:
     - name: WORKAROUND configure selinux to permissive mode
