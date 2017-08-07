@@ -4,10 +4,6 @@
 - hosts: usm_test
   remote_user: root
   pre_tasks:
-    - name: upgrade all packages
-      yum:
-        name: '*'
-        state: latest
     - name: WORKAROUND configure selinux to permissive mode
       selinux:
         state: permissive
@@ -16,8 +12,12 @@
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
   post_tasks:
+    - name: upgrade all packages
+      yum:
+        name: '*'
+        state: latest
     - name: Install pytest
-      pip:
+      yum:
         name: 'pytest'
     - name: Install tendrl packages
       yum:
