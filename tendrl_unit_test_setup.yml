@@ -1,0 +1,35 @@
+---
+# Perform following tasks, when applicable
+# (e.g. there are nodes in gluster or ceph_* group)
+# * Configure firewall
+# * Install Tendrl server.
+# * Install Tendrl storage nodes.
+# * Install Gluster nodes.
+# * Configure gluster trusted storage pool.
+# * Install Ceph nodes.
+# * Preconfigure ceph-ansible.
+- hosts: usm_test
+  remote_user: root
+  vars:
+    etcd_ip_address: "{{ ansible_default_ipv4.address }}"
+  pre_tasks:
+    - name: upgrade all packages
+      yum:
+        name: '*'
+        state: latest
+      register: task_result
+      until: task_result|success
+      retries: 5
+      delay: 5
+    - name: WORKAROUND configure selinux to permissive mode
+      selinux:
+        state: permissive
+        policy: targeted
+  roles:
+    - { role: epel, epel_enabled: 1 }
+    - qe-tendrl-repo
+  post_tasks:
+    - name: Install tendrl packages
+      yum:
+        name: 'tendrl*'
+        state: latest
