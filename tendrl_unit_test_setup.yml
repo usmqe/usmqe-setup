@@ -19,6 +19,11 @@
     - name: Install pytest
       yum:
         name: 'pytest'
+        state: latest
+    - name: Install python-mock
+      yum:
+        name: 'python-mock'
+        state: latest
     - name: Install tendrl packages
       yum:
         name: 'tendrl*'
