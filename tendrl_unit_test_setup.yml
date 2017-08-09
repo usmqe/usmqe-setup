@@ -1,0 +1,30 @@
+---
+# Sets up machine so there can be performed Tendrl unit tests
+# Installs all tendrl packages and pytest
+- hosts: unittest_node
+  remote_user: root
+  pre_tasks:
+    - name: WORKAROUND configure selinux to permissive mode
+      selinux:
+        state: permissive
+        policy: targeted
+  roles:
+    - { role: epel, epel_enabled: 1 }
+    - qe-tendrl-repo
+  post_tasks:
+    - name: upgrade all packages
+      yum:
+        name: '*'
+        state: latest
+    - name: Install pytest
+      yum:
+        name: 'pytest'
+        state: latest
+    - name: Install python-mock
+      yum:
+        name: 'python-mock'
+        state: latest
+    - name: Install tendrl packages
+      yum:
+        name: 'tendrl*'
+        state: latest
