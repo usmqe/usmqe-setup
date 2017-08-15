@@ -7,7 +7,7 @@
   hosts: qe_server
   user: root
   roles:
-   - epel
+   - { role: epel, epel_enabled: 1 }
    - rh-python35
    - qe-server
 
