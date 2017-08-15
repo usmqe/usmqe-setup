@@ -141,3 +141,4 @@
    - vim
    - wget
    - yum-utils
+   - jq
