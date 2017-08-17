@@ -24,6 +24,9 @@
      repo: "{{ tendrl_ansible_repo }}"
      version: "{{ tendrl_ansible_version }}"
 
+- name: HACK - install pylatest from PyPI via pip2
+  shell: pip2 install --user pylatest
+
 # Install all requirements of usmqe-tests repository via pip from PyPI
 # locally for usmqe user and rh-python35 software collection only.
 - name: HACK - install python modules required to run usmqe-tests
