@@ -11,7 +11,7 @@
   roles:
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
-    - ceph-installer # TODO: make it optional (when we don't deploy ceph)
+    #- ceph-installer # TODO: make it optional (when we don't deploy ceph)
     - tendrl-server
   post_tasks:
     - debug: var=hostvars[groups['usm_server'][0]]['admin_password']
