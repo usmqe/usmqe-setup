@@ -29,6 +29,7 @@
   remote_user: root
   vars:
     etcd_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
+    graphite_ip_address: "{{ etcd_ip_address }}"
   roles:
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
