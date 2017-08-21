@@ -1,8 +1,12 @@
 ---
-# URL to Tendrl main repo and gpg key
-tendrl_repo_url: "http://copr-be.cloud.fedoraproject.org/results/tendrl/release/epel-7-x86_64/"
-tendrl_repo_gpgkey_url: "https://copr-be.cloud.fedoraproject.org/results/tendrl/release/pubkey.gpg" 
+# Tendrl repo configuration selector
+# might be "release" or "master"
+tendrl_repo: "release"
 
-# URL to Tendrl dependencies repo and gpg key
-tendrl_dependencies_repo_url: "http://copr-be.cloud.fedoraproject.org/results/tendrl/dependencies/epel-7-x86_64/"
-tendrl_dependencies_repo_gpgkey_url: "https://copr-be.cloud.fedoraproject.org/results/tendrl/dependencies/pubkey.gpg"
+## following variables overwrite general configuration selected by tendrl_repo
+## URL to Tendrl main repo and gpg key
+# tendrl_repo_url: ""
+# tendrl_repo_gpgkey_url: ""
+## URL to Tendrl dependencies repo and gpg key
+# tendrl_dependencies_repo_url: ""
+# tendrl_dependencies_repo_gpgkey_url: ""
