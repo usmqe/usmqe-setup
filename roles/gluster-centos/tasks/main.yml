@@ -1,7 +1,6 @@
 - name: Install GlusterFS
   yum:
     name="{{ item }}"
-    disable_gpg_check=yes
     state=latest
   with_items:
     - glusterfs
