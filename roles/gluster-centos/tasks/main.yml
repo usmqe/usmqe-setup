@@ -1,25 +1,9 @@
-- name: Install GlusterFS
+- name: Install GlusterFS Server
   yum:
-    name="{{ item }}"
-    state=latest
+    name: "{{ item }}"
+    state: latest
   with_items:
-    - glusterfs
-    - glusterfs-fuse
     - glusterfs-server
-    - python-gluster
-    - glusterfs-rdma
-#    - glusterfs-debuginfo
-    - glusterfs-api
-    - glusterfs-client
-    - glusterfs-api-devel
-    - glusterfs-devel
-    - glusterfs-libs
-    - userspace-rcu
-    - glusterfs-cli
-    - glusterfs-events
-    - glusterfs-rdma
-    - glusterfs-client-xlators
-    - glusterfs-extra-xlators
     - glusterfs-geo-replication
   register: task_result
   until: task_result|success
