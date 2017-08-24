@@ -3,7 +3,7 @@
 - name: Add Gluster yum repository
   yum_repository:
     name: gluster-centos
-    description: Gluster from CentOS Storage SIG
-    baseurl: "{{ gluster_repo_url }}"
+    description: "{{ gluster_centos_repos[gluster_centos_repo].description }}"
+    baseurl: "{{ gluster_centos_repos[gluster_centos_repo].baseurl }}"
     gpgcheck: no
     repo_gpgcheck: no
