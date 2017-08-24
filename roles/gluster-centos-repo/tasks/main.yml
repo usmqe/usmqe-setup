@@ -1,7 +1,7 @@
 ---
 
-- name: Add Gluster YUM repo
+- name: Add Gluster yum repository
   yum_repository:
-    name: gluster
-    description: Gluster YUM repo
+    name: gluster-centos
+    description: Gluster from CentOS Storage SIG
     baseurl: "{{ gluster_repo_url }}"
