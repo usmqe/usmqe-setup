@@ -9,5 +9,5 @@
     # gluster_centos_repo: "3-11" # for GlusterFS 3.11
   roles:
     - gluster-centos-repo
-    - gluster-gdeploy-copr
+    # - gluster-gdeploy-copr
     - gluster-centos
