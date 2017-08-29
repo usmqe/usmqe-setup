@@ -1,7 +1,9 @@
 ---
 
-- name: Add Gluster YUM repo
+- name: Add Gluster yum repository
   yum_repository:
-    name: gluster
-    description: Gluster YUM repo
-    baseurl: "{{ gluster_repo_url }}"
+    name: gluster-centos
+    description: "{{ gluster_centos_repos[gluster_centos_repo].description }}"
+    baseurl: "{{ gluster_centos_repos[gluster_centos_repo].baseurl }}"
+    gpgcheck: no
+    repo_gpgcheck: no

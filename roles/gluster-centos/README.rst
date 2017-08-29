@@ -2,5 +2,4 @@
  Gluster-centos
 ================
 
-This role installs gluster packages used by Tendrl project and enables
-glusterd service.
+This role installs gluster server package and enables glusterd service.
