@@ -9,6 +9,7 @@
   roles:
    - epel
    - rh-python35
+   - gluster-gdeploy-copr
    - qe-server
   tasks:
    - name: Add jenkins user into usmqe group
