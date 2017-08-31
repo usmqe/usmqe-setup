@@ -28,11 +28,3 @@
   remote_user: root
   roles:
     - ceph-centos-repo
-
-# WORKAROUND for https://github.com/ceph/ceph-ansible/issues/1403
-# TODO: delete after resolving
-- hosts: ceph_osd
-  remote_user: root
-  tasks:
-    - name: Run partprobe
-      shell: partprobe || true

@@ -25,11 +25,3 @@
   when: groups.ceph_osd is defined and groups.ceph_mon is defined
 
 - include: tendrl.yml
-
-# WORKAROUND for https://github.com/ceph/ceph-ansible/issues/1403
-# TODO: delete after resolving
-- hosts: ceph_osd
-  remote_user: root
-  tasks:
-    - name: Run partprobe
-      shell: partprobe || true
