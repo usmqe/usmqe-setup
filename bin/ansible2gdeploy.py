@@ -32,6 +32,11 @@ def main():
         dest="inventory",
         action="store",
         help="ansible inventory (aka hosts) file")
+    ap.add_argument(
+        "-o",
+        dest="output",
+        action="store",
+        help="save the result into output file instead of in place edit")
     args = ap.parse_args()
 
     # open gdeploy config file via plain config parser
@@ -76,8 +81,11 @@ def main():
     if args.dry_run:
         gdeploy_conf.write(sys.stdout)
     else:
-        # replace original file (in place edit)
-        with open(args.gdeployconf, 'w') as gdeploy_conf_file:
+        if args.output is not None:
+            output_filename = args.output
+        else:
+            output_filename = args.gdeployconf
+        with open(output_filename, 'w') as gdeploy_conf_file:
             gdeploy_conf.write(gdeploy_conf_file)
 
 
