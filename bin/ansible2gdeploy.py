@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
 
+# This script allows you to replace hosts and client hosts in gdeploy
+# config file, addressing use case described here:
+# https://github.com/gluster/gdeploy/issues/422
+
 # To use this script on umsqe server with python3 software collection,
 # run it via:
 #
