@@ -66,6 +66,13 @@
   yum: name=ceph-ansible state=present
 
 #
+# gdeploy
+#
+
+- name: Install gdeploy
+  yum: name=gdeploy state=present
+
+#
 # usmqe dependencies
 #
 
