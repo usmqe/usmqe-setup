@@ -1,0 +1,10 @@
+- name: Install GlusterFS Client Packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - glusterfs-fuse
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5

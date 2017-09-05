@@ -11,3 +11,15 @@
     - gluster-centos-repo
     # - gluster-gdeploy-copr
     - gluster-server-centos
+
+#
+# Install gluster client
+#
+- hosts: usm_client
+  remote_user: root
+  vars:
+    gluster_centos_repo: "nightly"
+    # gluster_centos_repo: "3-11" # for GlusterFS 3.11
+  roles:
+    - gluster-centos-repo
+    - gluster-client-centos
