@@ -1,6 +1,6 @@
 ---
 #
-# Install gluster
+# Install gluster server
 #
 - hosts: gluster
   remote_user: root
@@ -10,4 +10,16 @@
   roles:
     - gluster-centos-repo
     # - gluster-gdeploy-copr
-    - gluster-centos
+    - gluster-server-centos
+
+#
+# Install gluster client
+#
+- hosts: usm_client
+  remote_user: root
+  vars:
+    gluster_centos_repo: "nightly"
+    # gluster_centos_repo: "3-11" # for GlusterFS 3.11
+  roles:
+    - gluster-centos-repo
+    - gluster-client-centos
