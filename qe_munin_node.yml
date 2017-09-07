@@ -1,0 +1,7 @@
+---
+# install and configure munin-node
+
+- hosts: "usm_server:usm_nodes:usm_client"
+  remote_user: root
+  roles:
+    - qe-munin-node
