@@ -1,0 +1,7 @@
+---
+# configure munin-node cidr_allow parameter
+# (enable access from munin server)
+# The default (0.0.0.0/0) is insecure, because it allow world wide access!
+# To restrict access from one specific server, set it to IP/32.
+# for example 192.0.2.1/32
+qe_munin_node_cidr_allow: "0.0.0.0/0"
