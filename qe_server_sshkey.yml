@@ -24,7 +24,7 @@
     register: usmqe_ssh_key
 
 - name: Deploy ssh public key of usmqe user to test machines
-  hosts: usm_server:usm_nodes
+  hosts: usm_server:usm_nodes:usm_client
   user: root
   vars:
     ssh_key: "{{ hostvars[groups['qe_server'][0]].usmqe_ssh_key.stdout }}"
