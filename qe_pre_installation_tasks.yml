@@ -5,7 +5,7 @@
 # * WORKAROUND: set selinux to permissive mode
 # * enable ntp sync via chronyd
 #
-- hosts: usm_server:usm_nodes
+- hosts: usm_server:usm_nodes:usm_client
   remote_user: root
   tasks:
     - name: upgrade all packages
