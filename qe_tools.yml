@@ -2,7 +2,7 @@
 #
 # Install useful and auxiliary tools
 #
-- hosts: usm_server:usm_nodes
+- hosts: usm_server:usm_nodes:usm_client
   remote_user: root
   tasks:
     - name: Install useful tools
