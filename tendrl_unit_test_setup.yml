@@ -29,3 +29,4 @@
       yum:
         name: 'tendrl*'
         state: latest
+        exclude: 'tendrl-node-selinux'
