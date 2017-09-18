@@ -11,6 +11,7 @@
   roles:
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
+    - gluster-centos-repo
   post_tasks:
     - name: upgrade all packages
       yum:
