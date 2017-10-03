@@ -19,7 +19,7 @@
 # to form similar to this: ci-usm1-server.ci-usm1
 # this nicely group machines from one cluster together
 #
-- name: Configure munin-node - host_name
+- name: Configure munin-node - host_name - USM VMs
   lineinfile:
     name: /etc/munin/munin-node.conf
     line: "host_name {{ ansible_hostname }}.{{ ansible_hostname | regex_replace('^([a-z]*-usm[0-9])-.*$', '\\1') }}"
@@ -28,6 +28,16 @@
   notify:
     - restart munin-node service
   when: "'usm' in ansible_hostname"
+
+- name: Configure munin-node - host_name - not USM VM.
+  lineinfile:
+    name: /etc/munin/munin-node.conf
+    line: "host_name {{ inventory_hostname }}"
+    regexp: "^host_name .*$"
+    state: present
+  notify:
+    - restart munin-node service
+  when: "'usm' not in ansible_hostname"
 
 - name: disable useless plugins
   file:
