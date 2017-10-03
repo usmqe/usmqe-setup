@@ -11,10 +11,10 @@
     graphite_ip_address: "{{ etcd_ip_address }}"
   roles:
     - { role: epel, epel_enabled: 1 }
-    - grafana-repo
+    - tendrl-ansible.grafana-repo
     - qe-tendrl-repo
-    #- ceph-installer # TODO: make it optional (when we don't deploy ceph)
-    - tendrl-server
+    #- tendrl-ansible.ceph-installer # TODO: make it optional (when we don't deploy ceph)
+    - tendrl-ansible.tendrl-server
   post_tasks:
     - debug: var=hostvars[groups['usm_server'][0]]['admin_password']
     - name: Copy usm.ini template
@@ -33,7 +33,7 @@
   roles:
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
-    - tendrl-storage-node
+    - tendrl-ansible.tendrl-storage-node
 
 - hosts: gluster
   remote_user: root
@@ -44,5 +44,5 @@
   roles:
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
-    - gluster-gdeploy-copr
-    - tendrl-storage-node
+    - tendrl-ansible.gluster-gdeploy-copr
+    - tendrl-ansible.tendrl-storage-node
