@@ -24,15 +24,21 @@
     dest: "{{ ssl_certs_dir }}/{{ ssl_cert_name }}.crt"
     remote_src: yes
     mode: 0644
+    owner: "{{ ssl_owner}}"
+    group: "{{ ssl_group }}"
 
 - name: Copy generated key to desired location
   copy:
     src: "{{ ssl_cert_tmp_dir }}/{{ ssl_cert_name }}.key"
     dest: "{{ ssl_keys_dir }}/{{ ssl_cert_name }}.key"
     remote_src: yes
-    mode: 0644
+    mode: 0600
+    owner: "{{ ssl_owner }}"
+    group: "{{ ssl_group }}"
+
 
 - name: Get CA certificate
   get_url:
     url: "http://usm-ssl-ca.usersys.redhat.com/mrg_openssl_ca/ca.crt"
     dest: "{{ ssl_certs_dir }}/ca.crt"
+    mode: 0644
