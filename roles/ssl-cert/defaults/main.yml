@@ -1,0 +1,5 @@
+---
+
+ssl_cert_name: "server"
+ssl_certs_dir: "/etc/pki/tls/certs/"
+ssl_keys_dir: "/etc/pki/tls/private/"

@@ -1,0 +1,3 @@
+---
+
+ssl_cert_tmp_dir: "/tmp/ssl_certs/"

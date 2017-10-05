@@ -1,0 +1,38 @@
+---
+# install required packages
+- name: Install required packages
+  yum: name="{{ item }}" state=latest
+  with_items:
+  - bind-utils
+  - hostname
+  - openssl
+
+- name: Prepare tmp directory.
+  file:
+    path: "{{ ssl_cert_tmp_dir }}"
+    state: directory
+
+- name: Prepare helper script ssl_certs.sh
+  copy: src=ssl_cert.sh dest="{{ ssl_cert_tmp_dir }}/ssl_cert.sh" mode="u=rwx,g=rx,o=rx"
+
+- name: Generate certs
+  command: "{{ ssl_cert_tmp_dir }}/ssl_cert.sh {{ ssl_cert_tmp_dir }} {{ ssl_cert_name }}"
+
+- name: Copy generated cert to desired location
+  copy:
+    src: "{{ ssl_cert_tmp_dir }}/{{ ssl_cert_name }}.crt"
+    dest: "{{ ssl_certs_dir }}/{{ ssl_cert_name }}.crt"
+    remote_src: yes
+    mode: 0644
+
+- name: Copy generated key to desired location
+  copy:
+    src: "{{ ssl_cert_tmp_dir }}/{{ ssl_cert_name }}.key"
+    dest: "{{ ssl_keys_dir }}/{{ ssl_cert_name }}.key"
+    remote_src: yes
+    mode: 0644
+
+- name: Get CA certificate
+  get_url:
+    url: "http://usm-ssl-ca.usersys.redhat.com/mrg_openssl_ca/ca.crt"
+    dest: "{{ ssl_certs_dir }}/ca.crt"
