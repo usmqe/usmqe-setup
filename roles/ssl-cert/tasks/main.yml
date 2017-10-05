@@ -8,19 +8,21 @@
   - openssl
 
 - name: Prepare tmp directory.
-  file:
-    path: "{{ ssl_cert_tmp_dir }}"
+  tempfile:
+    prefix: "ssl-certs."
     state: directory
+  register: ssl_cert_tmp_dir
 
 - name: Prepare helper script ssl_certs.sh
-  copy: src=ssl_cert.sh dest="{{ ssl_cert_tmp_dir }}/ssl_cert.sh" mode="u=rwx,g=rx,o=rx"
+  copy: src=ssl_cert.sh dest="/opt/ssl_cert.sh" mode="u=rwx,g=rx,o=rx"
 
 - name: Generate certs
-  command: "{{ ssl_cert_tmp_dir }}/ssl_cert.sh {{ ssl_cert_tmp_dir }} {{ ssl_cert_name }}"
+  command: "/opt/ssl_cert.sh {{ ssl_cert_tmp_dir.path }} {{ ssl_cert_name }}"
+  serial : true
 
 - name: Copy generated cert to desired location
   copy:
-    src: "{{ ssl_cert_tmp_dir }}/{{ ssl_cert_name }}.crt"
+    src: "{{ ssl_cert_tmp_dir.path }}/{{ ssl_cert_name }}.crt"
     dest: "{{ ssl_certs_dir }}/{{ ssl_cert_name }}.crt"
     remote_src: yes
     mode: 0644
@@ -29,7 +31,7 @@
 
 - name: Copy generated key to desired location
   copy:
-    src: "{{ ssl_cert_tmp_dir }}/{{ ssl_cert_name }}.key"
+    src: "{{ ssl_cert_tmp_dir.path }}/{{ ssl_cert_name }}.key"
     dest: "{{ ssl_keys_dir }}/{{ ssl_cert_name }}.key"
     remote_src: yes
     mode: 0600
@@ -42,3 +44,9 @@
     url: "http://usm-ssl-ca.usersys.redhat.com/mrg_openssl_ca/ca.crt"
     dest: "{{ ssl_certs_dir }}/ca.crt"
     mode: 0644
+
+- name: Remove tmp directory.
+  file:
+    path: "{{ ssl_cert_tmp_dir.path }}"
+    state: absent
+  when: ssl_debug != true
