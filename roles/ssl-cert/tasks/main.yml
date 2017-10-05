@@ -41,7 +41,7 @@
 - name: Get CA certificate
   get_url:
     url: "http://usm-ssl-ca.usersys.redhat.com/mrg_openssl_ca/ca.crt"
-    dest: "{{ ssl_certs_dir }}/ca.crt"
+    dest: "{{ ssl_certs_dir }}/ca-usmqe.crt"
     mode: 0644
 
 - name: Remove tmp directory.
