@@ -7,3 +7,5 @@
 *.retry
 # ini files
 *.ini
+# tendrl-ansible files
+tendrl-ansible-tmp

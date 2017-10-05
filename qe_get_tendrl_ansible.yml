@@ -1,0 +1,49 @@
+---
+
+#
+# Get content of tendrl-ansible package
+#
+
+- hosts: usm_server
+  remote_user: root
+  vars:
+    tendrl_ansible_dir: "./tendrl-ansible-tmp/"
+  roles:
+    - qe-tendrl-repo
+  tasks:
+    # This task is not necessary, but we will at least check that
+    # installation works as expected
+    - name: Install tendrl-ansible package
+      yum: name=tendrl-ansible state=latest
+
+    # prepare local directory for tendrl-ansible
+    - name: Remove old '{{ tendrl_ansible_dir }}' directory for tendrl-ansible
+      local_action:
+        module: file
+        state: absent
+        path: "{{ tendrl_ansible_dir }}"
+      run_once: True
+    - name: Create directory for tendrl-ansible
+      local_action:
+        module: file
+        state: directory
+        path: "{{ tendrl_ansible_dir }}"
+      run_once: True
+    # Download tendrl-ansible package on the remote host
+    - name: Download tendrl-ansible package
+      shell: yumdownloader --destdir /tmp/downloaded-tendrl-ansible-rpm/ tendrl-ansible
+    - name: Get name of the downloaded package
+      shell: ls /tmp/downloaded-tendrl-ansible-rpm/
+      register: tendrl_ansible_rpm_name
+    # Fetch tendrl-ansible package from remote host to local host
+    - name: Fetch tendrl-ansible packge to local machine
+      fetch:
+        src: "/tmp/downloaded-tendrl-ansible-rpm/{{ tendrl_ansible_rpm_name.stdout }}"
+        dest: "{{ tendrl_ansible_dir }}{{ tendrl_ansible_rpm_name.stdout }}"
+        flat: yes
+    # Unpack the package on local host
+    - name: Unpack the downloaded package
+      local_action:
+        module: shell rpm2cpio {{ tendrl_ansible_rpm_name.stdout }} | cpio -idmv --no-absolute-filenames
+        chdir: "{{ tendrl_ansible_dir }}"
+      run_once: True
