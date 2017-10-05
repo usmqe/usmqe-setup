@@ -18,7 +18,6 @@
 
 - name: Generate certs
   command: "/opt/ssl_cert.sh {{ ssl_cert_tmp_dir.path }} {{ ssl_cert_name }}"
-  serial : true
 
 - name: Copy generated cert to desired location
   copy:
