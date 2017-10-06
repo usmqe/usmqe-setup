@@ -24,7 +24,7 @@
     src: "{{ ssl_cert_tmp_dir.path }}/{{ ssl_cert_name }}.crt"
     dest: "{{ ssl_certs_dir }}/{{ ssl_cert_name }}.crt"
     remote_src: yes
-    mode: 0644
+    mode: "{{ ssl_cert_perm }}"
     owner: "{{ ssl_owner}}"
     group: "{{ ssl_group }}"
 
@@ -33,7 +33,7 @@
     src: "{{ ssl_cert_tmp_dir.path }}/{{ ssl_cert_name }}.key"
     dest: "{{ ssl_keys_dir }}/{{ ssl_cert_name }}.key"
     remote_src: yes
-    mode: 0600
+    mode: "{{ ssl_key_perm }}"
     owner: "{{ ssl_owner }}"
     group: "{{ ssl_group }}"
 
@@ -42,7 +42,7 @@
   get_url:
     url: "http://usm-ssl-ca.usersys.redhat.com/mrg_openssl_ca/ca.crt"
     dest: "{{ ssl_certs_dir }}/ca-usmqe.crt"
-    mode: 0644
+    mode: "{{ ssl_cert_perm }}"
 
 - name: Remove tmp directory.
   file:

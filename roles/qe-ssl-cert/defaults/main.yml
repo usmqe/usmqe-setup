@@ -2,7 +2,9 @@
 
 ssl_cert_name: "server"
 ssl_certs_dir: "/etc/pki/tls/certs/"
+ssl_cert_perm: "0644"
 ssl_keys_dir: "/etc/pki/tls/private/"
+ssl_key_perm: "0600"
 ssl_owner: "root"
 ssl_group: "root"
 # when debug set to true, do not delete the tmp directory

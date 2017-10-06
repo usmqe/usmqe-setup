@@ -12,3 +12,5 @@ Following variables might be used for changing the default behaviour of this rol
 * ``ssl_owner``: Owner of the cert and private key file (default: "root").
 * ``ssl_group``: Group of the cert and private key file (default: "root").
 * ``ssl_debug``: Debug mode, do not delete temporary files (default: false).
+* ``ssl_cert_perm``: Configure permissions for cert file (default: "0644").
+* ``ssl_key_perm``: Configure permissions for key file (default: "0600").
