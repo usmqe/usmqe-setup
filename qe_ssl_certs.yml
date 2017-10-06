@@ -6,4 +6,4 @@
 - hosts: usm_server:usm_nodes:usm_client
   remote_user: root
   roles:
-    - {role: ssl-cert, ssl_cert_name: "server"}
+    - {role: qe-ssl-cert, ssl_cert_name: "server"}
