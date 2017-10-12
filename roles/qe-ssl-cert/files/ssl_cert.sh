@@ -39,7 +39,7 @@ function mrg_ssl_create_key() {
   echo "" >> /tmp/openssl.cnf
   echo "[alt_names]" >> /tmp/openssl.cnf
   echo "DNS.1 = ${CERT_CN}" >> /tmp/openssl.cnf
-  echo "DNS.2 = $(hostname -f)" >> /tmp/openssl.cnf
+  [[ "${CERT_CN}" != "$(hostname -f)" ]] && echo "DNS.2 = $(hostname -f)" >> /tmp/openssl.cnf
   [[ -n ${DDNS_NAME} ]] && echo "DNS.3 = ${DDNS_NAME}" >> /tmp/openssl.cnf
   [[ -n ${IP} ]] && echo "IP.1 = ${IP}" >> /tmp/openssl.cnf
 
