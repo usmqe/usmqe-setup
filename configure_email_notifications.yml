@@ -35,7 +35,7 @@
       uri:
         url: "{{ tendrl_api_url }}/users/admin"
         method: PUT
-        body: {"name":"Admin","username":"admin","email":"{{ recipient_email }}","role":"admin","email_notifications":true}
+        body: {"name":"Admin", "username":"admin", "email":"{{ recipient_email }}", "role":"admin", "email_notifications":true}
         body_format: json
         headers:
           Authorization: Bearer {{ login.json.access_token }}
