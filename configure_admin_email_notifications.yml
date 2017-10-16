@@ -1,0 +1,53 @@
+---
+#
+# Configure email notifications for user admin.
+#
+# It expects that Tendrl notifier is already properly configured
+# (usable after tendrl.yml playbook).
+#
+# # parameters:
+#   recipient_email: where to send notification emails (required)
+#
+#   tendrl_user: tendrl user (default: admin)
+#   tendrl_password: password for tendrl user (default: adminuser)
+#
+
+- hosts: usm_server
+  remote_user: root
+  vars:
+    tendrl_user: "admin"
+    tendrl_password: "adminuser"
+    tendrl_api_url_protocol: "http"
+    tendrl_api_url: "{{ tendrl_api_url_protocol }}://{{ inventory_hostname }}/api/1.0"
+
+  pre_tasks:
+    - name: Check that 'recipient_email' variable is defined properly
+      assert:
+        that:
+          - recipient_email is defined
+
+  tasks:
+    - name: Login into Tendrl
+      uri:
+        url: "{{ tendrl_api_url }}/login"
+        method: POST
+        body: {"username":"{{ tendrl_user }}", "password":"{{ tendrl_password }}"}
+        body_format: json
+      register: login
+
+    - name: Configure admin user
+      uri:
+        url: "{{ tendrl_api_url }}/users/admin"
+        method: PUT
+        body: {"name":"Admin", "username":"admin", "email":"{{ recipient_email }}", "role":"admin", "email_notifications":true}
+        body_format: json
+        headers:
+          Authorization: Bearer {{ login.json.access_token }}
+
+    - name: Logout
+      uri:
+        url: "{{ tendrl_api_url }}/logout"
+        method: DELETE
+        return_content: yes
+        headers:
+          Authorization: Bearer {{ login.json.access_token }}
