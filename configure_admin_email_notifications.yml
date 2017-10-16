@@ -1,7 +1,11 @@
 ---
 #
 # Configure email notifications for user admin.
-# parameters:
+#
+# It expects that Tendrl notifier is already properly configured
+# (usable after tendrl.yml playbook).
+#
+# # parameters:
 #   recipient_email: where to send notification emails (required)
 #
 #   tendrl_user: tendrl user (default: admin)
