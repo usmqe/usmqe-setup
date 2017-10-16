@@ -7,8 +7,9 @@
 - hosts: usm_server
   remote_user: root
   vars:
+    etcd_fqdn: "{{ ansible_fqdn }}"
     etcd_ip_address: "{{ ansible_default_ipv4.address }}"
-    graphite_ip_address: "{{ etcd_ip_address }}"
+    graphite_fqdn: "{{ etcd_fqdn }}"
   roles:
     - { role: epel, epel_enabled: 1 }
     - tendrl-ansible.grafana-repo
@@ -28,8 +29,9 @@
 - hosts: ceph_osd:ceph_mon
   remote_user: root
   vars:
+    etcd_fqdn: "{{ hostvars[groups['usm_server'][0]].ansible_fqdn }}"
     etcd_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
-    graphite_ip_address: "{{ etcd_ip_address }}"
+    graphite_fqdn: "{{ hostvars[groups['usm_server'][0]].ansible_fqdn }}"
   roles:
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
@@ -38,8 +40,9 @@
 - hosts: gluster
   remote_user: root
   vars:
+    etcd_fqdn: "{{ hostvars[groups['usm_server'][0]].ansible_fqdn }}"
     etcd_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
-    graphite_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
+    graphite_fqdn: "{{ hostvars[groups['usm_server'][0]].ansible_fqdn }}"
     tendrl_gluster_provisioning_support: True
   roles:
     - { role: epel, epel_enabled: 1 }
