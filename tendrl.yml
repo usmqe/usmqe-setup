@@ -9,7 +9,12 @@
   vars:
     etcd_ip_address: "{{ ansible_default_ipv4.address }}"
     graphite_ip_address: "{{ etcd_ip_address }}"
+    etcd_tls_client_auth: True
+    etcd_trusted_ca_file: "/etc/pki/tls/certs/ca-usmqe.crt"
   roles:
+    - role: qe-ssl-cert
+      ssl_cert_name: "etcd"
+      ssl_key_perm: "0644"
     - { role: epel, epel_enabled: 1 }
     - tendrl-ansible.grafana-repo
     - qe-tendrl-repo
@@ -30,7 +35,11 @@
   vars:
     etcd_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
     graphite_ip_address: "{{ etcd_ip_address }}"
+    etcd_tls_client_auth: True
+    etcd_trusted_ca_file: "/etc/pki/tls/certs/ca-usmqe.crt"
   roles:
+    - role: qe-ssl-cert
+      ssl_cert_name: "etcd"
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
     - tendrl-ansible.tendrl-storage-node
@@ -41,7 +50,11 @@
     etcd_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
     graphite_ip_address: "{{ hostvars[groups['usm_server'][0]].ansible_default_ipv4.address }}"
     tendrl_gluster_provisioning_support: True
+    etcd_tls_client_auth: True
+    etcd_trusted_ca_file: "/etc/pki/tls/certs/ca-usmqe.crt"
   roles:
+    - role: qe-ssl-cert
+      ssl_cert_name: "etcd"
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
     - tendrl-ansible.gluster-gdeploy-copr
