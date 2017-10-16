@@ -1,0 +1,16 @@
+---
+# SSL setup for etcd client-server authentication
+
+- hosts: usm_server
+  remote_user: root
+  roles:
+    - role: qe-ssl-cert
+      ssl_cert_name: "etcd"
+      ssl_key_perm: "0644"
+      # ssl_owner: "etcd"
+
+- hosts: usm_nodes
+  remote_user: root
+  roles:
+    - role: qe-ssl-cert
+      ssl_cert_name: "etcd"
