@@ -16,9 +16,11 @@
     - role: qe-ssl-cert
       ssl_cert_name: "etcd"
       ssl_key_perm: "0644"
-    - { role: epel, epel_enabled: 1 }
-    - tendrl-ansible.grafana-repo
-    - qe-tendrl-repo
+    - { role: epel, epel_enabled: 1, when: ansible_distribution == 'CentOS' }
+    - role: tendrl-ansible.grafana-repo
+      when: ansible_distribution == 'CentOS'
+    - role: qe-tendrl-repo
+      when: ansible_distribution == 'CentOS'
     #- tendrl-ansible.ceph-installer # TODO: make it optional (when we don't deploy ceph)
     - tendrl-ansible.tendrl-server
   post_tasks:
@@ -42,8 +44,9 @@
   roles:
     - role: qe-ssl-cert
       ssl_cert_name: "etcd"
-    - { role: epel, epel_enabled: 1 }
-    - qe-tendrl-repo
+    - { role: epel, epel_enabled: 1, when: ansible_distribution == 'CentOS' }
+    - role: qe-tendrl-repo
+      when: ansible_distribution == 'CentOS'
     - tendrl-ansible.tendrl-storage-node
 
 - hosts: gluster
@@ -58,7 +61,9 @@
   roles:
     - role: qe-ssl-cert
       ssl_cert_name: "etcd"
-    - { role: epel, epel_enabled: 1 }
-    - qe-tendrl-repo
-    - tendrl-ansible.gluster-gdeploy-copr
+    - { role: epel, epel_enabled: 1, when: ansible_distribution == 'CentOS' }
+    - role: qe-tendrl-repo
+      when: ansible_distribution == 'CentOS'
+    - role: tendrl-ansible.gluster-gdeploy-copr
+      when: ansible_distribution == 'CentOS'
     - tendrl-ansible.tendrl-storage-node

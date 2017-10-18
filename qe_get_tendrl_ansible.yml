@@ -9,7 +9,8 @@
   vars:
     tendrl_ansible_dir: "./tendrl-ansible-tmp/"
   roles:
-    - qe-tendrl-repo
+    - role: qe-tendrl-repo
+      when: ansible_distribution == 'CentOS'
   tasks:
     # This task is not necessary, but we will at least check that
     # installation works as expected
