@@ -1,6 +1,6 @@
 ---
 #
-# Reboot all machines (usm_server,usm_nodes) and wait till they boot up
+# Reboot all machines (usm_server,usm_nodes,usm_client) and wait till they boot up
 #
 - name: Reboot all servers
   hosts: "usm_server:usm_nodes:usm_client"
