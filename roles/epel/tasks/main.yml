@@ -5,7 +5,10 @@
 
 - name: Check if EPEL is not permanently enabled on RHEL
   fail: msg="Do not permanently enable EPEL on RHEL!"
-  when: epel_enabled and ansible_distribution == 'RedHat'
+  when:
+    - epel_enabled
+    - ansible_distribution == 'RedHat'
+    - qe_not_production_testing_server is not defined
 
 - name: Copy EPEL rpm-gpg key first (hack)
   copy:
