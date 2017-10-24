@@ -9,6 +9,7 @@
     - epel_enabled
     - ansible_distribution == 'RedHat'
     - qe_not_production_testing_server is not defined
+    - not qe_not_production_testing_server|bool
 
 - name: Copy EPEL rpm-gpg key first (hack)
   copy:
