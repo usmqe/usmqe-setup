@@ -1,3 +1,4 @@
+# https://wiki.centos.org/HowTos/GlusterFSonCentOS
 - name: Install GlusterFS Server - CentOS
   yum:
     name: "{{ item }}"
@@ -11,6 +12,7 @@
   delay: 5
   when: ansible_distribution == 'CentOS'
 
+# https://access.redhat.com/documentation/en-us/red_hat_gluster_storage/3.3/html/installation_guide/installing_red_hat_storage_server_on_red_hat_enterprise_linux_layered_install
 - name: Install GlusterFS Server - RedHat
   yum:
     name: "{{ item }}"
