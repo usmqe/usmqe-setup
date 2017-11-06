@@ -1,4 +1,4 @@
-- name: Install GlusterFS Server
+- name: Install GlusterFS Server - CentOS
   yum:
     name: "{{ item }}"
     state: latest
@@ -9,6 +9,19 @@
   until: task_result|success
   retries: 5
   delay: 5
+  when: ansible_distribution == 'CentOS'
+
+- name: Install GlusterFS Server - RedHat
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - redhat-storage-server
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
+  when: ansible_distribution == 'RedHat'
 
 - name: Run and enable glusterd service
   service:
