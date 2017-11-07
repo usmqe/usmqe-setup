@@ -1,0 +1,31 @@
+# V2 end point details
+# Enable the below lines if v2 end point to be used for SNMP notifications
+# Note: For different communities make different similar entries below additionally
+# Here default community is public
+# V2 is auth less 
+
+# v2_endpoint:
+#  endpoint1:
+#    host_ip: 127.0.0.1
+#    community: public
+#  endpoint2:
+#    host_ip: 127.0.0.1
+#    community: public
+
+
+# V3 end point details
+# V3 needs authorization, Need to provide md5 password and des password
+# Enable the below lines if v3 end point to be used for SNMP notifications
+
+# v3_endpoint:
+#  endpoint1:
+#    host_ip: 127.0.0.1
+#    username: admin
+#    auth_key: mymd5pass
+#    priv_key: mydespass
+#  endpoint2:
+#    host_ip: 127.0.0.1
+#    username: user
+#    auth_key: mymd5pass
+#    priv_key: mydespass
+
