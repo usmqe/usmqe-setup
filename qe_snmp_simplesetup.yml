@@ -1,0 +1,76 @@
+---
+# QE configuration of SNMP v3 notifications
+#
+# Based on:
+# https://github.com/Tendrl/documentation/wiki/Tendrl-release-v1.5.4-(install-guide)#tendrl-server-installation
+# http://www.net-snmp.org/wiki/index.php/TUT:Configuring_snmptrapd_to_receive_SNMPv3_notifications
+#
+# See also:
+# https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol
+# http://www.net-snmp.org/wiki/index.php/TUT:snmptrap
+# http://www.net-snmp.org/wiki/index.php/TUT:SNMPv3_Options
+# http://net-snmp.sourceforge.net/docs/man/
+
+- hosts: usm_client
+  remote_user: root
+  vars:
+    qe_snmp_user: "tendrlTrapUser"
+    qe_snmp_auth_pass: "sL0pdokt4Y6FXc5XXp5KS0wuj6cWZPAEYfPv9z5NGH4="
+    qe_snmp_priv_pass : "jHaJ6V2523gu1PfNu0FGa44lkx2yVOznaCpbbQDBew4="
+  handlers:
+    - name: restart snmptrapd
+      service:
+        name=snmptrapd
+        state=restarted
+  tasks:
+
+    - name: Install net-snmp tools
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - net-snmp
+        - net-snmp-utils
+
+    # see http://net-snmp.sourceforge.net/docs/man/snmpd.conf.html
+    # for more details about SNMPv3 users (section SNMPv3 USM Users),
+    # particular options are based on Tendrl Install Guide referenced above
+    - name: Add tendrluser (SNMPv3 user) into snmptrapd.conf
+      lineinfile:
+        dest: /etc/snmp/snmptrapd.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - regexp: '^authUser'
+          line: 'authUser log {{ qe_snmp_user }}'
+        - regexp: '^createUser'
+          line: 'createUser -e 8000000001020304 {{ qe_snmp_user }} MD5 {{ qe_snmp_auth_pass }} DES {{ qe_snmp_priv_pass }}'
+
+    - name: Start and enable snmptrapd
+      service:
+        name: snmptrapd
+        state: started
+        enabled: yes
+
+- hosts: usm_server
+  remote_user: root
+  vars:
+    qe_snmp_user: "tendrlTrapUser"
+    qe_snmp_auth_pass: "sL0pdokt4Y6FXc5XXp5KS0wuj6cWZPAEYfPv9z5NGH4="
+    qe_snmp_priv_pass : "jHaJ6V2523gu1PfNu0FGa44lkx2yVOznaCpbbQDBew4="
+  handlers:
+    - name: restart tendrl-notifier
+      service:
+        name=tendrl-notifier
+        state=restarted
+  tasks:
+
+    - name: Create snmp.conf.yaml based on a template
+      template:
+        dest: /etc/tendrl/notifier/snmp.conf.yaml
+        src: snmp.conf.yaml.j2
+        backup: yes
+        force: yes
+      notify:
+        - restart tendrl-notifier
