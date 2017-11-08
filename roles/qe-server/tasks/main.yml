@@ -51,21 +51,6 @@
     value='%(directory)s/%%h-%%r'
 
 #
-# ceph-ansible
-#
-- name: Add ceph-ansible repository for CentOS
-  yum_repository:
-    name: ceph-ansible
-    description: ceph-ansible packages
-    baseurl: "https://shaman.ceph.com/api/repos/ceph-ansible/master/latest/centos/7/noarch/noarch"
-    metadata_expire: 600
-    gpgcheck: no
-  when: ansible_distribution == 'CentOS'
-
-- name: Install ceph-ansible
-  yum: name=ceph-ansible state=present
-
-#
 # gdeploy
 #
 
