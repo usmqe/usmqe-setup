@@ -1,5 +1,8 @@
 ---
-# QE configuration of SNMP v3 notifications
+# QE configuration of SNMP v3 notifications, where:
+#
+# * snmptrapd (daemon receiving snmp trap messages) runs on usm_client
+# * tendrl is configured to send snmp traps to usm_client machine
 #
 # Based on:
 # https://github.com/Tendrl/documentation/wiki/Tendrl-release-v1.5.4-(install-guide)#tendrl-server-installation
