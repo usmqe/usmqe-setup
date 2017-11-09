@@ -34,6 +34,7 @@
       with_items:
         - net-snmp
         - net-snmp-utils
+        - net-snmp-devel
 
     # see http://net-snmp.sourceforge.net/docs/man/snmpd.conf.html
     # for more details about SNMPv3 users (section SNMPv3 USM Users),
