@@ -17,6 +17,8 @@
 # Verification of QE setup
 # ========================
 #
+# After you run this playbook, you can recheck the setup manually as follows.
+#
 # Setup of snmptrapd service could be tested by sending snmp trap message from
 # server machine to the client one (where snmptrapd is running).
 #
