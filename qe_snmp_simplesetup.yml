@@ -1,14 +1,42 @@
 ---
-# QE configuration of SNMP v3 notifications, where:
+# ===========================================
+#  QE configuration of SNMP v3 notifications
+# ===========================================
+#
+# Overview of the setup:
 #
 # * snmptrapd (daemon receiving snmp trap messages) runs on usm_client
-# * tendrl is configured to send snmp traps to usm_client machine
+# * tendrl is configured to send snmp traps to usm_client machine, which is
+#   implemented by tendrl-notifier service running on usm_server machine
 #
-# Based on:
-# https://github.com/Tendrl/documentation/wiki/Tendrl-release-v1.5.4-(install-guide)#tendrl-server-installation
-# http://www.net-snmp.org/wiki/index.php/TUT:Configuring_snmptrapd_to_receive_SNMPv3_notifications
+# The configuration is based on:
 #
-# See also:
+# * https://github.com/Tendrl/documentation/wiki/Tendrl-release-v1.5.4-(install-guide)#tendrl-server-installation
+# * http://www.net-snmp.org/wiki/index.php/TUT:Configuring_snmptrapd_to_receive_SNMPv3_notifications
+#
+# Verification of QE setup
+# ========================
+#
+# Setup of snmptrapd service could be tested by sending snmp trap message from
+# server machine to the client one (where snmptrapd is running).
+#
+# On the client machine, run:
+#
+# [root@mbukatov-usm1-client ~]# journalctl -u snmptrapd -fe
+#
+# While you are watching the journal logs of snmptrapd, send some trap messages
+# from the server:
+#
+# [root@mbukatov-usm1-server ~]# snmptrap -v 3 -a MD5 -A sL0pdokt4Y6FXc5XXp5KS0wuj6cWZPAEYfPv9z5NGH4= -x DES -X jHaJ6V2523gu1PfNu0FGa44lkx2yVOznaCpbbQDBew4= -l authPriv -u tendrlTrapUser -e 0x8000000001020304 10.37.169.25 0 linkUp.0
+#
+# This is just an example.
+#
+# You should be able to see the snmp trap messages immediatelly shown in the
+# journald log.
+#
+# See also
+# ========
+#
 # https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol
 # http://www.net-snmp.org/wiki/index.php/TUT:snmptrap
 # http://www.net-snmp.org/wiki/index.php/TUT:SNMPv3_Options
