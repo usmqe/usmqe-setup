@@ -25,8 +25,6 @@
   remote_user: root
   vars:
     qe_snmp_user: "tendrlTrapUser"
-    qe_snmp_auth_pass: "sL0pdokt4Y6FXc5XXp5KS0wuj6cWZPAEYfPv9z5NGH4="
-    qe_snmp_priv_pass: "jHaJ6V2523gu1PfNu0FGa44lkx2yVOznaCpbbQDBew4="
   handlers:
     - name: restart tendrl-notifier
       service:
