@@ -1,0 +1,130 @@
+---
+# ========================================
+#  QE configuration of SMTP notifications
+# ========================================
+#
+# Overview of the configuration this playbook sets up:
+#
+# * postfix smtp server runs on usm_client machine, listening on public
+#   interface
+# * tendrl notifier is configured to send email via postfix smtp server running
+#   on usm_client directly (so mx entries are required for this to work)
+# * tendrl notifier sends email alerts for admin user to root at
+#   usm_client machine
+# * root user on client machine can read email alerts for tendrl admin user,
+#   which are delevered to his mailbox, via email clients such as mailx or mutt
+#
+# Based on:
+#
+# https://github.com/Tendrl/documentation/wiki/Tendrl-release-v1.5.4-(install-guide)#tendrl-server-installation
+#
+# See Also:
+#
+# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system_administrators_guide/s1-email-mta#s2-email-mta-postfix
+# http://www.postfix.org/BASIC_CONFIGURATION_README.html
+
+- hosts: usm_client
+  remote_user: root
+  handlers:
+    - name: restart postfix
+      service:
+        name: postfix
+        state: restarted
+  tasks:
+
+    - name: Install postfix and email client
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - postfix
+        - mailx
+        - mutt
+
+    - name: Reconfigure postfix to listen on interface of its hostname
+      lineinfile:
+        dest: /etc/postfix/main.cf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - regexp: '^#? *inet_interfaces = \$myhostname, localhost'
+          line: 'inet_interfaces = $myhostname, localhost'
+        - regexp: '^#? *inet_interfaces = localhost'
+          line: '#inet_interfaces = localhost'
+        - regexp: '#? *mynetworks_style = host'
+          line: 'mynetworks_style = host'
+      notify:
+        - restart postfix
+
+    - name: Start and enable postfix
+      service:
+        name: postfix
+        state: started
+        enabled: yes
+
+- hosts: usm_server
+  remote_user: root
+  handlers:
+    - name: restart tendrl-notifier
+      service:
+        name: tendrl-notifier
+        state: restarted
+  vars:
+    # TODO: load admin and password from somewhere?
+    tendrl_user: "admin"
+    tendrl_password: "adminuser"
+    # note: we don't support https or other api versions so far
+    tendrl_api_url_protocol: "http"
+    tendrl_api_url: "{{ tendrl_api_url_protocol }}://{{ inventory_hostname }}/api/1.0"
+    # notifier sends email alerts (for tendrl admin) to this email address
+    tendrl_admin_recipient_email: "root@{{ groups['usm_client'][0] }}"
+    # notifier sends email alerts from this email address
+    tendrl_notifier_email_id: "tendrl@{{ groups['usm_server'][0] }}"
+    # smpt server which notifier uses to send email
+    tendrl_notifier_email_smtp_server: "{{ groups['usm_client'][0] }}"
+    # smpt port of server specified above
+    tendrl_notifier_email_smtp_port: "25"
+
+  tasks:
+
+    # this task comes from tendl-ansible
+    - name: Setup email notifications in email.conf.yaml of tendrl-notifier
+      lineinfile:
+        dest: /etc/tendrl/notifier/email.conf.yaml
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - regexp: '^#? *email_id:.*'
+          line: "email_id: {{ tendrl_notifier_email_id }}"
+        - regexp: '^#? *email_smtp_server:.*'
+          line: "email_smtp_server: {{ tendrl_notifier_email_smtp_server }} "
+        - regexp: '^#? *email_smtp_port:.*'
+          line: "email_smtp_port: {{ tendrl_notifier_email_smtp_port }}"
+      notify:
+        - restart tendrl-notifier
+
+    - name: Login into Tendrl via API
+      uri:
+        url: "{{ tendrl_api_url }}/login"
+        method: POST
+        body: {"username":"{{ tendrl_user }}", "password":"{{ tendrl_password }}"}
+        body_format: json
+      register: login
+
+    - name: Enable and configure email notifications for admin user via API
+      uri:
+        url: "{{ tendrl_api_url }}/users/admin"
+        method: PUT
+        body: {"name":"Admin", "username":"admin", "email":"{{ tendrl_admin_recipient_email }}", "role":"admin", "email_notifications":true}
+        body_format: json
+        headers:
+          Authorization: Bearer {{ login.json.access_token }}
+
+    - name: Logout via API
+      uri:
+        url: "{{ tendrl_api_url }}/logout"
+        method: DELETE
+        return_content: yes
+        headers:
+          Authorization: Bearer {{ login.json.access_token }}
