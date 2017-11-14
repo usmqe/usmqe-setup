@@ -1,0 +1,15 @@
+# V3 end point details
+# V3 needs authorization, Need to provide md5 password and des password
+# Enable the below lines if v3 end point to be used for SNMP notifications
+
+v3_endpoint:
+ endpoint1:
+   host_ip: {{ hostvars[groups['usm_client'][0]]['ansible_default_ipv4']['address'] }}
+   username: {{ qe_snmp_user }}
+   auth_key: {{ qe_snmp_auth_pass }}
+   priv_key: {{ qe_snmp_priv_pass }}
+#  endpoint2:
+#    host_ip: 127.0.0.1
+#    username: user
+#    auth_key: mymd5pass
+#    priv_key: mydespass

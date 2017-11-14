@@ -1,0 +1,40 @@
+---
+
+- hosts: usm_client
+  remote_user: root
+  vars:
+    qe_snmp_user: "tendrlTrapUser"
+  tasks:
+
+    - name: Stop and disable snmptrapd
+      service:
+        name: snmptrapd
+        state: stopped
+        enabled: no
+
+    - name: Remove tendrluser (SNMPv3 user) from snmptrapd.conf
+      lineinfile:
+        dest: /etc/snmp/snmptrapd.conf
+        regexp: "{{ item }}"
+        state: absent
+      with_items:
+        - '^authUser.*{{ qe_snmp_user }}'
+        - '^createUser.*{{ qe_snmp_user }}'
+
+- hosts: usm_server
+  remote_user: root
+  vars:
+    qe_snmp_user: "tendrlTrapUser"
+  handlers:
+    - name: restart tendrl-notifier
+      service:
+        name=tendrl-notifier
+        state=restarted
+  tasks:
+
+    - name: Remove snmp.conf.yaml file
+      file:
+        dest: /etc/tendrl/notifier/snmp.conf.yaml
+        state: absent
+      notify:
+        - restart tendrl-notifier

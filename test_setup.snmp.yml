@@ -1,0 +1,112 @@
+---
+# ===========================================
+#  QE configuration of SNMP v3 notifications
+# ===========================================
+#
+# Overview of the setup:
+#
+# * snmptrapd (daemon receiving snmp trap messages) runs on usm_client
+# * tendrl is configured to send snmp traps to usm_client machine, which is
+#   implemented by tendrl-notifier service running on usm_server machine
+#
+# The configuration is based on:
+#
+# * https://github.com/Tendrl/documentation/wiki/Tendrl-release-v1.5.4-(install-guide)#tendrl-server-installation
+# * http://www.net-snmp.org/wiki/index.php/TUT:Configuring_snmptrapd_to_receive_SNMPv3_notifications
+#
+# Verification of QE setup
+# ========================
+#
+# After you run this playbook, you can recheck the setup manually as follows.
+#
+# Setup of snmptrapd service could be tested by sending snmp trap message from
+# server machine to the client one (where snmptrapd is running).
+#
+# On the client machine, run:
+#
+# [root@mbukatov-usm1-client ~]# journalctl -u snmptrapd -fe
+#
+# While you are watching the journal logs of snmptrapd, send some trap messages
+# from the server:
+#
+# [root@mbukatov-usm1-server ~]# snmptrap -v 3 -a MD5 -A sL0pdokt4Y6FXc5XXp5KS0wuj6cWZPAEYfPv9z5NGH4= -x DES -X jHaJ6V2523gu1PfNu0FGa44lkx2yVOznaCpbbQDBew4= -l authPriv -u tendrlTrapUser -e 0x8000000001020304 10.37.169.25 0 linkUp.0
+#
+# This is just an example.
+#
+# You should be able to see the snmp trap messages immediatelly shown in the
+# journald log.
+#
+# See also
+# ========
+#
+# https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol
+# http://www.net-snmp.org/wiki/index.php/TUT:snmptrap
+# http://www.net-snmp.org/wiki/index.php/TUT:SNMPv3_Options
+# http://net-snmp.sourceforge.net/docs/man/
+
+- hosts: usm_client
+  remote_user: root
+  vars:
+    qe_snmp_user: "tendrlTrapUser"
+    qe_snmp_auth_pass: "sL0pdokt4Y6FXc5XXp5KS0wuj6cWZPAEYfPv9z5NGH4="
+    qe_snmp_priv_pass: "jHaJ6V2523gu1PfNu0FGa44lkx2yVOznaCpbbQDBew4="
+  handlers:
+    - name: restart snmptrapd
+      service:
+        name=snmptrapd
+        state=restarted
+  tasks:
+
+    - name: Install net-snmp tools
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - net-snmp
+        - net-snmp-utils
+        - net-snmp-devel
+
+    # see http://net-snmp.sourceforge.net/docs/man/snmpd.conf.html
+    # for more details about SNMPv3 users (section SNMPv3 USM Users),
+    # particular options are based on Tendrl Install Guide referenced above
+    - name: Add tendrluser (SNMPv3 user) into snmptrapd.conf
+      lineinfile:
+        dest: /etc/snmp/snmptrapd.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - regexp: '^authUser'
+          line: 'authUser log {{ qe_snmp_user }}'
+        - regexp: '^createUser'
+          line: 'createUser -e 8000000001020304 {{ qe_snmp_user }} MD5 {{ qe_snmp_auth_pass }} DES {{ qe_snmp_priv_pass }}'
+      notify:
+        - restart snmptrapd
+
+    - name: Start and enable snmptrapd
+      service:
+        name: snmptrapd
+        state: started
+        enabled: yes
+
+- hosts: usm_server
+  remote_user: root
+  vars:
+    qe_snmp_user: "tendrlTrapUser"
+    qe_snmp_auth_pass: "sL0pdokt4Y6FXc5XXp5KS0wuj6cWZPAEYfPv9z5NGH4="
+    qe_snmp_priv_pass: "jHaJ6V2523gu1PfNu0FGa44lkx2yVOznaCpbbQDBew4="
+  handlers:
+    - name: restart tendrl-notifier
+      service:
+        name=tendrl-notifier
+        state=restarted
+  tasks:
+
+    - name: Create snmp.conf.yaml based on a template
+      template:
+        dest: /etc/tendrl/notifier/snmp.conf.yaml
+        src: snmp.conf.yaml.j2
+        backup: yes
+        force: yes
+      notify:
+        - restart tendrl-notifier
