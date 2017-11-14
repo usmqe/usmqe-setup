@@ -8,7 +8,7 @@
 # * postfix smtp server runs on usm_client machine, listening on public
 #   interface
 # * tendrl notifier is configured to send email via postfix smtp server running
-#   on usm_client directly (so mx entries are required for this to work)
+#   on usm_client directly (so no MX entries are required for this to work)
 # * tendrl notifier sends email alerts for admin user to root at
 #   usm_client machine
 # * root user on client machine can read email alerts for tendrl admin user,
