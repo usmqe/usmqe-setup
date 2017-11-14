@@ -80,6 +80,8 @@
           line: 'authUser log {{ qe_snmp_user }}'
         - regexp: '^createUser'
           line: 'createUser -e 8000000001020304 {{ qe_snmp_user }} MD5 {{ qe_snmp_auth_pass }} DES {{ qe_snmp_priv_pass }}'
+      notify:
+        - restart snmptrapd
 
     - name: Start and enable snmptrapd
       service:
