@@ -48,11 +48,9 @@
         line: "{{ item.line }}"
         state: present
       with_items:
-        - regexp: '^#? *inet_interfaces = \$myhostname, localhost'
+        - regexp: '^ *inet_interfaces *='
           line: 'inet_interfaces = $myhostname, localhost'
-        - regexp: '^#? *inet_interfaces = localhost'
-          line: '#inet_interfaces = localhost'
-        - regexp: '#? *mynetworks_style = host'
+        - regexp: '^ *mynetworks_style *='
           line: 'mynetworks_style = host'
       notify:
         - restart postfix
