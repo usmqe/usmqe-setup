@@ -1,0 +1,95 @@
+---
+
+- hosts: usm_server
+  remote_user: root
+  handlers:
+    - name: restart tendrl-notifier
+      service:
+        name: tendrl-notifier
+        state: restarted
+  vars:
+    # TODO: load admin and password from somewhere?
+    tendrl_user: "admin"
+    tendrl_password: "adminuser"
+    # note: we don't support https or other api versions so far
+    tendrl_api_url_protocol: "http"
+    tendrl_api_url: "{{ tendrl_api_url_protocol }}://{{ inventory_hostname }}/api/1.0"
+
+  tasks:
+
+    # this task comes from tendl-ansible,
+    # using default values from tendrl-notifier rpm package
+    - name: Reset email notifications in email.conf.yaml of tendrl-notifier
+      lineinfile:
+        dest: /etc/tendrl/notifier/email.conf.yaml
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - regexp: '^#? *email_id:.*'
+          line: "email_id: user1@example.com"
+        - regexp: '^#? *email_smtp_server:.*'
+          line: "email_smtp_server: smtp.example.com"
+        - regexp: '^#? *email_smtp_port:.*'
+          line: "email_smtp_port: 25"
+      notify:
+        - restart tendrl-notifier
+
+    - name: Login into Tendrl via API
+      uri:
+        url: "{{ tendrl_api_url }}/login"
+        method: POST
+        body: {"username":"{{ tendrl_user }}", "password":"{{ tendrl_password }}"}
+        body_format: json
+      register: login
+
+    - name: Disable and unconfigure email notifications for admin user via API
+      uri:
+        url: "{{ tendrl_api_url }}/users/admin"
+        method: PUT
+        body: {"name":"Admin", "username":"admin", "email":"admin@example.com", "role":"admin", "email_notifications":false}
+        body_format: json
+        headers:
+          Authorization: Bearer {{ login.json.access_token }}
+
+    - name: Logout via API
+      uri:
+        url: "{{ tendrl_api_url }}/logout"
+        method: DELETE
+        return_content: yes
+        headers:
+          Authorization: Bearer {{ login.json.access_token }}
+
+- hosts: usm_client
+  remote_user: root
+  handlers:
+    - name: restart postfix
+      service:
+        name: postfix
+        state: restarted
+  tasks:
+
+    - name: Reconfigure postfix, set inet_interfaces back to localhost
+      lineinfile:
+        dest: /etc/postfix/main.cf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - regexp: '^ *inet_interfaces *='
+          line: 'inet_interfaces = localhost'
+      notify:
+        - restart postfix
+
+    - name: Reconfigure postfix, drop mynetworks_style option
+      lineinfile:
+        dest: /etc/postfix/main.cf
+        regexp: '^ *mynetworks_style *='
+        state: absent
+      notify:
+        - restart postfix
+
+    - name: Keep postfix running and enabled
+      service:
+        name: postfix
+        state: started
+        enabled: yes
