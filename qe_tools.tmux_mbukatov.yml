@@ -1,0 +1,29 @@
+---
+# Install tmux and configure it using mbukatov's tmux.conf file
+
+- hosts: all
+  remote_user: root
+  roles:
+   - role: epel
+     when: ansible_distribution_major_version == "6"
+
+  tasks:
+
+    - name: Install tmux (RHEL 7)
+      yum: name=tmux state=present
+      when: ansible_distribution_major_version == "7"
+      until: task_result|success
+      retries: 5
+      delay: 5
+      ignore_errors: yes
+    
+    - name: Install tmux from EPEL (RHEL 6)
+      yum: name=tmux state=present enablerepo=epel
+      when: ansible_distribution_major_version == "6"
+      until: task_result|success
+      retries: 5
+      delay: 5
+      ignore_errors: yes
+
+    - name: Install tmux conf file with tweaks for mbukatov
+      copy: src=tmux.mbukatov.rhel.conf dest="/root/.tmux.conf"
