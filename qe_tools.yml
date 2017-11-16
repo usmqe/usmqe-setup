@@ -16,6 +16,7 @@
         - tmux
         - tree
         - vim
+        - lsof
       register: task_result
       until: task_result|success
       retries: 5
