@@ -1,0 +1,44 @@
+---
+# ===========================================
+#  QE configuration for invoking split brain
+# ===========================================
+#
+# This is work in progress, quick hack so far. Don't use it for testing without
+# checking and tweaking.
+#
+# To use this playbook, create 2 new groups in inventory file:
+#
+# * gluster_splitbrain_group1
+# * gluster_splitbrain_group2
+#
+# This playbook then makes sure all network traffic is dropped between these
+# two groups.
+#
+# See also
+# ========
+#
+# https://docs.gluster.org/en/latest/Administrator%20Guide/Split%20brain%20and%20ways%20to%20deal%20with%20it/#split-brain
+
+- hosts: gluster_splitbrain_group1
+  remote_user: root
+  tasks:
+    - name: Drop all traffic to the other group
+      iptables:
+        action: insert
+        state: present
+        chain: OUTPUT
+        destination: "{{ item }}"
+        jump: DROP
+      with_items: "{{ groups['gluster_splitbrain_group2'] }}"
+
+- hosts: gluster_splitbrain_group2
+  remote_user: root
+  tasks:
+    - name: Drop all traffic to the other group
+      iptables:
+        action: insert
+        state: present
+        chain: OUTPUT
+        destination: "{{ item }}"
+        jump: DROP
+      with_items: "{{ groups['gluster_splitbrain_group1'] }}"

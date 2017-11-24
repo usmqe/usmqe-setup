@@ -1,0 +1,23 @@
+---
+
+- hosts: gluster_splitbrain_group1
+  remote_user: root
+  tasks:
+    - name: Allow all traffic to the other group
+      iptables:
+        state: absent
+        chain: OUTPUT
+        destination: "{{ item }}"
+        jump: DROP
+      with_items: "{{ groups['gluster_splitbrain_group2'] }}"
+
+- hosts: gluster_splitbrain_group2
+  remote_user: root
+  tasks:
+    - name: Allow all traffic to the other group
+      iptables:
+        state: absent
+        chain: OUTPUT
+        destination: "{{ item }}"
+        jump: DROP
+      with_items: "{{ groups['gluster_splitbrain_group1'] }}"
