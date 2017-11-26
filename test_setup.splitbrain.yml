@@ -20,7 +20,7 @@
 # brained resides.
 #
 # Besides that you need to update volume_name variable if you don't use
-# volume_beta_arbiter_2_plus_1x2.
+# volume_alpha_distrep_6x2.
 #
 # This playbook then makes sure that all network traffic is dropped for:
 #
@@ -50,7 +50,7 @@
   remote_user: root
   vars:
     volume_mountpoint: "/mnt/volume_tmp_splitbrain"
-    volume_name: "volume_beta_arbiter_2_plus_1x2"
+    volume_name: "volume_alpha_distrep_6x2"
   tasks:
 
     - name: Create new mountpoint just for splitbrain
