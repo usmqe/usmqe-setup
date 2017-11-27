@@ -1,0 +1,75 @@
+---
+# ===========================================
+#  QE configuration for invoking split brain
+# ===========================================
+#
+# Requirements of this playbook:
+#
+# * gluster volume with AFR tranlator
+# * 2 client machines in usm_client group
+# * some already existing non empty text file on the gluster volume (a victiom
+#   of a split brain related test case)
+#
+# To use this playbook, create 2 new groups in inventory file:
+#
+# * gluster_splitbrain0
+# * gluster_splitbrain1
+#
+# Populating these groups requires you to understand replica set configuration
+# of your volume. Moreover you need to figure out on which the file to be split
+# brained resides.
+#
+# Besides that you need to update volume_name variable if you don't use
+# volume_alpha_distrep_6x2.
+#
+# This playbook then makes sure that all network traffic is dropped for:
+#
+# * connections from usm_client[0] machine to gluster_splitbrain0 machines
+# * connections from usm_client[1] machine to gluster_splitbrain1 machines
+#
+# This way, you can update some same already existing file from both clients
+# and create a split brain situation.
+#
+# Based on upstream GlusterFS documentation:
+#
+# https://docs.gluster.org/en/latest/Administrator%20Guide/Split%20brain%20and%20ways%20to%20deal%20with%20it/#split-brain
+
+- hosts: usm_client[0]
+  remote_user: root
+  tasks:
+    - name: Drop all traffic to gluster_splitbrain0 machines
+      iptables:
+        action: insert
+        state: present
+        chain: OUTPUT
+        destination: "{{ item }}"
+        jump: DROP
+      with_items: "{{ groups['gluster_splitbrain0'] }}"
+
+- hosts: usm_client[1]
+  remote_user: root
+  vars:
+    volume_mountpoint: "/mnt/volume_tmp_splitbrain"
+    volume_name: "volume_alpha_distrep_6x2"
+  tasks:
+
+    - name: Create new mountpoint just for splitbrain
+      file:
+        path: "{{ volume_mountpoint }}"
+        state: directory
+
+    - name: Mount GlusterSF volume for splitbrain purposes there
+      mount:
+        path: "{{ volume_mountpoint }}"
+        fstype: glusterfs
+        src: "{{ groups['gluster'][0] }}:{{ volume_name }}"
+        state: mounted
+
+    - name: Drop all traffic to gluster_splitbrain1 machines
+      iptables:
+        action: insert
+        state: present
+        chain: OUTPUT
+        destination: "{{ item }}"
+        jump: DROP
+      with_items: "{{ groups['gluster_splitbrain1'] }}"

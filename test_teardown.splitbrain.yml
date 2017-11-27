@@ -1,0 +1,41 @@
+---
+
+- hosts: usm_client[0]
+  remote_user: root
+  tasks:
+    - name: Remove splitbrain invoking iptables rules
+      iptables:
+        action: insert
+        state: absent
+        chain: OUTPUT
+        destination: "{{ item }}"
+        jump: DROP
+      with_items: "{{ groups['gluster_splitbrain0'] }}"
+
+- hosts: usm_client[1]
+  remote_user: root
+  vars:
+    volume_mountpoint: "/mnt/volume_tmp_splitbrain"
+    volume_name: "volume_alpha_distrep_6x2"
+  tasks:
+
+    - name: Remove splitbrain invoking iptables rules
+      iptables:
+        action: insert
+        state: absent
+        chain: OUTPUT
+        destination: "{{ item }}"
+        jump: DROP
+      with_items: "{{ groups['gluster_splitbrain1'] }}"
+
+    - name: Unmount GlusterSF volume for splitbrain purposes
+      mount:
+        path: "{{ volume_mountpoint }}"
+        state: unmounted
+
+    - name: Remove GlusterSF volume for splitbrain purposes
+      mount:
+        path: "{{ volume_mountpoint }}"
+        fstype: glusterfs
+        src: "{{ groups['gluster'][0] }}:{{ volume_name }}"
+        state: absent
