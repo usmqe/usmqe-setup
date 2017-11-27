@@ -33,14 +33,9 @@
         path: "{{ volume_mountpoint }}"
         state: unmounted
 
-    - name: Remove GlusterSF volume for splitbrain purposes from fstab
+    - name: Remove GlusterSF volume for splitbrain purposes
       mount:
         path: "{{ volume_mountpoint }}"
         fstype: glusterfs
         src: "{{ groups['gluster'][0] }}:{{ volume_name }}"
-        state: absent
-
-    - name: Remove splitbrain mountpoint directory
-      file:
-        path: "{{ volume_mountpoint }}"
         state: absent
