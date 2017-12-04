@@ -1,0 +1,68 @@
+---
+# This playbook just tries to enable firewall on all machines of the cluster and on usm server machine.
+# Based on https://github.com/Tendrl/documentation/wiki/Tendrl-firewall-settings
+#
+# Note: considering etcd, graphite, grafana and tendrl servers run on server machine.
+
+- name: Configure and enable firewalld on Tendrl server machine
+  hosts: usm_server
+  user: root
+  vars:
+    tendrl_uses_https: false
+  tasks:
+  - name: Make sure firewalld is enabled and running
+    service: name=firewalld state=started enabled=yes
+
+  - name: Enable port for Etcd
+    firewalld:
+      port=2379/tcp
+      zone=public permanent=true state=enabled immediate=true
+  
+  - name: Enable port for Graphite
+    firewalld:
+      port=2003/tcp
+      zone=public permanent=true state=enabled immediate=true
+  
+  - name: Enable port for GraphiteWeb
+    firewalld:
+      port=10080/tcp
+      zone=public permanent=true state=enabled immediate=true
+  
+  - name: Enable port for Tendrl (with http)
+    firewalld:
+      port=80/tcp
+      zone=public permanent=true state=enabled immediate=true
+    when: not tendrl_uses_https
+  
+  - name: Enable port for Tendrl (with https)
+    firewalld:
+      port=443/tcp
+      zone=public permanent=true state=enabled immediate=true
+    when: tendrl_uses_https
+  
+  - name: Enable port for tendrl-api
+    firewalld:
+      port=9292/tcp
+      zone=public permanent=true state=enabled immediate=true
+ 
+  - name: Enable port for Grafana Server
+    firewalld:
+      port=3000/tcp
+      zone=public permanent=true state=enabled immediate=true
+ 
+  - name: Enable port for tendrl-monitoring-integration
+    firewalld:
+      port=8989/tcp
+      zone=public permanent=true state=enabled immediate=true
+
+- name: Configure and enable firewalld on Tendrl storage nodes
+  hosts: usm_nodes
+  user: root
+  tasks:
+  - name: Make sure firewalld is enabled and running
+    service: name=firewalld state=started enabled=yes
+
+  - name: Enable port for tendrl-gluster-integration
+    firewalld:
+      port=8697/tcp
+      zone=public permanent=true state=enabled immediate=true
