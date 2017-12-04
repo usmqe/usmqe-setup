@@ -30,13 +30,13 @@
   
   - name: Enable port for Tendrl (with http)
     firewalld:
-      port=80/tcp
+      service=http
       zone=public permanent=true state=enabled immediate=true
     when: not tendrl_uses_https
   
   - name: Enable port for Tendrl (with https)
     firewalld:
-      port=443/tcp
+      service=https
       zone=public permanent=true state=enabled immediate=true
     when: tendrl_uses_https
   
