@@ -16,10 +16,6 @@
       until: task_result|success
       retries: 5
       delay: 5
-    - name: WORKAROUND configure selinux to permissive mode
-      selinux:
-        state: permissive
-        policy: targeted
     - name: Install chrony
       yum:
         name: chrony
