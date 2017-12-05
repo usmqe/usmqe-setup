@@ -2,7 +2,6 @@
 #
 # Perform auxiliary tasks before installing Tendrl itself:
 # * update all packages
-# * WORKAROUND: set selinux to permissive mode
 # * enable ntp sync via chronyd
 #
 - hosts: usm_server:usm_nodes:usm_client
@@ -16,10 +15,6 @@
       until: task_result|success
       retries: 5
       delay: 5
-    - name: WORKAROUND configure selinux to permissive mode
-      selinux:
-        state: permissive
-        policy: targeted
     - name: Install chrony
       yum:
         name: chrony

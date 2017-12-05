@@ -3,11 +3,6 @@
 # Installs all tendrl packages and pytest
 - hosts: unittest_node
   remote_user: root
-  pre_tasks:
-    - name: WORKAROUND configure selinux to permissive mode
-      selinux:
-        state: permissive
-        policy: targeted
   roles:
     - { role: epel, epel_enabled: 1 }
     - qe-tendrl-repo
