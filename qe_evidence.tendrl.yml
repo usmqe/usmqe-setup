@@ -12,8 +12,6 @@
     evidence_dirs:
       - /var/log/audit/
       - /etc/yum.repos.d/
-      - /etc/tendrl/
-      - /var/log/tendrl/
     evidence_files:
       - /var/log/messages
       - /var/log/yum.log
@@ -44,6 +42,7 @@
       - /etc/grafana/
       - /etc/collectd_template/
       - /etc/collectd.d/
+      - /etc/tendrl/
       - /var/log/tendrl/
       - /var/log/httpd/
       - /var/log/carbon/
@@ -67,6 +66,8 @@
     evidence_dirs:
       - /etc/collectd_template/
       - /etc/collectd.d/
+      - /etc/tendrl/
+      - /var/log/tendrl/
     evidence_files:
       - /etc/collectd.conf
     evidence_journald_services:
