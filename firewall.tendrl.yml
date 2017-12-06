@@ -4,6 +4,18 @@
 #
 # Note: considering etcd, graphite, grafana and tendrl servers run on server machine.
 
+- hosts: usm_server:usm_nodes
+  remote_user: root
+  pre_tasks:
+    - name: install firewalld
+      yum:
+        name: 'firewalld'
+        state: present
+      register: task_result
+      until: task_result|success
+      retries: 5
+      delay: 5
+
 - name: Configure and enable firewalld on Tendrl server machine
   hosts: usm_server
   user: root
