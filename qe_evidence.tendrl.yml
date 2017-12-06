@@ -34,26 +34,46 @@
   user: root
   vars:
     evidence_dirs:
-      - /etc/tendrl/
       - /etc/httpd/
       - /etc/etcd/
       - /etc/carbon/
       - /etc/graphite-web/
       - /etc/ceph-installer/
+      - /etc/grafana/
+      - /etc/collectd_template/
+      - /etc/collectd.d/
+      - /etc/tendrl/
       - /var/log/tendrl/
       - /var/log/httpd/
       - /var/log/carbon/
       - /var/log/graphite-web/
-      - /var/log/rabbitmq/
+      - /var/log/grafana/
     evidence_files:
       - /etc/collectd.conf
     evidence_journald_services:
       - tendrl-api
-      - tendrl-performance-monitoring
-      - ceph-installer
-      - ceph-installer-celery
+      - tendrl-node-agent
+      - tendrl-monitoring-integration
+      - tendrl-notifier
   roles:
     - qe-evidence
+    - qe-evidence-probe-journald
+
+- name: Download logs from Storage machines
+  hosts: usm_nodes
+  user: root
+  vars:
+    evidence_dirs:
+      - /etc/collectd_template/
+      - /etc/collectd.d/
+      - /etc/tendrl/
+      - /var/log/tendrl/
+    evidence_files:
+      - /etc/collectd.conf
+    evidence_journald_services:
+      - tendrl-node-agent
+  roles:
+    - role: qe-evidence
     - qe-evidence-probe-journald
 
 - name: Download logs from Gluster Storage machines
@@ -61,31 +81,23 @@
   user: root
   vars:
     evidence_dirs:
-      - /etc/tendrl/
       - /etc/glusterfs/
-      - /var/log/tendrl/
       - /var/log/glusterfs/
     evidence_journald_services:
       - tendrl-gluster-integration
-      - tendrl-node-agent
-      - tendrl-performance-monitoring
   roles:
     - qe-evidence
     - qe-evidence-probe-journald
 
 - name: Download logs from Ceph Storage machines
-  hosts: ceph_osd:ceph_mon
+  hosts: ceph_osd ceph_mon
   user: root
   vars:
     evidence_dirs:
-      - /etc/tendrl/
       - /etc/ceph/
-      - /var/log/tendrl/
-      - /var/log/ceph/
+      - /var/log/ceph
     evidence_journald_services:
       - tendrl-ceph-integration
-      - tendrl-node-agent
-      - tendrl-performance-monitoring
   roles:
-   - qe-evidence
+   - role: qe-evidence
    - qe-evidence-probe-journald
