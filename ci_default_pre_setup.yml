@@ -7,8 +7,7 @@
 - include: qe_pre_installation_tasks.yml
 
 # configure firewall
-- include: firewall_tendrl.yml
-- include: firewall_tendrl_workaround.yml
+- include: firewall.tendrl.yml
 
 - include: qe_reboot.yml
 
