@@ -64,7 +64,7 @@
  
   - name: Enable port for tendrl-monitoring-integration
     firewalld:
-      port=8989/tcp
+      port=8789/tcp
       zone=public permanent=true state=enabled immediate=true
 
 - name: Configure and enable firewalld on Tendrl storage nodes
