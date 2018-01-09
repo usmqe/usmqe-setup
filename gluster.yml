@@ -11,6 +11,7 @@
     - gluster-centos-repo
     # - gluster-gdeploy-copr
     - gluster-server
+    - firewall-gluster
 
 #
 # Install gluster client
