@@ -20,6 +20,10 @@
       yum:
         name: 'python-mock'
         state: latest
+    - name: "WORKAROUND - exclude=grafana-4.6.*"
+      lineinfile:
+        path: '/etc/yum.conf'
+        line: 'exclude=grafana-4.6.*'
     - name: Install tendrl packages
       yum:
         name: 'tendrl*'
