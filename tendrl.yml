@@ -16,6 +16,7 @@
     - role: qe-ssl-cert
       ssl_cert_name: "etcd"
       ssl_key_perm: "0644"
+      when: etcd_tls_client_auth|bool == True
     - { role: epel, epel_enabled: 1, when: ansible_distribution == 'CentOS' }
     - role: tendrl-ansible.grafana-repo
       when: ansible_distribution == 'CentOS'
@@ -43,6 +44,7 @@
   roles:
     - role: qe-ssl-cert
       ssl_cert_name: "etcd"
+      when: etcd_tls_client_auth|bool == True
     - { role: epel, epel_enabled: 1, when: ansible_distribution == 'CentOS' }
     - role: qe-tendrl-repo
       when: ansible_distribution == 'CentOS'
@@ -58,6 +60,7 @@
   roles:
     - role: qe-ssl-cert
       ssl_cert_name: "etcd"
+      when: etcd_tls_client_auth|bool == True
     - { role: epel, epel_enabled: 1, when: ansible_distribution == 'CentOS' }
     - role: qe-tendrl-repo
       when: ansible_distribution == 'CentOS'
