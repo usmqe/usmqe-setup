@@ -1,0 +1,8 @@
+---
+- name: Make sure firewalld is enabled and running
+  service: name=firewalld state=started enabled=yes
+
+- name: Enable glusterfs service in firewalld
+  firewalld:
+    service=glusterfs 
+    zone=public permanent=true state=enabled immediate=true
