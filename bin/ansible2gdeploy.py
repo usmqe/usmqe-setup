@@ -13,6 +13,7 @@
 
 from configparser import ConfigParser
 import argparse
+import os
 import sys
 
 
@@ -24,28 +25,35 @@ GLUSTER_CLIENT_GROUP = "usm_client"
 
 def main():
     ap = argparse.ArgumentParser(
-        description="in place update of hosts in gdeploy conf file")
+        description="update of hosts and devices in gdeploy conf file")
     ap.add_argument(
         "-d",
         "--dry-run",
         action="store_true",
-        help="print to stdout instead of in place edit")
-    ap.add_argument("gdeployconf", help="gdeploy config file to edit")
+        help="print to stdout instead of save to file")
+    ap.add_argument(
+        "gdeployconf",
+        nargs="+",
+        help="gdeploy config files to edit")
     ap.add_argument(
         "-i",
         dest="inventory",
         action="store",
         help="ansible inventory (aka hosts) file")
     ap.add_argument(
-        "-o",
-        dest="output",
+        "-p",
+        dest="file_prefix",
         action="store",
-        help="save the result into output file instead of in place edit")
+        default="",
+        help="output file prefix (added before the name of the input gdeploy conf file) " \
+            "If empty, input file is overwritten (in place edit).")
     args = ap.parse_args()
 
-    # open gdeploy config file via plain config parser
-    gdeploy_conf = ConfigParser(allow_no_value=True)
-    gdeploy_conf.read(args.gdeployconf)
+    # open gdeploy config files via plain config parser
+    gdeploy_confs = {}
+    for gdeploy_conf_file in args.gdeployconf:
+        gdeploy_confs[gdeploy_conf_file] = ConfigParser(allow_no_value=True)
+        gdeploy_confs[gdeploy_conf_file].read(gdeploy_conf_file)
 
     # open ansible inventory file via plain config parser
     inventory = ConfigParser(allow_no_value=True)
@@ -53,7 +61,7 @@ def main():
 
     # validate the inventory file
     sections_to_validate = [GLUSTER_SERVER_GROUP]
-    if gdeploy_conf.has_section("clients"):
+    if any([gc.has_section("clients") for gc in gdeploy_confs.values()]):
         sections_to_validate.append(GLUSTER_CLIENT_GROUP)
     for section in sections_to_validate:
         if not inventory.has_section(section):
@@ -64,33 +72,35 @@ def main():
 
     # get machines from the inventory file
     servers = inventory.options(GLUSTER_SERVER_GROUP)
-    if gdeploy_conf.has_section("clients"):
+    if any([gc.has_section("clients") for gc in gdeploy_confs.values()]):
         clients = inventory.options(GLUSTER_CLIENT_GROUP)
     else:
         clients = []
     print("servers: " + ", ".join(servers), file=sys.stderr)
     print("clients: " + ", ".join(clients), file=sys.stderr)
 
-    # ignore hosts section if present
-    if gdeploy_conf.has_section("hosts"):
-        gdeploy_conf.remove_section("hosts")
-    # add servers into hosts sections
-    gdeploy_conf.add_section("hosts")
-    for server in servers:
-        gdeploy_conf.set("hosts", server, None)
+    # update gdeploy config files
+    for gdeploy_conf_file in gdeploy_confs:
+        # ignore hosts section if present
+        if gdeploy_confs[gdeploy_conf_file].has_section("hosts"):
+            gdeploy_confs[gdeploy_conf_file].remove_section("hosts")
+        # add servers into hosts sections
+        gdeploy_confs[gdeploy_conf_file].add_section("hosts")
+        for server in servers:
+            gdeploy_confs[gdeploy_conf_file].set("hosts", server, None)
 
-    if gdeploy_conf.has_section("clients"):
-        gdeploy_conf.set("clients", "hosts", ",".join(clients))
+        if gdeploy_confs[gdeploy_conf_file].has_section("clients"):
+            gdeploy_confs[gdeploy_conf_file].set("clients", "hosts", ",".join(clients))
 
-    if args.dry_run:
-        gdeploy_conf.write(sys.stdout)
-    else:
-        if args.output is not None:
-            output_filename = args.output
+        if args.dry_run:
+            print("## %s" % gdeploy_conf_file)
+            gdeploy_confs[gdeploy_conf_file].write(sys.stdout)
         else:
-            output_filename = args.gdeployconf
-        with open(output_filename, 'w') as gdeploy_conf_file:
-            gdeploy_conf.write(gdeploy_conf_file)
+            output_filename = os.path.join(
+                os.path.dirname(gdeploy_conf_file),
+                "%s%s" % (args.file_prefix, os.path.basename(gdeploy_conf_file)))
+            with open(output_filename, 'w') as output_file:
+                gdeploy_confs[gdeploy_conf_file].write(output_file)
 
 
 if __name__ == '__main__':
