@@ -22,8 +22,10 @@ import sys
 GLUSTER_SERVER_GROUP = "gluster"
 GLUSTER_CLIENT_GROUP = "usm_client"
 
-
-def main():
+def parse_args():
+    """
+    Parse command line arguments.
+    """
     ap = argparse.ArgumentParser(
         description="update of hosts and devices in gdeploy conf file")
     ap.add_argument(
@@ -47,7 +49,18 @@ def main():
         default="",
         help="output file prefix (added before the name of the input gdeploy conf file) " \
             "If empty, input file is overwritten (in place edit).")
-    args = ap.parse_args()
+    ap.add_argument(
+        "-s",
+        "--storage-devices",
+        dest="storage_devices",
+        help="Coma separated list of available devices for bricks.")
+    return ap.parse_args()
+
+def main():
+    """
+    main function
+    """
+    args = parse_args()
 
     # open gdeploy config files via plain config parser
     gdeploy_confs = {}
@@ -76,8 +89,15 @@ def main():
         clients = inventory.options(GLUSTER_CLIENT_GROUP)
     else:
         clients = []
+
+    # prepare list of storage devices
+    storage_devices = []
+    if args.storage_devices:
+        storage_devices = args.storage_devices.split(",")
+
     print("servers: " + ", ".join(servers), file=sys.stderr)
     print("clients: " + ", ".join(clients), file=sys.stderr)
+    print("devices: " + ", ".join(storage_devices), file=sys.stderr)
 
     # update gdeploy config files
     for gdeploy_conf_file in gdeploy_confs:
@@ -89,9 +109,28 @@ def main():
         for server in servers:
             gdeploy_confs[gdeploy_conf_file].set("hosts", server, None)
 
+        # configure client
         if gdeploy_confs[gdeploy_conf_file].has_section("clients"):
             gdeploy_confs[gdeploy_conf_file].set("clients", "hosts", ",".join(clients))
 
+        # configure storage devices
+        if args.storage_devices and \
+                gdeploy_confs[gdeploy_conf_file].has_section("backend-setup") and \
+                gdeploy_confs[gdeploy_conf_file].has_option("backend-setup", "devices"):
+
+            # number of used devices
+            n_devices = len(gdeploy_confs[gdeploy_conf_file].get("backend-setup", "devices").split(","))
+
+            if n_devices > len(storage_devices):
+                msg = "Not enough storage devices for {} - available: {} ({}), required: {}".format(
+                    gdeploy_conf_file, len(storage_devices), ",".join(storage_devices), n_devices)
+                print(msg, file=sys.stderr)
+                return 1
+            gdeploy_confs[gdeploy_conf_file].set("backend-setup", "devices", \
+                ",".join(storage_devices[:n_devices]))
+            storage_devices = storage_devices[n_devices:]
+
+        # generate and save/print output
         if args.dry_run:
             print("## %s" % gdeploy_conf_file)
             gdeploy_confs[gdeploy_conf_file].write(sys.stdout, space_around_delimiters=False)
