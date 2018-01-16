@@ -94,13 +94,13 @@ def main():
 
         if args.dry_run:
             print("## %s" % gdeploy_conf_file)
-            gdeploy_confs[gdeploy_conf_file].write(sys.stdout)
+            gdeploy_confs[gdeploy_conf_file].write(sys.stdout, space_around_delimiters=False)
         else:
             output_filename = os.path.join(
                 os.path.dirname(gdeploy_conf_file),
                 "%s%s" % (args.file_prefix, os.path.basename(gdeploy_conf_file)))
             with open(output_filename, 'w') as output_file:
-                gdeploy_confs[gdeploy_conf_file].write(output_file)
+                gdeploy_confs[gdeploy_conf_file].write(output_file, space_around_delimiters=False)
 
 
 if __name__ == '__main__':
