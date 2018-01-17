@@ -71,6 +71,11 @@ def main():
     # open gdeploy config files via plain config parser
     gdeploy_confs = {}
     for gdeploy_conf_file in args.gdeployconf:
+        if not os.path.exists(gdeploy_conf_file):
+            msg = "Specified gdeploy config file '{}' doesn't exists.".format(
+                gdeploy_conf_file)
+            print(msg, file=sys.stderr)
+            return 1
         gdeploy_confs[gdeploy_conf_file] = ConfigParser(allow_no_value=True)
         gdeploy_confs[gdeploy_conf_file].read(gdeploy_conf_file)
 
