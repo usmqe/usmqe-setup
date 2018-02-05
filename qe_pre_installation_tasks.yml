@@ -1,12 +1,71 @@
 ---
 #
 # Perform auxiliary tasks before installing Tendrl itself:
+# * add any additional repo(s) if required, controlled by following variables
+#   (containing comma separated list of urls pointing to repo config files)
+#   - additional_repos
+#   - additional_repos_usm_server
+#   - additional_repos_usm_nodes
+#   - additional_repos_usm_client
 # * update all packages
 # * enable ntp sync via chronyd
 #
+- hosts: usm_server
+  remote_user: root
+  tasks:
+    - name: Add any additional repo(s)
+      get_url:
+        url: "{{ item }}"
+        dest: "/etc/yum.repos.d/"
+      retries: 5
+      delay: 5
+      register: result
+      until: 'result|success'
+      with_items: "{{ (additional_repos_usm_server | default('')).split(',') }}"
+      when: item != ""
+
+- hosts: usm_nodes
+  remote_user: root
+  tasks:
+    - name: Add any additional repo(s)
+      get_url:
+        url: "{{ item }}"
+        dest: "/etc/yum.repos.d/"
+      retries: 5
+      delay: 5
+      register: result
+      until: 'result|success'
+      with_items: "{{ (additional_repos_usm_nodes | default('')).split(',') }}"
+      when: item != ""
+
+- hosts: usm_client
+  remote_user: root
+  tasks:
+    - name: Add any additional repo(s)
+      get_url:
+        url: "{{ item }}"
+        dest: "/etc/yum.repos.d/"
+      retries: 5
+      delay: 5
+      register: result
+      until: 'result|success'
+      with_items: "{{ (additional_repos_usm_client | default('')).split(',') }}"
+      when: item != ""
+
 - hosts: usm_server:usm_nodes:usm_client
   remote_user: root
   tasks:
+    - name: Add any additional repo(s)
+      get_url:
+        url: "{{ item }}"
+        dest: "/etc/yum.repos.d/"
+      retries: 5
+      delay: 5
+      register: result
+      until: 'result|success'
+      with_items: "{{ (additional_repos | default('')).split(',') }}"
+      when: item != ""
+
     - name: upgrade all packages
       yum:
         name: '*'
