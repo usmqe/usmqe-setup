@@ -10,4 +10,4 @@ usm_brick_path = /bricks/fs_gluster01/brick
 usm_gluster_role = gluster
 usm_volume_name = TestVolume
 usm_gluster_version = 3.8.3
-usm_id_fqdn = {{ groups['gluster'][0] }}
+usm_cluster_member = {{ groups['gluster'][0] }}
