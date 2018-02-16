@@ -4,4 +4,5 @@
 - hosts: "usm_server:usm_nodes:usm_client"
   remote_user: root
   roles:
+    - { role: epel, epel_enabled: 1, when: ansible_distribution == 'CentOS' }
     - qe-munin-node
