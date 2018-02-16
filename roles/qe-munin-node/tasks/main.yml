@@ -3,6 +3,10 @@
   package:
     name: munin-node
     state: present
+  retries: 5
+  delay: 5
+  register: result
+  until: 'result|success'
   notify:
     - restart munin-node service
 
