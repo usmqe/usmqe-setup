@@ -55,6 +55,10 @@
     - postfix_mailqueue
     - postfix_mailvolume
 
+- name: Reload firewalld
+  shell: firewall-cmd --reload
+  ignore_errors: yes
+
 - name: Configure firewall
   firewalld:
     service: munin-node
