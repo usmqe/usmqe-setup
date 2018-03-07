@@ -1,0 +1,34 @@
+---
+# This teardown playbook reverts environment when we don't have direct ssh
+# root access on storage machines and need to connect via different user and
+# then use sudo into normal, direct root access allowed, state.
+
+- hosts: all
+  remote_user: cloud-user
+  become: yes
+  handlers:
+    - name: restart sshd
+      service: name=sshd state=restarted
+  tasks:
+    - name: Allow direct ssh access for root again
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^AllowUsers'
+        state: absent
+      notify:
+        - restart sshd
+
+- hosts: all
+  remote_user: root
+  tasks:
+
+    - name: Remove sudoers file for cloud-user
+      file:
+        path: /etc/sudoers.d/90-cloud-init-users
+        state: absent
+
+    - name: Remove cloud-user account including homedir
+      user:
+        name: cloud-user
+        remove: yes
+        state: absent
