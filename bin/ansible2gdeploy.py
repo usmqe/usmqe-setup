@@ -25,7 +25,7 @@ import sys
 
 # names of ansible inventory groups to use
 # TODO: make reconfigurable from command line if needed
-GLUSTER_SERVER_GROUP = "gluster"
+GLUSTER_SERVER_GROUP = "gluster-servers"
 GLUSTER_CLIENT_GROUP = "usm_client"
 
 def parse_args():
