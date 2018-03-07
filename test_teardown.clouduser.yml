@@ -27,6 +27,9 @@
         path: /etc/sudoers.d/90-cloud-init-users
         state: absent
 
+    - name: HACK - wait for some time to prevent failure of the next task
+      pause: minutes=1
+
     - name: Remove cloud-user account including homedir
       user:
         name: cloud-user
