@@ -2,7 +2,7 @@
 #
 # Install gluster server
 #
-- hosts: gluster
+- hosts: gluster-servers
   remote_user: root
   vars:
     gluster_centos_repo: "nightly"

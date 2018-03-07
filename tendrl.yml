@@ -50,7 +50,7 @@
       when: ansible_distribution == 'CentOS'
     - tendrl-ansible.tendrl-storage-node
 
-- hosts: gluster
+- hosts: gluster-servers
   remote_user: root
   vars:
     etcd_fqdn: "{{ hostvars[groups['usm_server'][0]].ansible_fqdn }}"
