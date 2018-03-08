@@ -3,7 +3,7 @@
 # root access on storage machines and need to connect via different user and
 # then use sudo into normal, direct root access allowed, state.
 
-- hosts: all
+- hosts: "usm_server:usm_nodes:usm_client"
   remote_user: cloud-user
   become: yes
   handlers:
@@ -18,7 +18,7 @@
       notify:
         - restart sshd
 
-- hosts: all
+- hosts: "usm_server:usm_nodes:usm_client"
   remote_user: root
   tasks:
 

@@ -9,7 +9,7 @@
 #
 # [1] https://cloudinit.readthedocs.io/en/latest/
 
-- hosts: all
+- hosts: "usm_server:usm_nodes:usm_client"
   remote_user: root
   handlers:
     - name: restart sshd
@@ -61,7 +61,7 @@
         - restart sshd
 
 - name: Check if cloud-user can connect via ssh and use sudo as expected
-  hosts: all
+  hosts: "usm_server:usm_nodes:usm_client"
   remote_user: cloud-user
   become: yes
   tasks:
