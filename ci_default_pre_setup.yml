@@ -12,7 +12,6 @@
 - include: qe_reboot.yml
 
 - include: gluster.yml
-  when: groups.gluster-servers is defined
 
 - include: ceph_prereq.yml
   when: groups.ceph_osd is defined and groups.ceph_mon is defined
