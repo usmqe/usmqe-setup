@@ -77,7 +77,7 @@
     - qe-evidence-probe-journald
 
 - name: Download logs from Gluster Storage machines
-  hosts: gluster
+  hosts: gluster-servers
   user: root
   vars:
     evidence_dirs:
