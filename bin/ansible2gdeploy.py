@@ -28,9 +28,9 @@ import sys
 GLUSTER_SERVER_GROUP = "gluster-servers"
 GLUSTER_CLIENT_GROUP = "usm_client"
 
-def parse_args():
+def main():
     """
-    Parse command line arguments.
+    main function
     """
     ap = argparse.ArgumentParser(
         description="update of hosts and devices in gdeploy conf file")
@@ -60,13 +60,7 @@ def parse_args():
         "--storage-devices",
         dest="storage_devices",
         help="Coma separated list of available devices for bricks.")
-    return ap.parse_args()
-
-def main():
-    """
-    main function
-    """
-    args = parse_args()
+    args = ap.parse_args()
 
     # open gdeploy config files via plain config parser
     gdeploy_confs = {}
