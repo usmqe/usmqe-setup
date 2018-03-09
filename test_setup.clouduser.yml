@@ -1,0 +1,81 @@
+---
+# This playbook adds new user account with sudo root privileges, based on user
+# account usually created by cloud-init[1] and disables direct root access via
+# ssh.
+#
+# This is usefull for testing ssh access in environment when we don't have
+# direct ssh root access on storage machines and need to connect via different
+# user and then use sudo instead.
+#
+# [1] https://cloudinit.readthedocs.io/en/latest/
+
+- hosts: "usm_server:usm_nodes:usm_client"
+  remote_user: root
+  handlers:
+    - name: restart sshd
+      service: name=sshd state=restarted
+
+  tasks:
+
+    - name: Create cloud-user account
+      user:
+        name: cloud-user
+        comment: "Cloud User"
+        groups: wheel,adm,systemd-journal
+        shell: /bin/bash
+        createhome: yes
+        state: present
+
+    - name: Make sure sudoers file exists
+      file:
+        path: /etc/sudoers.d/90-cloud-init-users
+        mode: 0440
+        owner: root
+        group: root
+        state: touch
+
+    - name: Make sure cloud-user has root priviliges via sudo
+      lineinfile:
+        dest: /etc/sudoers.d/90-cloud-init-users
+        regexp: "^cloud-user"
+        line: "cloud-user ALL=(ALL) NOPASSWD:ALL"
+        state: present
+
+    - name: Add public ssh key to cloud-user account
+      authorized_key:
+        exclusive=no
+        user=cloud-user
+        state=present
+        key={{ item }}
+      with_items:
+        - "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAvMKFILLKwsl0vPGO/5G2wOegqvgjfx9bG+ce0lum0yHP/23Ben53llNhS3G4D/iPWYKVH6rHOTClJrjdSPCPLCvQX341MgW14eglGqONiR3WGNvP72Q7XL656KcS61uxzhwdqC6iJI6KDg3yoL40fZPOzIqvJgWULnkFiYhiG005fOAgGXT/ouy0kaZXTEBie6B5RH7k7kVZj1O4a/xOoG2kPIcK28zT87RwJrN41gcHEpnjPJexyEJIe6mAUmcxwJxwaY8hUErRoMJKP+QxLwYhpJH8umA8BmHQeHGYzSUi48r9pPVvliulYobF9iGGWy5webdcvOFkJtte945yxQ== ansible_rsa"
+        # - "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
+
+    - name: Allow direct ssh access for cloud-user only
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^AllowUsers'
+        line: 'AllowUsers cloud-user'
+        state: present
+      notify:
+        - restart sshd
+
+- name: Check if cloud-user can connect via ssh and use sudo as expected
+  hosts: "usm_server:usm_nodes:usm_client"
+  remote_user: cloud-user
+  become: yes
+  tasks:
+
+    - name: Test access of cloud-user
+      command: sudo whoami
+      register: sudo_whoami
+
+    - assert:
+        that:
+          - sudo_whoami.rc == 0
+          - sudo_whoami.stdout == "root"
+        msg:
+          - "Ops, I'm afraid you would need to invetigate what went wrong."
+          - "In the worst case, you just lost access and need to use serial"
+          - "console to gain access again or just redeploy."
+          - "I'm so sorry."
