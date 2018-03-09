@@ -137,6 +137,8 @@ def main():
                     gdeploy_conf_file, len(storage_devices), ",".join(storage_devices), n_devices)
                 print(msg, file=sys.stderr)
                 return 1
+            print(gdeploy_conf_file + " was assigned devices: " + \
+                    ",".join(storage_devices[:n_devices]), file=sys.stderr)
             gdeploy_conf.set("backend-setup", "devices", \
                 ",".join(storage_devices[:n_devices]))
             storage_devices = storage_devices[n_devices:]
