@@ -8,11 +8,18 @@
 # To use this script on umsqe server with python3 software collection,
 # run it via:
 #
-# python ./bin/ansible2gdeploy.py -i usm1.hosts gdeploy_config/volume_usmqe_alpha_distrep_4x2.create.conf
+# python ./bin/ansible2gdeploy.py -i usm1.hosts \
+#   gdeploy_config/volume_alpha_distrep_6x2.create.conf
+#
+# python ./bin/ansible2gdeploy.py -i usm1.hosts \
+#   -p UPDATE_ -s vdb,vdc,vdd,vde,vdf,vdg \
+#   gdeploy_config/volume_alpha_distrep_6x2.create.conf \
+#   gdeploy_config/volume_beta_arbiter_2_plus_1x2.create.conf \
 
 
 from configparser import ConfigParser
 import argparse
+import os
 import sys
 
 
@@ -21,31 +28,50 @@ import sys
 GLUSTER_SERVER_GROUP = "gluster-servers"
 GLUSTER_CLIENT_GROUP = "usm_client"
 
-
 def main():
+    """
+    main function
+    """
     ap = argparse.ArgumentParser(
-        description="in place update of hosts in gdeploy conf file")
+        description="update of hosts and devices in gdeploy conf file")
     ap.add_argument(
         "-d",
         "--dry-run",
         action="store_true",
-        help="print to stdout instead of in place edit")
-    ap.add_argument("gdeployconf", help="gdeploy config file to edit")
+        help="print to stdout instead of save to file (in place edit by default)")
+    ap.add_argument(
+        "gdeployconf",
+        nargs="+",
+        help="gdeploy config files to edit")
     ap.add_argument(
         "-i",
         dest="inventory",
         action="store",
         help="ansible inventory (aka hosts) file")
     ap.add_argument(
-        "-o",
-        dest="output",
+        "-p",
+        dest="file_prefix",
         action="store",
-        help="save the result into output file instead of in place edit")
+        default="",
+        help="output file prefix (added before the name of the input gdeploy conf file) " \
+            "If empty, input file is overwritten (in place edit).")
+    ap.add_argument(
+        "-s",
+        "--storage-devices",
+        dest="storage_devices",
+        help="Coma separated list of available devices for bricks.")
     args = ap.parse_args()
 
-    # open gdeploy config file via plain config parser
-    gdeploy_conf = ConfigParser(allow_no_value=True)
-    gdeploy_conf.read(args.gdeployconf)
+    # open gdeploy config files via plain config parser
+    gdeploy_confs = {}
+    for gdeploy_conf_file in args.gdeployconf:
+        if not os.path.exists(gdeploy_conf_file):
+            msg = "Specified gdeploy config file '{}' doesn't exists.".format(
+                gdeploy_conf_file)
+            print(msg, file=sys.stderr)
+            return 1
+        gdeploy_confs[gdeploy_conf_file] = ConfigParser(allow_no_value=True)
+        gdeploy_confs[gdeploy_conf_file].read(gdeploy_conf_file)
 
     # open ansible inventory file via plain config parser
     inventory = ConfigParser(allow_no_value=True)
@@ -53,7 +79,7 @@ def main():
 
     # validate the inventory file
     sections_to_validate = [GLUSTER_SERVER_GROUP]
-    if gdeploy_conf.has_section("clients"):
+    if any([gc.has_section("clients") for gc in gdeploy_confs.values()]):
         sections_to_validate.append(GLUSTER_CLIENT_GROUP)
     for section in sections_to_validate:
         if not inventory.has_section(section):
@@ -64,33 +90,63 @@ def main():
 
     # get machines from the inventory file
     servers = inventory.options(GLUSTER_SERVER_GROUP)
-    if gdeploy_conf.has_section("clients"):
+    if any([gc.has_section("clients") for gc in gdeploy_confs.values()]):
         clients = inventory.options(GLUSTER_CLIENT_GROUP)
     else:
         clients = []
+
+    # prepare list of storage devices
+    storage_devices = []
+    if args.storage_devices:
+        storage_devices = args.storage_devices.split(",")
+
     print("servers: " + ", ".join(servers), file=sys.stderr)
     print("clients: " + ", ".join(clients), file=sys.stderr)
+    print("devices: " + ", ".join(storage_devices), file=sys.stderr)
 
-    # ignore hosts section if present
-    if gdeploy_conf.has_section("hosts"):
-        gdeploy_conf.remove_section("hosts")
-    # add servers into hosts sections
-    gdeploy_conf.add_section("hosts")
-    for server in servers:
-        gdeploy_conf.set("hosts", server, None)
+    # update gdeploy config files
+    for gdeploy_conf_file, gdeploy_conf in gdeploy_confs.items():
+        # ignore hosts section if present
+        if gdeploy_conf.has_section("hosts"):
+            gdeploy_conf.remove_section("hosts")
+        # add servers into hosts sections
+        gdeploy_conf.add_section("hosts")
+        for server in servers:
+            gdeploy_conf.set("hosts", server, None)
 
-    if gdeploy_conf.has_section("clients"):
-        gdeploy_conf.set("clients", "hosts", ",".join(clients))
+        # configure client
+        if gdeploy_conf.has_section("clients"):
+            gdeploy_conf.set("clients", "hosts", ",".join(clients))
 
-    if args.dry_run:
-        gdeploy_conf.write(sys.stdout)
-    else:
-        if args.output is not None:
-            output_filename = args.output
+        # configure storage devices
+        if args.storage_devices and \
+                gdeploy_conf.has_section("backend-setup") and \
+                gdeploy_conf.has_option("backend-setup", "devices"):
+
+            # number of used devices
+            n_devices = len(gdeploy_conf.get("backend-setup", "devices").split(","))
+
+            if n_devices > len(storage_devices):
+                msg = "Not enough storage devices for {} - available: {} ({}), required: {}".format(
+                    gdeploy_conf_file, len(storage_devices), ",".join(storage_devices), n_devices)
+                print(msg, file=sys.stderr)
+                return 1
+            print(gdeploy_conf_file + " was assigned devices: " + \
+                    ",".join(storage_devices[:n_devices]), file=sys.stderr)
+            gdeploy_conf.set("backend-setup", "devices", \
+                ",".join(storage_devices[:n_devices]))
+            storage_devices = storage_devices[n_devices:]
+
+        # generate and save/print output
+        if args.dry_run:
+            print("## %s" % gdeploy_conf_file)
+            gdeploy_conf.write(sys.stdout, space_around_delimiters=False)
         else:
-            output_filename = args.gdeployconf
-        with open(output_filename, 'w') as gdeploy_conf_file:
-            gdeploy_conf.write(gdeploy_conf_file)
+            output_filename = os.path.join(
+                os.path.dirname(gdeploy_conf_file),
+                "%s%s" % (args.file_prefix, os.path.basename(gdeploy_conf_file)))
+            with open(output_filename, 'w') as output_file:
+                gdeploy_conf.write(output_file, space_around_delimiters=False)
 
 
 if __name__ == '__main__':
