@@ -111,46 +111,46 @@ def main():
     print("devices: " + ", ".join(storage_devices), file=sys.stderr)
 
     # update gdeploy config files
-    for gdeploy_conf_file in gdeploy_confs:
+    for gdeploy_conf_file, gdeploy_conf in gdeploy_confs.items():
         # ignore hosts section if present
-        if gdeploy_confs[gdeploy_conf_file].has_section("hosts"):
-            gdeploy_confs[gdeploy_conf_file].remove_section("hosts")
+        if gdeploy_conf.has_section("hosts"):
+            gdeploy_conf.remove_section("hosts")
         # add servers into hosts sections
-        gdeploy_confs[gdeploy_conf_file].add_section("hosts")
+        gdeploy_conf.add_section("hosts")
         for server in servers:
-            gdeploy_confs[gdeploy_conf_file].set("hosts", server, None)
+            gdeploy_conf.set("hosts", server, None)
 
         # configure client
-        if gdeploy_confs[gdeploy_conf_file].has_section("clients"):
-            gdeploy_confs[gdeploy_conf_file].set("clients", "hosts", ",".join(clients))
+        if gdeploy_conf.has_section("clients"):
+            gdeploy_conf.set("clients", "hosts", ",".join(clients))
 
         # configure storage devices
         if args.storage_devices and \
-                gdeploy_confs[gdeploy_conf_file].has_section("backend-setup") and \
-                gdeploy_confs[gdeploy_conf_file].has_option("backend-setup", "devices"):
+                gdeploy_conf.has_section("backend-setup") and \
+                gdeploy_conf.has_option("backend-setup", "devices"):
 
             # number of used devices
-            n_devices = len(gdeploy_confs[gdeploy_conf_file].get("backend-setup", "devices").split(","))
+            n_devices = len(gdeploy_conf.get("backend-setup", "devices").split(","))
 
             if n_devices > len(storage_devices):
                 msg = "Not enough storage devices for {} - available: {} ({}), required: {}".format(
                     gdeploy_conf_file, len(storage_devices), ",".join(storage_devices), n_devices)
                 print(msg, file=sys.stderr)
                 return 1
-            gdeploy_confs[gdeploy_conf_file].set("backend-setup", "devices", \
+            gdeploy_conf.set("backend-setup", "devices", \
                 ",".join(storage_devices[:n_devices]))
             storage_devices = storage_devices[n_devices:]
 
         # generate and save/print output
         if args.dry_run:
             print("## %s" % gdeploy_conf_file)
-            gdeploy_confs[gdeploy_conf_file].write(sys.stdout, space_around_delimiters=False)
+            gdeploy_conf.write(sys.stdout, space_around_delimiters=False)
         else:
             output_filename = os.path.join(
                 os.path.dirname(gdeploy_conf_file),
                 "%s%s" % (args.file_prefix, os.path.basename(gdeploy_conf_file)))
             with open(output_filename, 'w') as output_file:
-                gdeploy_confs[gdeploy_conf_file].write(output_file, space_around_delimiters=False)
+                gdeploy_conf.write(output_file, space_around_delimiters=False)
 
 
 if __name__ == '__main__':
