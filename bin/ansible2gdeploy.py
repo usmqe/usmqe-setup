@@ -38,7 +38,7 @@ def parse_args():
         "-d",
         "--dry-run",
         action="store_true",
-        help="print to stdout instead of save to file")
+        help="print to stdout instead of save to file (in place edit by default)")
     ap.add_argument(
         "gdeployconf",
         nargs="+",
