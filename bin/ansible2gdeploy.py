@@ -93,6 +93,7 @@ def main():
         "-i",
         dest="inventory",
         action="store",
+        required=True,
         help="ansible inventory (aka hosts) file")
     ap.add_argument(
         "-p",
