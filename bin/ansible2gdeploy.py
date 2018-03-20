@@ -61,6 +61,8 @@ def host_mixed(fqdn):
     Return host's fqdn, hostname or IP - sequentially selected.
     """
     choices = (host_fqdn, host_short, host_ip)
+    # HACK: instead of using a global variable or iterator,
+    # we just push an attribute to the function object to preserve global state
     try:
         current_i = host_mixed.i
     except AttributeError:
