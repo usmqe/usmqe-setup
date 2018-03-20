@@ -27,12 +27,6 @@ import socket
 import sys
 
 
-# names of ansible inventory groups to use
-# TODO: make reconfigurable from command line if needed
-GLUSTER_SERVER_GROUP = "gluster-servers"
-GLUSTER_CLIENT_GROUP = "usm_client"
-
-
 def host_fqdn(fqdn):
     """
     Return host's fqdn.
@@ -118,6 +112,18 @@ def main():
         choices=['fqdn', 'short', 'ip', 'mixed', 'random'],
         default='fqdn',
         help="How to define hosts in gdeploy config: fqdn, short, ip, mixed or random.")
+    ap.add_argument(
+        "--gluster-server-group",
+        dest="gluster_server_group",
+        action="store",
+        default='gluster_servers',
+        help="Name of ansible inventory group of gluster storage servers.")
+    ap.add_argument(
+        "--gluster-client-group",
+        dest="gluster_client_group",
+        action="store",
+        default='usm_client',
+        help="Name of ansible inventory group of gluster client machine.")
     args = ap.parse_args()
 
     # open gdeploy config files via plain config parser
@@ -136,9 +142,9 @@ def main():
     inventory.read(args.inventory)
 
     # validate the inventory file
-    sections_to_validate = [GLUSTER_SERVER_GROUP]
+    sections_to_validate = [args.gluster_server_group]
     if any([gc.has_section("clients") for gc in gdeploy_confs.values()]):
-        sections_to_validate.append(GLUSTER_CLIENT_GROUP)
+        sections_to_validate.append(args.gluster_client_group)
     for section in sections_to_validate:
         if not inventory.has_section(section):
             msg = "inventory file {} is missing group {}".format(
@@ -147,9 +153,9 @@ def main():
             return 1
 
     # get machines from the inventory file
-    servers = inventory.options(GLUSTER_SERVER_GROUP)
+    servers = inventory.options(args.gluster_server_group)
     if any([gc.has_section("clients") for gc in gdeploy_confs.values()]):
-        clients = inventory.options(GLUSTER_CLIENT_GROUP)
+        clients = inventory.options(args.gluster_client_group)
     else:
         clients = []
 
