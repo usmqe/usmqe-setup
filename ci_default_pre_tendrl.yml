@@ -11,18 +11,6 @@
       ssl_key_perm: "0644"
       when: etcd_tls_client_auth|bool == True
   tasks:
-    - name: install firewalld
-      yum:
-        name: 'firewalld'
-        state: present
-      register: task_result
-      until: task_result|success
-      retries: 5
-      delay: 5
-
-    - name: Make sure firewalld is enabled and running
-      service: name=firewalld state=started enabled=yes
-
     - name: Create usmqe user group
       group:
         name: usmqe
