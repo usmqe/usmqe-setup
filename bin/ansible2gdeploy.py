@@ -179,8 +179,10 @@ def main():
         gdeploy_conf.add_section("hosts")
         print("hosts_definition: %s" % args.hosts_definition, file=sys.stderr)
         for server in servers:
-            gdeploy_conf.set("hosts", \
-                    host_transformation[args.hosts_definition](server), None)
+            gdeploy_conf.set(
+                "hosts",
+                host_transformation[args.hosts_definition](server),
+                None)
 
         # configure client
         if gdeploy_conf.has_section("clients"):
