@@ -50,17 +50,6 @@
         - '  StrictHostKeyChecking no'
         - '  UserKnownHostsFile=/dev/null'
 
-    - name: Configure ssh for root - UserKnownHostsFile and StrictHostKeyChecking
-      lineinfile:
-        dest=/root/.ssh/config
-        state=present
-        create=yes
-        line="{{ item }}"
-      with_items:
-        - 'Host *'
-        - '  StrictHostKeyChecking no'
-        - '  UserKnownHostsFile=/dev/null'
-
     - name: Ensure that tendrl-ansible is installed
       yum:
         name: tendrl-ansible
@@ -75,15 +64,6 @@
     - name: Get public key from tendrl_server (from user usmqe).
       command: cat /home/usmqe/.ssh/id_rsa.pub
       register: usmqe_ssh_key
-
-    - name: Generate ssh key for root
-      user:
-        name: root
-        generate_ssh_key: yes
-
-    - name: Get public key from tendrl_server (from user root).
-      command: cat /root/.ssh/id_rsa.pub
-      register: root_ssh_key
 
 #
 # Gluster servers
@@ -105,7 +85,6 @@
   remote_user: root
   vars:
     usmqe_ssh_key: "{{ hostvars[groups['tendrl_server'][0]].usmqe_ssh_key }}"
-    root_ssh_key: "{{ hostvars[groups['tendrl_server'][0]].root_ssh_key }}"
   tasks:
     - name: install firewalld
       yum:
@@ -126,5 +105,4 @@
         state=present
         key="{{ item.stdout }}"
       with_items:
-        - "{{ root_ssh_key }}"
         - "{{ usmqe_ssh_key }}"
