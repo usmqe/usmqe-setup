@@ -20,6 +20,8 @@
 from configparser import ConfigParser
 import argparse
 import os
+import random
+import socket
 import sys
 
 
@@ -27,6 +29,50 @@ import sys
 # TODO: make reconfigurable from command line if needed
 GLUSTER_SERVER_GROUP = "gluster-servers"
 GLUSTER_CLIENT_GROUP = "usm_client"
+
+
+def host_fqdn(fqdn):
+    """
+    Return host's fqdn.
+    """
+    print("FQDN: %s" % fqdn, file=sys.stderr)
+    return fqdn
+
+def host_short(fqdn):
+    """
+    Return host's short hostname.
+    """
+    short = fqdn.split(".")[0]
+    print("SHORT: %s" % short, file=sys.stderr)
+    return short
+
+def host_ip(fqdn):
+    """
+    Return host's IP.
+    """
+    ip = socket.gethostbyname(fqdn)
+    print("IP: %s" % ip, file=sys.stderr)
+    return ip
+
+def host_mixed(fqdn):
+    """
+    Return host's fqdn, hostname or IP - sequentially selected.
+    """
+    choices = (host_fqdn, host_short, host_ip)
+    try:
+        current_i = host_mixed.i
+    except AttributeError:
+        host_mixed.i = 0
+        current_i = 0
+    host_mixed.i = (host_mixed.i + 1) % len(choices)
+    return choices[current_i](fqdn)
+
+def host_random(fqdn):
+    """
+    Return host's fqdn, hostname or IP - randomly selected.
+    """
+    choices = (host_fqdn, host_short, host_ip)
+    return random.choice(choices)(fqdn)
 
 def main():
     """
@@ -60,6 +106,13 @@ def main():
         "--storage-devices",
         dest="storage_devices",
         help="Coma separated list of available devices for bricks.")
+    ap.add_argument(
+        "-H",
+        "--hosts-definition",
+        dest="hosts_definition",
+        choices=['fqdn', 'short', 'ip', 'mixed', 'random'],
+        default='fqdn',
+        help="How to define hosts in gdeploy config: fqdn, short, ip, mixed or random.")
     args = ap.parse_args()
 
     # open gdeploy config files via plain config parser
@@ -104,6 +157,14 @@ def main():
     print("clients: " + ", ".join(clients), file=sys.stderr)
     print("devices: " + ", ".join(storage_devices), file=sys.stderr)
 
+    host_transformation = {
+        'fqdn': host_fqdn,
+        'short': host_short,
+        'ip': host_ip,
+        'mixed': host_mixed,
+        'random': host_random,
+        }
+
     # update gdeploy config files
     for gdeploy_conf_file, gdeploy_conf in gdeploy_confs.items():
         # ignore hosts section if present
@@ -111,8 +172,10 @@ def main():
             gdeploy_conf.remove_section("hosts")
         # add servers into hosts sections
         gdeploy_conf.add_section("hosts")
+        print("hosts_definition: %s" % args.hosts_definition, file=sys.stderr)
         for server in servers:
-            gdeploy_conf.set("hosts", server, None)
+            gdeploy_conf.set("hosts", \
+                    host_transformation[args.hosts_definition](server), None)
 
         # configure client
         if gdeploy_conf.has_section("clients"):
