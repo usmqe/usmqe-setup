@@ -13,7 +13,7 @@
       command: cat /root/password
       register: admin_password
 
-    - debug: var=hostvars[groups['tendrl_server'][0]]['admin_password']
+    - debug: var=admin_password
 
     - name: Copy usm.ini template
       local_action: template src=./templates/usm.ini.j2 dest=./usm.ini
