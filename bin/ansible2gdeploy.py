@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
 
-# This script allows you to replace hosts and client hosts in gdeploy
-# config file, addressing use case described here:
-# https://github.com/gluster/gdeploy/issues/422
+"""
+This script allows you to replace hosts and client hosts in gdeploy
+config file, addressing use case described here:
+https://github.com/gluster/gdeploy/issues/422
 
-# To use this script on umsqe server with python3 software collection,
-# run it via:
-#
-# python ./bin/ansible2gdeploy.py -i usm1.hosts \
-#   gdeploy_config/volume_alpha_distrep_6x2.create.conf
-#
-# python ./bin/ansible2gdeploy.py -i usm1.hosts \
-#   -p UPDATE_ -s vdb,vdc,vdd,vde,vdf,vdg \
-#   gdeploy_config/volume_alpha_distrep_6x2.create.conf \
-#   gdeploy_config/volume_beta_arbiter_2_plus_1x2.create.conf \
+To use this script on umsqe server with python3 software collection,
+run it via:
+
+python ./bin/ansible2gdeploy.py -i usm1.hosts \
+  gdeploy_config/volume_alpha_distrep_6x2.create.conf
+
+python ./bin/ansible2gdeploy.py -i usm1.hosts \
+  -p UPDATE_ -s vdb,vdc,vdd,vde,vdf,vdg \
+  gdeploy_config/volume_alpha_distrep_6x2.create.conf \
+  gdeploy_config/volume_beta_arbiter_2_plus_1x2.create.conf \
+"""
 
 
 from configparser import ConfigParser
