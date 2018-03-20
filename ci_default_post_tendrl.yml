@@ -1,0 +1,19 @@
+---
+# Perform auxiliary tasks after site.yml from tendrl-ansible.
+# * prepare usm.ini configuration for usmqe-tests
+
+#
+# Tendrl server
+#
+
+- hosts: tendrl_server
+  remote_user: root
+  tasks:
+    - name: Read Tendrl admin password
+      command: cat /root/password
+      register: admin_password
+
+    - debug: var=admin_password
+
+    - name: Copy usm.ini template
+      local_action: template src=./templates/usm.ini.j2 dest=./usm.ini

@@ -1,4 +1,13 @@
 ---
+- name: install firewalld
+  yum:
+    name: 'firewalld'
+    state: present
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
+
 - name: Make sure firewalld is enabled and running
   service: name=firewalld state=started enabled=yes
 

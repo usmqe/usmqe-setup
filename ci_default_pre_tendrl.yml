@@ -1,0 +1,108 @@
+---
+# Perform auxiliary tasks before running site.yml from tendrl-ansible.
+# * generate ssl certificates (if required)
+# * install, enable and start firewalld
+# * create usmqe user on tendrl_server and configure password-less ssh to all
+#   servers - will be used for launching site.yml from tendrl-ansible
+# * install and configure tendrl-ansible on tendrl_server
+
+#
+# Tendrl server
+#
+
+- hosts: tendrl_server
+  remote_user: root
+  roles:
+    - role: qe-ssl-cert
+      ssl_cert_name: "etcd"
+      ssl_key_perm: "0644"
+      when: etcd_tls_client_auth|bool == True
+  tasks:
+    - name: Create usmqe user group
+      group:
+        name: usmqe
+        state: present
+
+    - name: Create usmqe user account
+      user:
+        name: usmqe
+        group: usmqe
+        createhome: yes
+        generate_ssh_key: yes
+        comment: "USM QE test user account"
+        state: present
+
+    - name: Deploy public ssh key for usmqe user
+      authorized_key:
+        exclusive: no
+        user: usmqe
+        state: present
+        key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
+
+    - name: Configure ssh for usmqe - UserKnownHostsFile and StrictHostKeyChecking
+      lineinfile:
+        dest=/home/usmqe/.ssh/config
+        state=present
+        create=yes
+        line="{{ item }}"
+      with_items:
+        - 'Host *'
+        - '  StrictHostKeyChecking no'
+        - '  UserKnownHostsFile=/dev/null'
+
+    - name: Ensure that tendrl-ansible is installed
+      yum:
+        name: tendrl-ansible
+        state: present
+
+    - name: Copy site.yml and precheck.yml files to /home/usmqe
+      shell: cp /usr/share/doc/tendrl-ansible-*/{{item}}* /home/usmqe/{{item}}
+      with_items:
+        - prechecks.yml
+        - site.yml
+
+    - name: Get public key from tendrl_server (from user usmqe).
+      command: cat /home/usmqe/.ssh/id_rsa.pub
+      register: usmqe_ssh_key
+
+#
+# Gluster servers
+#
+
+- hosts: gluster_servers
+  remote_user: root
+  roles:
+    - role: qe-ssl-cert
+      ssl_cert_name: "etcd"
+      when: etcd_tls_client_auth|bool == True
+
+
+#
+# Tendrl server and Gluster servers
+#
+
+- hosts: tendrl_server:gluster_servers
+  remote_user: root
+  vars:
+    usmqe_ssh_key: "{{ hostvars[groups['tendrl_server'][0]].usmqe_ssh_key }}"
+  tasks:
+    - name: install firewalld
+      yum:
+        name: 'firewalld'
+        state: present
+      register: task_result
+      until: task_result|success
+      retries: 5
+      delay: 5
+
+    - name: Make sure firewalld is enabled and running
+      service: name=firewalld state=started enabled=yes
+
+    - name: Deploy public ssh keys from tendrl_server to all hosts
+      authorized_key:
+        exclusive=no
+        user=root
+        state=present
+        key="{{ item.stdout }}"
+      with_items:
+        - "{{ usmqe_ssh_key }}"

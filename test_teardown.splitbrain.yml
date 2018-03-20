@@ -37,5 +37,5 @@
       mount:
         path: "{{ volume_mountpoint }}"
         fstype: glusterfs
-        src: "{{ groups['gluster-servers'][0] }}:{{ volume_name }}"
+        src: "{{ groups['gluster_servers'][0] }}:{{ volume_name }}"
         state: absent
