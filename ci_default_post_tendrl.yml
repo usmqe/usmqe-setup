@@ -1,4 +1,7 @@
 ---
+# Perform auxiliary tasks after site.yml from tendrl-ansible.
+# * prepare usm.ini configuration for usmqe-tests
+
 #
 # Tendrl server
 #

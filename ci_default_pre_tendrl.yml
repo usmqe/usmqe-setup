@@ -1,4 +1,11 @@
 ---
+# Perform auxiliary tasks before running site.yml from tendrl-ansible.
+# * generate ssl certificates (if required)
+# * install, enable and start firewalld
+# * create usmqe user on tendrl_server and configure password-less ssh to all
+#   servers - will be used for launching site.yml from tendrl-ansible
+# * install and configure tendrl-ansible on tendrl_server
+
 #
 # Tendrl server
 #
@@ -88,6 +95,11 @@
     - role: qe-ssl-cert
       ssl_cert_name: "etcd"
       when: etcd_tls_client_auth|bool == True
+
+
+#
+# Tendrl server and Gluster servers
+#
 
 - hosts: tendrl_server:gluster_servers
   remote_user: root

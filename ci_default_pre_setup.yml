@@ -1,6 +1,7 @@
 ---
 # Perform following tasks, when applicable
 # (e.g. there are nodes in gluster_servers or ceph_* group)
+# * update and reboot all servers
 # * Install Gluster nodes.
 - include: qe_pre_installation_tasks.yml
 
