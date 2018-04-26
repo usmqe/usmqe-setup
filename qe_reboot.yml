@@ -16,6 +16,7 @@
         state: started
     - name: reboot
       shell: "echo reboot | at now"
+      when: not skip_reboot|default(false)|bool
 
 - name: Wait for all servers to boot up
   hosts: "usm_server:usm_nodes:usm_client"
@@ -25,7 +26,9 @@
     - name: Wait for all servers
       local_action: wait_for host={{ inventory_hostname }} port=22
         state=started timeout=7200 delay=60
+      when: not skip_reboot|default(false)|bool
     - pause: seconds=15
+      when: not skip_reboot|default(false)|bool
     - name: Ping
       ping:
       any_errors_fatal: True
