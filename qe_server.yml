@@ -8,7 +8,7 @@
   user: root
   roles:
    - { role: epel, epel_enabled: 1 }
-   - rh-python35
+   - rh-python36
    - tendrl-ansible.gluster-gdeploy-copr
    - qe-server
 
