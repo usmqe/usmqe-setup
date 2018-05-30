@@ -8,7 +8,7 @@
   user: root
   roles:
    - epel
-   - rh-python35
+   - rh-python36
    - tendrl-ansible.gluster-gdeploy-copr
    - qe-server
   tasks:

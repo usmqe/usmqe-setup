@@ -64,8 +64,8 @@
 - name: Install usmqe dependencies from rh-python-35 collection
   yum: name={{ item }} state=installed
   with_items:
-   - rh-python35-PyYAML
-   - rh-python35-python-jinja2
+   - rh-python36-PyYAML
+   - rh-python36-python-jinja2
 
 #
 # support for web tests

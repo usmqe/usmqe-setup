@@ -1,0 +1,34 @@
+---
+
+#
+# https://www.softwarecollections.org/en/scls/rhscl/rh-python36/
+#
+
+- name: Install centos-release-scl (package with the repo file)
+  yum: name=centos-release-scl state=installed
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
+  when: ansible_distribution == 'CentOS'
+
+- name: Install rh python36 software collection
+  yum: name=rh-python36 state=present
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5
+
+- name: Install core dev tools from the software collection
+  yum: name={{ item }} state=present
+  with_items:
+    - rh-python36-python-devel
+    - rh-python36-python-tools
+    - rh-python36-python-pip
+    - rh-python36-python-docutils
+    - rh-python36-python-setuptools
+    - rh-python36-python-virtualenv
+  register: task_result
+  until: task_result|success
+  retries: 5
+  delay: 5

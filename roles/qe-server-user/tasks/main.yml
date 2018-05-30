@@ -25,9 +25,9 @@
   shell: pip2 install --user pylatest
 
 # Install all requirements of usmqe-tests repository via pip from PyPI
-# locally for usmqe user and rh-python35 software collection only.
+# locally for usmqe user and rh-python36 software collection only.
 - name: HACK - install python modules required to run usmqe-tests
-  shell: scl enable rh-python35 "pip install --user -r  {{ ansible_user_dir }}/usmqe-tests/requirements.txt"
+  shell: scl enable rh-python36 "pip install --user -r  {{ ansible_user_dir }}/usmqe-tests/requirements.txt"
 
 # Based on http://developers.redhat.com/blog/2014/03/19/permanently-enable-a-software-collection/
 - name: Enable the software collection in ~/.bashrc
@@ -36,8 +36,8 @@
     state=present
     line="{{ item }}"
   with_items:
-   - 'source /opt/rh/rh-python35/enable'
-   - "export X_SCLS=$(scl enable rh-python35 'echo $X_SCLS')"
+   - 'source /opt/rh/rh-python36/enable'
+   - "export X_SCLS=$(scl enable rh-python36 'echo $X_SCLS')"
 
 - name: Configure ssh - UserKnownHostsFile and StrictHostKeyChecking
   lineinfile:
