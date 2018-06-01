@@ -61,7 +61,7 @@
 # usmqe dependencies
 #
 
-- name: Install usmqe dependencies from rh-python-35 collection
+- name: Install usmqe dependencies from rh-python-36 collection
   yum: name={{ item }} state=installed
   with_items:
    - rh-python36-PyYAML
