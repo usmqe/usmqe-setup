@@ -1,0 +1,49 @@
+---
+# This playbooks downloads tarball with a dump of all english wikipedia
+# articles {{ wiki_tarball_filename }} on a client machine, so that
+# one can try to use it for testing, eg:
+#
+#  * extract some articles into individual files on gluster volume via
+#  wiki-export-split.py script, distributing lot of small files on all bricks
+#  so that the files on the bricks will be distributed uniformly
+#
+#  * copy the tarball into the volume directly (this will be a bit faster than
+#  generating equivalent size of random data)
+
+- hosts: usm_client
+  remote_user: root
+  vars:
+    - wiki_tarball_filename: "enwiki-latest-pages-articles.xml.bz2"
+    - wiki_tarball_dest: "/tmp"
+
+  tasks:
+
+    - name: Check that mandatory variables are defined
+      assert:
+        that:
+          - wiki_tarball_url is defined
+          - wiki_tarball_checksum is defined
+        msg:
+          - "You need to define *url of the tarball* in wiki_tarball_url"
+          - "variable in your invenory file."
+          - "Don't use original source, but host the file on your own machine!"
+          - ""
+          - "You also need to define *checksum of the tarball* in"
+          - "wiki_tarball_checksum variable."
+          - "Eg. md5:a538459bfe1bc35e4d8161840eadbcd"
+
+    - name: Download the wiki tarball into /tmp directory
+      get_url:
+        url: "{{ wiki_tarball_url }}"
+        checksum: "{{ wiki_tarball_checksum }}"
+        dest: "{{ wiki_tarball_dest }}/{{ wiki_tarball_filename }}"
+
+    - name: Extract wiki tarball checksum data
+      set_fact:
+        wiki_tarball_checksum_type: "{{ wiki_tarball_checksum|regex_replace('([^:]*):.*', '\\1') }}"
+        wiki_tarball_checksum_data: "{{ wiki_tarball_checksum|regex_replace('[^:]*:(.*)', '\\1') }}"
+
+    - name: Store wiki tarball checksum in checksum file
+      copy:
+        content: "{{ wiki_tarball_checksum_data }}  {{ wiki_tarball_filename }}"
+        dest: "{{ wiki_tarball_dest }}/{{ wiki_tarball_filename }}.{{ wiki_tarball_checksum_type }}"
