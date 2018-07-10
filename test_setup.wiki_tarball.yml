@@ -47,3 +47,9 @@
       copy:
         content: "{{ wiki_tarball_checksum_data }}  {{ wiki_tarball_filename }}"
         dest: "{{ wiki_tarball_dest }}/{{ wiki_tarball_filename }}.{{ wiki_tarball_checksum_type }}"
+
+    - name: Install wiki-export-split.py script into /usr/local/bin
+      copy:
+        src: "bin/wiki-export-split.py"
+        dest: "/usr/local/bin/wiki-export-split.py"
+        mode: "755"
