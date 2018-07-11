@@ -27,6 +27,7 @@
           - "You need to define *url of the tarball* in wiki_tarball_url"
           - "variable in your invenory file."
           - "Don't use original source, but host the file on your own machine!"
+          - "Eg. http://example.com/enwiki-latest-pages-articles.xml.bz2"
           - ""
           - "You also need to define *checksum of the tarball* in"
           - "wiki_tarball_checksum variable."
