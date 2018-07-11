@@ -31,7 +31,7 @@
           - wiki_tarball_checksum is defined
         msg:
           - "You need to define *url of the tarball* in wiki_tarball_url"
-          - "variable in your invenory file."
+          - "variable in your inventory file."
           - "Eg. http://example.com/enwiki-latest-pages-articles.xml.bz2"
           - ""
           - "You also need to define *checksum of the tarball* in"
