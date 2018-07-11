@@ -1,6 +1,6 @@
 ---
 # This playbooks downloads tarball with a dump of all english wikipedia
-# articles {{ wiki_tarball_filename }} on a client machine, so that
+# articles enwiki-latest-pages-articles.xml.bz2 on a client machine, so that
 # one can try to use it for testing, eg:
 #
 #  * extract some articles into individual files on gluster volume via
@@ -9,6 +9,11 @@
 #
 #  * copy the tarball into the volume directly (this will be a bit faster than
 #  generating equivalent size of random data)
+#
+# The original source of the tarball is available on dumps.wikimedia.org here:
+# https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
+# For the purpose of this playbook, you should setup a local mirror instead of
+# using the original url directly, see task about mandatory variables below.
 
 - hosts: usm_client
   remote_user: root
@@ -27,12 +32,19 @@
         msg:
           - "You need to define *url of the tarball* in wiki_tarball_url"
           - "variable in your invenory file."
-          - "Don't use original source, but host the file on your own machine!"
           - "Eg. http://example.com/enwiki-latest-pages-articles.xml.bz2"
           - ""
           - "You also need to define *checksum of the tarball* in"
           - "wiki_tarball_checksum variable."
           - "Eg. md5:a538459bfe1bc35e4d8161840eadbcd"
+
+    - name: Check that mandatory variables references a local mirror
+      assert:
+        that:
+          - "'wikimedia.org' not in '{{ wiki_tarball_url }}'"
+        msg:
+          - "Don't use original source on wikimedia.org, but host the file on"
+          - "your own infrastructure!"
 
     - name: Download the wiki tarball into /tmp directory (wiki_tarball_dest)
       get_url:
