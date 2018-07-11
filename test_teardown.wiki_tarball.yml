@@ -1,0 +1,19 @@
+---
+
+- hosts: usm_client
+  remote_user: root
+  vars:
+    - wiki_tarball_filename: "enwiki-latest-pages-articles.xml.bz2"
+    - wiki_tarball_dest: "/tmp"
+
+  tasks:
+
+    - name: Remove wiki-export-split.py script
+      file:
+        dest: "/usr/local/bin/wiki-export-split.py"
+        state: "absent"
+
+    - name: Remove the wiki tarball
+      file:
+        dest: "{{ wiki_tarball_dest }}/{{ wiki_tarball_filename }}"
+        state: "absent"

@@ -1,0 +1,69 @@
+---
+# This playbooks downloads tarball with a dump of all english wikipedia
+# articles enwiki-latest-pages-articles.xml.bz2 on a client machine, so that
+# one can try to use it for testing, eg:
+#
+#  * extract some articles into individual files on gluster volume via
+#  wiki-export-split.py script, distributing lot of small files on all bricks
+#  so that the files on the bricks will be distributed uniformly
+#
+#  * copy the tarball into the volume directly (this will be a bit faster than
+#  generating equivalent size of random data)
+#
+# The original source of the tarball is available on dumps.wikimedia.org here:
+# https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2
+# For the purpose of this playbook, you should setup a local mirror instead of
+# using the original url directly, see task about mandatory variables below.
+
+- hosts: usm_client
+  remote_user: root
+  vars:
+    # you are not expected to change these variables
+    - wiki_tarball_filename: "enwiki-latest-pages-articles.xml.bz2"
+    - wiki_tarball_dest: "/tmp"
+
+  tasks:
+
+    - name: Check that mandatory variables are defined
+      assert:
+        that:
+          - wiki_tarball_url is defined
+          - wiki_tarball_checksum is defined
+        msg:
+          - "You need to define *url of the tarball* in wiki_tarball_url"
+          - "variable in your inventory file."
+          - "Eg. http://example.com/enwiki-latest-pages-articles.xml.bz2"
+          - ""
+          - "You also need to define *checksum of the tarball* in"
+          - "wiki_tarball_checksum variable."
+          - "Eg. md5:a538459bfe1bc35e4d8161840eadbcd"
+
+    - name: Check that mandatory variables references a local mirror
+      assert:
+        that:
+          - "'wikimedia.org' not in '{{ wiki_tarball_url }}'"
+        msg:
+          - "Don't use original source on wikimedia.org, but host the file on"
+          - "your own infrastructure!"
+
+    - name: Download the wiki tarball into /tmp directory (wiki_tarball_dest)
+      get_url:
+        url: "{{ wiki_tarball_url }}"
+        checksum: "{{ wiki_tarball_checksum }}"
+        dest: "{{ wiki_tarball_dest }}/{{ wiki_tarball_filename }}"
+
+    - name: Extract wiki tarball checksum data
+      set_fact:
+        wiki_tarball_checksum_type: "{{ wiki_tarball_checksum|regex_replace('([^:]*):.*', '\\1') }}"
+        wiki_tarball_checksum_data: "{{ wiki_tarball_checksum|regex_replace('[^:]*:(.*)', '\\1') }}"
+
+    - name: Store wiki tarball checksum in checksum file
+      copy:
+        content: "{{ wiki_tarball_checksum_data }}  {{ wiki_tarball_filename }}"
+        dest: "{{ wiki_tarball_dest }}/{{ wiki_tarball_filename }}.{{ wiki_tarball_checksum_type }}"
+
+    - name: Install wiki-export-split.py script into /usr/local/bin
+      copy:
+        src: "bin/wiki-export-split.py"
+        dest: "/usr/local/bin/wiki-export-split.py"
+        mode: "755"
