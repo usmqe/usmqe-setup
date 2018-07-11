@@ -13,6 +13,7 @@
 - hosts: usm_client
   remote_user: root
   vars:
+    # you are not expected to change these variables
     - wiki_tarball_filename: "enwiki-latest-pages-articles.xml.bz2"
     - wiki_tarball_dest: "/tmp"
 
@@ -33,7 +34,7 @@
           - "wiki_tarball_checksum variable."
           - "Eg. md5:a538459bfe1bc35e4d8161840eadbcd"
 
-    - name: Download the wiki tarball into /tmp directory
+    - name: Download the wiki tarball into /tmp directory (wiki_tarball_dest)
       get_url:
         url: "{{ wiki_tarball_url }}"
         checksum: "{{ wiki_tarball_checksum }}"
