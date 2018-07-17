@@ -11,7 +11,7 @@
 
 
 # Stop individual services on the Storage Nodes
-- hosts: gluster-servers
+- hosts: gluster_servers
   user: root
   tasks:
     - name: Stop tendrl-node-agent service
@@ -30,7 +30,7 @@
         state: stopped
 
 # Stop individual services on the Tendrl server
-- hosts: tendrl-server
+- hosts: tendrl_server
   user: root
   tasks:
     - name: Stop etcd service
