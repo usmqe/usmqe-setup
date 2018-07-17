@@ -1,0 +1,81 @@
+---
+# This is an example of a ansible playbook to uninstall Tendrl according to Red Hat Gluster Storage Monitoring Guide
+# https://access.redhat.com/documentation/en-us/red_hat_gluster_storage/3.3/html/monitoring_guide/cluster_expansion#unmanaging_cluster
+#
+#
+# The playbook expects inventory file with the following groups:
+#
+# * tendrl-server: a single machine where Tendrl Server (management console) is
+#                  installed
+# * gluster-servers: gluster storage servers (machines with bricks)
+
+
+# Stop individual services on the Storage Nodes
+- hosts: gluster_servers
+  user: root
+  tasks:
+    - name: Stop tendrl-node-agent service
+      service:
+        name: tendrl-node-agent
+        state: stopped
+
+    - name: Stop collectd service
+      service:
+        name: collectd
+        state: stopped
+
+    - name: Stop tendrl-gluster-integration service
+      service: 
+        name: tendrl-gluster-integration
+        state: stopped
+
+# Stop individual services on the Tendrl server
+- hosts: tendrl_server
+  user: root
+  tasks:
+    - name: Stop etcd service
+      service:
+        name: etcd
+        state: stopped
+
+    - name: Stop tendrl-monitoring-integration service
+      service:
+        name: tendrl-monitoring-integration
+        state: stopped
+
+    - name: Stop tendrl-api service
+      service:
+        name: tendrl-api
+        state: stopped
+
+    - name: Stop tendrl-notifier service
+      service:
+        name: tendrl-notifier
+        state: stopped
+
+    - name: Stop carbon-cache service
+      service:
+        name: carbon-cache
+        state: stopped
+
+    - name: Stop grafana-server service
+      service:
+        name: grafana-server
+        state: stopped
+
+    - name: Stop tendrl-node-agent service
+      service:
+        name: tendrl-node-agent
+        state: stopped
+
+    - name: Remove Carbon files
+      shell: /bin/rm -rf /var/lib/carbon/whisper/*
+
+    - name: Remove Etcd files
+      shell: /bin/rm -rf /var/lib/etcd/*
+
+    - name: Remove Grafana files
+      file:
+        path: /var/lib/grafana/grafana.db
+        state: absent
+   
