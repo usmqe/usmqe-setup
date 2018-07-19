@@ -49,15 +49,6 @@ deployment, but for other tasks which QE team needed to automate, eg.:
   `usm qe integration tests`_ are installed and executed/managed from
 * ``qe_evidence*.yml`` playbooks automate log/evidence gathering process
 
-Note that playbooks with ``skyrings`` in it's name are not supposed to be used
-for Tendrl setup either. These files are there for a reference how particular
-deployment/setup task should be done, eg:
-
-* ``firewall.skyrings.yml`` firewall setup for skyrings project
-* ``services.skyrings.yml`` service management for skyrings project
-
-To see more details, check readme files of ansible roles used in the playbook.
-
 
 Requirements
 ------------
