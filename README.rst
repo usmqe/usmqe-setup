@@ -3,12 +3,12 @@
 =============
 
 This repository contains installation and test setup playbooks (along with
-other ansible code such as roles) for `usm qe integration tests`_ (aka
+other ansible code such as roles) for `usm qe system tests`_ (aka
 ``usmqe-tests``) of `Tendrl project`_.
 
 Ansible code here is build on top of official upstream ansible playbooks/roles
-for Tendrl: `tendrl-ansible`_. If you need to just install Tendrl, use that
-instead of this *qe only* repository.
+for Tendrl: `tendrl-ansible`_. If you need to just install Tendrl, just use
+`tendrl-ansible`_ instead of this **QE only** repository.
 
 
 Overview of the repository structure
@@ -25,20 +25,6 @@ Main top level directories:
 All ``*.yml`` files in the root of the repository are `ansible playbooks`_.
 
 
-Roles
------
-
-Roles with ``qe-`` prefix are automating qe tasks (which are not directly based
-on Tendrl, Ceph or Gluster documentation), such as particular test setup,
-debugging related actions or qe infrastructure deployment.
-
-Roles which installs yum repositories ends with ``-repo`` suffix.
-
-Note that since we reuse ansible roles from official `tendrl-ansible`_, roles
-in usmqe-setup should not use the same names. If such conflict happens later
-when new role is introduced in tendrl-ansible, we need to rename conflicting
-role in usmqe-setup to resolve the name clash.
-
 Playbooks
 ---------
 
@@ -46,23 +32,14 @@ Playbooks starting with ``qe_`` prefix are not meant for direct Tendrl
 deployment, but for other tasks which QE team needed to automate, eg.:
 
 * ``qe_server.yml`` playbook automates deployment of QE Server machine, where
-  `usm qe integration tests`_ are installed and executed/managed from
+  `usm qe system tests`_ are installed and executed/managed from
 * ``qe_evidence*.yml`` playbooks automate log/evidence gathering process
-
-Note that playbooks with ``skyrings`` in it's name are not supposed to be used
-for Tendrl setup either. These files are there for a reference how particular
-deployment/setup task should be done, eg:
-
-* ``firewall.skyrings.yml`` firewall setup for skyrings project
-* ``services.skyrings.yml`` service management for skyrings project
-
-To see more details, check readme files of ansible roles used in the playbook.
 
 
 Requirements
 ------------
 
-You need to install ansible 2.x (`ansible from current Fedora or EPEL`_).
+You need to install Ansible 2.x (`ansible from current Fedora or EPEL`_).
 
 We also assume that storage or tendrl servers (machines you configure with
 playbooks stored in this repository) run CentOS 7 distribution.
@@ -93,11 +70,11 @@ packages`_ or PyPI via ``pip``) and run::
 This check is also run by `usmqe-setup Travis CI job`_ for each pull request.
 
 
-Documentation
--------------
+See Also
+--------
 
 To find more details or to get a whole picture how this repository relates to
-integration tests, see `usm qe documentation`_.
+system tests, see `usm qe documentation`_.
 
 
 License
@@ -107,7 +84,7 @@ Distributed under the terms of the `Apache License 2.0`_ license.
 
 
 .. _`Tendrl project`: http://tendrl.org/
-.. _`usm qe integration tests`: https://github.com/usmqe/usmqe-tests/
+.. _`usm qe system tests`: https://github.com/usmqe/usmqe-tests/
 .. _`usm qe documentation`: https://usmqe-tests.readthedocs.io/en/latest/
 .. _`ansible best practices`: https://docs.ansible.com/ansible/playbooks_best_practices.html
 .. _`ansible group variables`: https://docs.ansible.com/ansible/intro_inventory.html#splitting-out-vars
