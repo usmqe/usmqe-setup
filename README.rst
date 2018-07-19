@@ -39,7 +39,7 @@ deployment, but for other tasks which QE team needed to automate, eg.:
 Requirements
 ------------
 
-You need to install ansible 2.x (`ansible from current Fedora or EPEL`_).
+You need to install Ansible 2.x (`ansible from current Fedora or EPEL`_).
 
 We also assume that storage or tendrl servers (machines you configure with
 playbooks stored in this repository) run CentOS 7 distribution.
@@ -70,8 +70,8 @@ packages`_ or PyPI via ``pip``) and run::
 This check is also run by `usmqe-setup Travis CI job`_ for each pull request.
 
 
-Documentation
--------------
+See Also
+--------
 
 To find more details or to get a whole picture how this repository relates to
 system tests, see `usm qe documentation`_.
