@@ -3,12 +3,12 @@
 =============
 
 This repository contains installation and test setup playbooks (along with
-other ansible code such as roles) for `usm qe integration tests`_ (aka
+other ansible code such as roles) for `usm qe system tests`_ (aka
 ``usmqe-tests``) of `Tendrl project`_.
 
 Ansible code here is build on top of official upstream ansible playbooks/roles
-for Tendrl: `tendrl-ansible`_. If you need to just install Tendrl, use that
-instead of this *qe only* repository.
+for Tendrl: `tendrl-ansible`_. If you need to just install Tendrl, just use
+`tendrl-ansible`_ instead of this **QE only** repository.
 
 
 Overview of the repository structure
@@ -46,7 +46,7 @@ Playbooks starting with ``qe_`` prefix are not meant for direct Tendrl
 deployment, but for other tasks which QE team needed to automate, eg.:
 
 * ``qe_server.yml`` playbook automates deployment of QE Server machine, where
-  `usm qe integration tests`_ are installed and executed/managed from
+  `usm qe system tests`_ are installed and executed/managed from
 * ``qe_evidence*.yml`` playbooks automate log/evidence gathering process
 
 
@@ -88,7 +88,7 @@ Documentation
 -------------
 
 To find more details or to get a whole picture how this repository relates to
-integration tests, see `usm qe documentation`_.
+system tests, see `usm qe documentation`_.
 
 
 License
@@ -98,7 +98,7 @@ Distributed under the terms of the `Apache License 2.0`_ license.
 
 
 .. _`Tendrl project`: http://tendrl.org/
-.. _`usm qe integration tests`: https://github.com/usmqe/usmqe-tests/
+.. _`usm qe system tests`: https://github.com/usmqe/usmqe-tests/
 .. _`usm qe documentation`: https://usmqe-tests.readthedocs.io/en/latest/
 .. _`ansible best practices`: https://docs.ansible.com/ansible/playbooks_best_practices.html
 .. _`ansible group variables`: https://docs.ansible.com/ansible/intro_inventory.html#splitting-out-vars
