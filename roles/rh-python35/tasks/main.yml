@@ -7,7 +7,7 @@
 - name: Install centos-release-scl (package with the repo file)
   yum: name=centos-release-scl state=installed
   register: task_result
-  until: task_result|success
+  until: task_result is success
   retries: 5
   delay: 5
   when: ansible_distribution == 'CentOS'
@@ -15,7 +15,7 @@
 - name: Install rh python35 software collection
   yum: name=rh-python35 state=present
   register: task_result
-  until: task_result|success
+  until: task_result is success
   retries: 5
   delay: 5
 
@@ -29,6 +29,6 @@
     - rh-python35-python-setuptools
     - rh-python35-python-virtualenv
   register: task_result
-  until: task_result|success
+  until: task_result is success
   retries: 5
   delay: 5

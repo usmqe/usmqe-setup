@@ -6,7 +6,7 @@
   retries: 5
   delay: 5
   register: result
-  until: 'result|success'
+  until: 'result is success'
   notify:
     - restart munin-node service
 
