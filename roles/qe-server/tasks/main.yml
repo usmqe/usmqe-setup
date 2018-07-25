@@ -31,7 +31,7 @@
 - name: Install ansible
   yum: name=ansible state=present enablerepo=epel
   register: task_result
-  until: task_result|success
+  until: task_result is success
   retries: 5
   delay: 5
 
