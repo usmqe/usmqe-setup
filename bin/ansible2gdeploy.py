@@ -72,10 +72,27 @@ def host_random(fqdn):
     choices = (host_fqdn, host_short, host_ip)
     return random.choice(choices)(fqdn)
 
+def host_example_org(fqdn):
+    """
+    Return host's hostname in domain example.org.
+    """
+    new_fqdn = "%s.example.org" % fqdn.split(".")[0]
+    print("NEW_FQDN: %s" % new_fqdn, file=sys.stderr)
+    return new_fqdn
+
 def main():
     """
     main function
     """
+    host_transformation = {
+        'fqdn': host_fqdn,
+        'short': host_short,
+        'ip': host_ip,
+        'mixed': host_mixed,
+        'random': host_random,
+        'example.org': host_example_org,
+        }
+
     ap = argparse.ArgumentParser(
         description="update of hosts and devices in gdeploy conf file")
     ap.add_argument(
@@ -109,7 +126,7 @@ def main():
         "-H",
         "--hosts-definition",
         dest="hosts_definition",
-        choices=['fqdn', 'short', 'ip', 'mixed', 'random'],
+        choices=host_transformation.keys(),
         default='fqdn',
         help="How to define hosts in gdeploy config: fqdn, short, ip, mixed or random.")
     ap.add_argument(
@@ -167,14 +184,6 @@ def main():
     print("servers: " + ", ".join(servers), file=sys.stderr)
     print("clients: " + ", ".join(clients), file=sys.stderr)
     print("devices: " + ", ".join(storage_devices), file=sys.stderr)
-
-    host_transformation = {
-        'fqdn': host_fqdn,
-        'short': host_short,
-        'ip': host_ip,
-        'mixed': host_mixed,
-        'random': host_random,
-        }
 
     # update gdeploy config files
     for gdeploy_conf_file, gdeploy_conf in gdeploy_confs.items():
