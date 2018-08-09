@@ -72,6 +72,14 @@ def host_random(fqdn):
     choices = (host_fqdn, host_short, host_ip)
     return random.choice(choices)(fqdn)
 
+def host_example_org(fqdn):
+    """
+    Return host's hostname in domain example.org.
+    """
+    new_fqdn = "%s.example.org" % fqdn.split(".")[0]
+    print("NEW_FQDN: %s" % new_fqdn, file=sys.stderr)
+    return new_fqdn
+
 def main():
     """
     main function
@@ -82,6 +90,7 @@ def main():
         'ip': host_ip,
         'mixed': host_mixed,
         'random': host_random,
+        'example.org': host_example_org,
         }
 
     ap = argparse.ArgumentParser(
