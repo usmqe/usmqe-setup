@@ -3,6 +3,15 @@ gluster_centos_repos:
     nightly:
         description: "Gluster nightly builds from CentOS Storage SIG"
         baseurl: "http://artifacts.ci.centos.org/gluster/nightly/master/7/x86_64/"
+    4-1:
+        description: "Gluster 4.1 from CentOS Storage SIG"
+        baseurl: "http://buildlogs.centos.org/centos/7/storage/x86_64/gluster-4.1/"
+    4-0:
+        description: "Gluster 4.0 from CentOS Storage SIG"
+        baseurl: "http://buildlogs.centos.org/centos/7/storage/x86_64/gluster-4.0/"
+    3-13:
+        description: "Gluster 3.13 from CentOS Storage SIG"
+        baseurl: "http://buildlogs.centos.org/centos/7/storage/x86_64/gluster-3.13/"
     3-12:
         description: "Gluster 3.12 from CentOS Storage SIG"
         baseurl: "http://buildlogs.centos.org/centos/7/storage/x86_64/gluster-3.12/"
