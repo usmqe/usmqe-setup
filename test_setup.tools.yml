@@ -1,6 +1,9 @@
 ---
 # Installation of helper tools which are needed for running automated tests
 # cases from usmqe-tests.
+# Note that even though this playbook enables EPEL repository only to install
+# given tools, it can install other dependencies from EPEL during this process
+# and so for this reason, teardown is not trivial.
 - hosts: usm_nodes
   remote_user: root
   roles:
