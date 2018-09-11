@@ -1,0 +1,19 @@
+---
+# Installation of helper tools which are needed for running automated tests
+# cases from usmqe-tests.
+- hosts: usm_nodes
+  remote_user: root
+  roles:
+    - role: epel
+  tasks:
+    - name: Install tools required for usmqe-tests from EPEL
+      yum:
+        name: "{{ item }}"
+        state: installed
+        enablerepo: epel
+      with_items:
+        - stress-ng
+      register: task_result
+      until: task_result is success
+      retries: 5
+      delay: 5
