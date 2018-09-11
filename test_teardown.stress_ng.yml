@@ -1,0 +1,18 @@
+---
+# Removal of stress-ng tool and all it's dependencies (checked via yum.log),
+# mainly to make sure we don't keep other tools from EPEL installed.
+- hosts: usm_nodes
+  remote_user: root
+  tasks:
+    - name: Remove stress-ng tool and direct dependencies
+      yum:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - stress-ng
+        - libbsd
+        - lksctp-tools
+      register: task_result
+      until: task_result is success
+      retries: 5
+      delay: 5
