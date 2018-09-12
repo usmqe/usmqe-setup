@@ -1,0 +1,19 @@
+---
+# Installation of stress-ng tool which is needed for running some automated
+# tests cases from usmqe-tests.
+# Note that 'epel' role used in this playbook installs the epel repo, but keeps
+# it disabled by default.
+- hosts: usm_nodes
+  remote_user: root
+  roles:
+    - role: epel
+  tasks:
+    - name: Install stress-ng tool required for usmqe-tests from EPEL
+      yum:
+        name: stress-ng
+        state: installed
+        enablerepo: epel
+      register: task_result
+      until: task_result is success
+      retries: 5
+      delay: 5
