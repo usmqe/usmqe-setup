@@ -11,7 +11,6 @@
       with_items:
         - stress-ng
         - libbsd
-        - lksctp-tools
       register: task_result
       until: task_result is success
       retries: 5
