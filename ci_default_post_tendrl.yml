@@ -22,3 +22,10 @@
       yum:
         name: ansible
         state: latest
+      register: ansible_update_status
+
+    - name: "WORKAROUND: (update ansible) restart tendrl-node-agent"
+      service:
+        name: "tendrl-node-agent"
+        state: restarted
+      when: ansible_update_status.changed
