@@ -17,3 +17,8 @@
 
     - name: Copy usm.ini template
       local_action: template src=./templates/usm.ini.j2 dest=./usm.ini
+
+    - name: "WORKAROUND: update ansible (Tendrl/commons/issues/1054)"
+      yum:
+        name: ansible
+        state: latest
