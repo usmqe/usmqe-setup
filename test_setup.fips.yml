@@ -1,7 +1,7 @@
 ---
 # Steps needed to make RHEL or CentOS FIPS 140-2 compliant
 # are listed here: https://access.redhat.com/solutions/137833
-- hosts: usm_nodes
+- hosts: usm_nodes:usm_server:usm_client
   remote_user: root
   tasks:
     - name: Install dracut-fips
