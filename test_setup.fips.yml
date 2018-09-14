@@ -1,0 +1,60 @@
+---
+# Steps needed to make RHEL or CentOS FIPS 140-2 compliant
+# are listed here: https://access.redhat.com/solutions/137833
+- hosts: usm_nodes:usm_server:usm_client
+  remote_user: root
+  tasks:
+    - name: Install dracut-fips
+      yum:
+        name: dracut-fips
+        state: installed
+
+    - name: Uninstall prelink
+      yum:
+        name: prelink
+        state: absent
+
+    - name: Backup existing initramfs
+      copy:
+        src: "/boot/initramfs-{{ ansible_kernel }}.img"
+        dest: "/boot/initramfs-{{ ansible_kernel }}.img.bak"
+        remote_src: yes
+
+    - name: Delete old initramfs
+      file:
+        state: absent
+        path: "/boot/initramfs-{{ ansible_kernel }}.img"
+
+    - name: Run dracut to rebuild initramfs
+      command: dracut
+
+    - name: Edit kernel command-line to include fips=1
+      shell: grubby --update-kernel=$(grubby --default-kernel) --args=fips=1
+
+# This task is necessary if /boot is a filesystem separate from the rootfs
+#    - name: Include boot=UUID=XXXX or similar
+#      shell: |
+#        uuid=$(findmnt -no uuid /boot)
+#        [[ -n $uuid ]] && grubby --update-kernel=$(grubby --default-kernel) --args=boot=UUID=${uuid}
+
+    - name: Reboot
+      shell: sleep 5 && reboot
+      async: 1
+      poll: 0
+
+    - name: Wait for the reboot to complete
+      wait_for_connection:
+        connect_timeout: 20
+        sleep: 5
+        delay: 20
+        timeout: 300
+
+    - name: Confirm FIPS mode
+      command: sysctl crypto.fips_enabled
+      register: fips
+      changed_when: False
+
+    - name: Check crypto.fips_enabled
+      assert:   
+        that:
+          - "'crypto.fips_enabled = 1' in fips.stdout"
