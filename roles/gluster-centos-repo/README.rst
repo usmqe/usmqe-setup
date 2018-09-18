@@ -11,6 +11,9 @@ eiter:
 * ``nightly``: Latest nightly builds from ``artifacts.ci.centos.org``.
   When used, ``epel`` role is added into dependencies of this role so that
   EPEL_ is installed and enabled as well (see explnanation below).
+* ``4-1``: GlusterFS version 4.1
+* ``4-0``: GlusterFS version 4.0
+* ``3-13``: GlusterFS version 3.13
 * ``3-12``: GlusterFS version 3.12
 * ``3-11``: GlusterFS version 3.11
 * ``3-10``: GlusterFS version 3.10
