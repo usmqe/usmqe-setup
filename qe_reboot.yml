@@ -6,28 +6,18 @@
   hosts: "usm_server:usm_nodes:usm_client"
   remote_user: root
   tasks:
-    - name: install package at
-      package:
-        name: at
-        state: latest
-    - name: start atd
-      service:
-        name: atd
-        state: started
-    - name: reboot
-      shell: "echo reboot | at now"
+    - name: Reboot
+      shell: sleep 5 && reboot
+      async: 1
+      poll: 0
       when: not skip_reboot|default(false)|bool
 
-- name: Wait for all servers to boot up
-  hosts: "usm_server:usm_nodes:usm_client"
-  gather_facts: no
-  remote_user: root
-  tasks:
-    - name: Wait for all servers
-      local_action: wait_for host={{ inventory_hostname }} port=22
-        state=started timeout=7200 delay=60
-      when: not skip_reboot|default(false)|bool
-    - pause: seconds=15
+    - name: Wait for the reboot to complete
+      wait_for_connection:
+        connect_timeout: 10
+        sleep: 10
+        delay: 30
+        timeout: 7200
       when: not skip_reboot|default(false)|bool
     - name: Ping
       ping:
