@@ -55,7 +55,7 @@
         name: tendrl-ansible
         state: present
 
-    - name: Copy site.yml and precheck.yml files to /home/usmqe
+    - name: Copy site.yml and prechecks.yml files to /home/usmqe
       shell: cp /usr/share/doc/tendrl-ansible-*/{{item}}* /home/usmqe/{{item}}
       with_items:
         - prechecks.yml
