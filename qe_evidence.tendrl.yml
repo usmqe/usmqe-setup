@@ -38,7 +38,6 @@
       - /etc/etcd/
       - /etc/carbon/
       - /etc/graphite-web/
-      - /etc/ceph-installer/
       - /etc/grafana/
       - /etc/collectd_template/
       - /etc/collectd.d/
@@ -88,16 +87,3 @@
   roles:
     - qe-evidence
     - qe-evidence-probe-journald
-
-- name: Download logs from Ceph Storage machines
-  hosts: ceph_osd ceph_mon
-  user: root
-  vars:
-    evidence_dirs:
-      - /etc/ceph/
-      - /var/log/ceph
-    evidence_journald_services:
-      - tendrl-ceph-integration
-  roles:
-   - role: qe-evidence
-   - qe-evidence-probe-journald
