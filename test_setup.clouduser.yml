@@ -74,8 +74,8 @@
         that:
           - sudo_whoami.rc == 0
           - sudo_whoami.stdout == "root"
-        msg:
-          - "Ops, I'm afraid you would need to invetigate what went wrong."
-          - "In the worst case, you just lost access and need to use serial"
-          - "console to gain access again or just redeploy."
-          - "I'm so sorry."
+        msg: >
+          Ops, I'm afraid you would need to invetigate what went wrong.
+          In the worst case, you just lost access and need to use serial
+          console to gain access again or just redeploy.
+          I'm so sorry.
