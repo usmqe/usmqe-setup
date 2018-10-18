@@ -29,22 +29,22 @@
         that:
           - wiki_tarball_url is defined
           - wiki_tarball_checksum is defined
-        msg:
-          - "You need to define *url of the tarball* in wiki_tarball_url"
-          - "variable in your inventory file."
-          - "Eg. http://example.com/enwiki-latest-pages-articles.xml.bz2"
-          - ""
-          - "You also need to define *checksum of the tarball* in"
-          - "wiki_tarball_checksum variable."
-          - "Eg. md5:a538459bfe1bc35e4d8161840eadbcd"
+        msg: >
+          You need to define *url of the tarball* in wiki_tarball_url
+          variable in your inventory file.
+          Eg. http://example.com/enwiki-latest-pages-articles.xml.bz2
+
+          You also need to define *checksum of the tarball* in
+          wiki_tarball_checksum variable.
+          Eg. md5:a538459bfe1bc35e4d8161840eadbcd
 
     - name: Check that mandatory variables references a local mirror
       assert:
         that:
           - "'wikimedia.org' not in '{{ wiki_tarball_url }}'"
-        msg:
-          - "Don't use original source on wikimedia.org, but host the file on"
-          - "your own infrastructure!"
+        msg: >
+          Don't use original source on wikimedia.org, but host the file on
+          your own infrastructure!
 
     - name: Download the wiki tarball into /tmp directory (wiki_tarball_dest)
       get_url:
