@@ -1,6 +1,8 @@
 ---
 # Steps needed to make RHEL or CentOS FIPS 140-2 compliant
 # are listed here: https://access.redhat.com/solutions/137833
+# See also:
+# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/chap-federal_standards_and_regulations
 - hosts: usm_nodes:usm_server:usm_client
   remote_user: root
   tasks:
