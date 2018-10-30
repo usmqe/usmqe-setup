@@ -1,6 +1,6 @@
 ---
 # Perform auxiliary tasks after site.yml from tendrl-ansible.
-# * prepare usm.ini configuration for usmqe-tests
+# * prepare usm.yaml configuration for usmqe-tests
 
 #
 # Tendrl server
@@ -15,8 +15,11 @@
 
     - debug: var=admin_password
 
-    - name: Copy usm.ini template
-      local_action: template src=./templates/usm.ini.j2 dest=./usm.ini
+    - name: Copy defaults.yaml template
+      local_action: template src=./templates/defaults.yaml.j2 dest=./defaults.yaml
+
+    - name: Copy usm.yaml template
+      local_action: template src=./templates/usm.yaml.j2 dest=./usm.yaml
 
     - name: "WORKAROUND: update ansible (Tendrl/commons/issues/1054)"
       yum:
