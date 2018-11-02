@@ -1,8 +1,0 @@
-usmqe:
-  log_level: DEBUG
-  username: admin
-  password: {{ hostvars[groups['usm_server'][0]]['admin_password'].stdout }}
-  ca_cert: conf/ooo_ca.crt
-  gluster_role: gluster_servers
-  gluster_version = 3.8.3
-  brick_name: brick
