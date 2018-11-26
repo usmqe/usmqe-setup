@@ -1,0 +1,53 @@
+---
+# ========================================
+#  QE configuration of SMTP notifications
+# ========================================
+#
+# Overview of the configuration this playbook sets up:
+#
+# * postfix smtp server runs on usm_client machine, listening on public
+#   interface
+# * tendrl notifier is configured to send email via postfix smtp server running
+#   on usm_client directly (so no MX entries are required for this to work)
+# * tendrl notifier sends email alerts for admin user to root at
+#   usm_client machine
+# * root user on client machine can read email alerts for tendrl admin user,
+#   which are delevered to his mailbox, via email clients such as mailx or mutt
+#
+# Based on:
+#
+# https://github.com/Tendrl/documentation/wiki/Tendrl-release-v1.5.4-(install-guide)#tendrl-server-installation
+#
+# See Also:
+#
+# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system_administrators_guide/s1-email-mta#s2-email-mta-postfix
+# http://www.postfix.org/BASIC_CONFIGURATION_README.html
+
+- hosts: usm_server
+  remote_user: root
+  vars:
+    tendrl_user: "admin"
+    tendrl_password: "adminuser"
+
+  tasks:
+    - name: Create alerts_logger python script based on a template
+      template:
+        dest: /usr/bin/alerts_logger_{{ tendrl_user }}.py
+        src: alerts_logger.py.j2
+        force: yes
+        mode: "+x"
+
+    - name: Create service file based on a template
+      template:
+        dest: /lib/systemd/system/alerts_logger_{{ tendrl_user }}.service
+        src: alerts_logger.service.j2
+        force: yes
+
+    - name: force systemd to reread configs
+      systemd: daemon_reload=yes
+
+    - name: enable alert logger
+      systemd:
+        name: alerts_logger_{{ tendrl_user }}
+        state: started
+        enabled: True
