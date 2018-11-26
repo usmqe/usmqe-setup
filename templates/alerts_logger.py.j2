@@ -110,8 +110,13 @@ class TendrlApi(object):
             auth=self._auth,)
         return response.json()
 
+
 class TendrlFormatter(logging.Formatter):
+    """
+    This class can be used to create special formating of tendrl logs.
+    """
     def format(self, record):
+        # TODO(fbalak): update this function to alter log format
         result = super(TendrlFormatter, self).format(record)
         return result
 

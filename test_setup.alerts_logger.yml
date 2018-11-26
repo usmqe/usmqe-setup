@@ -1,27 +1,10 @@
 ---
 # ========================================
-#  QE configuration of SMTP notifications
+#  QE configuration for alerts logger
 # ========================================
 #
-# Overview of the configuration this playbook sets up:
-#
-# * postfix smtp server runs on usm_client machine, listening on public
-#   interface
-# * tendrl notifier is configured to send email via postfix smtp server running
-#   on usm_client directly (so no MX entries are required for this to work)
-# * tendrl notifier sends email alerts for admin user to root at
-#   usm_client machine
-# * root user on client machine can read email alerts for tendrl admin user,
-#   which are delevered to his mailbox, via email clients such as mailx or mutt
-#
-# Based on:
-#
-# https://github.com/Tendrl/documentation/wiki/Tendrl-release-v1.5.4-(install-guide)#tendrl-server-installation
-#
-# See Also:
-#
-# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system_administrators_guide/s1-email-mta#s2-email-mta-postfix
-# http://www.postfix.org/BASIC_CONFIGURATION_README.html
+# This playbook serves as setup of alerts logger on tendrl server machine.
+# It periodically logs alerts from tendrl api based on tendrl user.
 
 - hosts: usm_server
   remote_user: root
