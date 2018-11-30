@@ -1,9 +1,0 @@
-[Unit]
-Description=Tendrl alerts logger for user {{ tendrl_user }}
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/alerts_logger_{{ tendrl_user }}.py
-
-[Install]
-WantedBy=multi-user.target

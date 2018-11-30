@@ -20,17 +20,16 @@
         force: yes
         mode: "+x"
 
-    - name: Create service file based on a template
-      template:
-        dest: /etc/systemd/system/alerts_logger_{{ tendrl_user }}.service
-        src: alerts_logger.service.j2
-        force: yes
+    - name: Create service file
+      copy:
+        dest: /etc/systemd/system/
+        src: alerts_logger@.service
 
     - name: force systemd to reread configs
       systemd: daemon_reload=yes
 
     - name: enable alert logger
       systemd:
-        name: alerts_logger_{{ tendrl_user }}
+        name: alerts_logger@{{ tendrl_user }}
         state: started
         enabled: True
