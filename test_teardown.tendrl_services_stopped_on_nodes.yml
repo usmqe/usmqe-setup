@@ -1,0 +1,25 @@
+---
+# ===========================================================================
+#  QE configuration for starting tendrl related services on gluster machines
+# ===========================================================================
+#
+# This playbook serves as a teardown for tests that check availability of
+# gluster nodes.
+
+- hosts: gluster_servers
+  remote_user: root
+  tasks:
+    - name: Start tendrl-node-agent
+      service:
+        name: tendrl-node-agent
+        state: started
+
+    - name: Start collectd service
+      service:
+        name: collectd
+        state: started
+
+    - name: Start tendrl-gluster-integration service
+      service: 
+        name: tendrl-gluster-integration
+        state: started

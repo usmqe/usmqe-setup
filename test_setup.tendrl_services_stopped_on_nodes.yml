@@ -1,0 +1,25 @@
+---
+# ===========================================================================
+#  QE configuration for stopping tendrl related services on gluster machines
+# ===========================================================================
+#
+# This playbook serves as a setup for tests that check availability of
+# gluster nodes.
+
+- hosts: gluster_servers
+  remote_user: root
+  tasks:
+    - name: Stop tendrl-node-agent
+      service:
+        name: tendrl-node-agent
+        state: stopped
+
+    - name: Stop collectd service
+      service:
+        name: collectd
+        state: stopped
+
+    - name: Stop tendrl-gluster-integration service
+      service: 
+        name: tendrl-gluster-integration
+        state: stopped
