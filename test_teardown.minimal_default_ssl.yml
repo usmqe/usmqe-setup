@@ -1,0 +1,46 @@
+---
+# ==================================================
+#  Teardown of HTTPS for Tendrl UI, API and Grafana
+# ==================================================
+#
+# Based on upstream wiki:
+# https://github.com/Tendrl/documentation/wiki/Enabling-Https-on-tendrl-server
+
+- hosts: usm_server
+  remote_user: root
+  handlers:
+    - name: restart httpd
+      service: name=httpd state=restarted
+  tasks:
+
+    - name: Remove tendrl-ssl.conf file
+      file:
+        path: /etc/httpd/conf.d/tendrl-ssl.conf
+        state: absent
+      notify: restart httpd
+
+    - name: Remove mod_ssl package
+      yum:
+        name: mod_ssl
+        state: absent
+
+    - name: Run apachectl configtest to validate new configuration
+      command: apachectl -t
+      changed_when: False
+      register: apachectl_configtest
+
+    - name: Recheck result of config validation (based on previous task)
+      assert:
+        that:
+          - apachectl_configtest.stderr == 'Syntax OK'
+          - apachectl_configtest.stdout == ''
+
+    - name: Disable https service in firewalld
+      firewalld:
+        service=https
+        zone=public permanent=true state=disabled immediate=true
+
+    - name: Enable http service in firewalld
+      firewalld:
+        service=http
+        zone=public permanent=true state=enabled immediate=true
