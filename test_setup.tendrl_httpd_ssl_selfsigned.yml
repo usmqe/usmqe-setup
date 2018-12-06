@@ -8,9 +8,6 @@
 
 - hosts: usm_server
   remote_user: root
-  handlers:
-    - name: restart httpd
-      service: name=httpd state=restarted
   roles:
     - role: tendrl-httpd-ssl
       httpd_server_name: "{{ inventory_hostname }}"
