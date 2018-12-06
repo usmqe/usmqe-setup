@@ -1,0 +1,62 @@
+---
+
+- debug:
+    var: httpd_server_name
+
+- debug:
+    var: httpd_ip_address
+
+- name: Install mod_ssl package
+  yum:
+    name: mod_ssl
+    state: latest
+
+- name: Initialize new tendrl-ssl.conf file based on sample conf file
+  copy:
+    src: /etc/httpd/conf.d/tendrl-ssl.conf.sample
+    remote_src: True
+    dest: /etc/httpd/conf.d/tendrl-ssl.conf
+
+- name: Replace ssl_virtualhost_ip with the correct ip address
+  lineinfile:
+    path: /etc/httpd/conf.d/tendrl-ssl.conf
+    regexp: '^<VirtualHost .*:443>'
+    line: "<VirtualHost {{ httpd_ip_address }}:443>"
+  notify:
+    - restart httpd
+
+- name: Adjust ServerName
+  lineinfile:
+    path: /etc/httpd/conf.d/tendrl-ssl.conf
+    insertafter: '<VirtualHost .*:443>'
+    regexp: '^ *ServerName .*'
+    line: "  ServerName {{ httpd_server_name }}"
+    state: present
+  notify:
+    - restart httpd
+
+- name: Run apachectl configtest to validate new configuration
+  command: apachectl -t
+  changed_when: False
+  register: apachectl_configtest
+
+- name: Recheck result of config validation (based on previous task)
+  assert:
+    that:
+      - apachectl_configtest.stderr == 'Syntax OK'
+      - apachectl_configtest.stdout == ''
+
+- name: Open port for https in firewalld
+  firewalld:
+    service=https
+    zone=public permanent=true state=enabled immediate=true
+
+- name: Disable http service in firewalld (for proper testing)
+  firewalld:
+    service=http
+    zone=public permanent=true state=disabled immediate=true
+
+- name: Close port 80 in firewalld (for proper testing)
+  firewalld:
+    port="80/tcp"
+    zone=public permanent=true state=disabled immediate=true

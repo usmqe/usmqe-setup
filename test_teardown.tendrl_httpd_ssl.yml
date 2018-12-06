@@ -3,8 +3,9 @@
 #  Teardown of HTTPS for Tendrl UI, API and Grafana
 # ==================================================
 #
-# Based on upstream wiki:
-# https://github.com/Tendrl/documentation/wiki/Enabling-Https-on-tendrl-server
+# This just removes any SSL Tendrl configuration (no matter if default local
+# self signed certs or actuall CA is used) and configures Tendrl to use plain
+# http again.
 
 - hosts: usm_server
   remote_user: root

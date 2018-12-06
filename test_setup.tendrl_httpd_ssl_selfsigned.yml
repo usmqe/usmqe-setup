@@ -1,0 +1,17 @@
+---
+# ===============================================
+#  Setup of HTTPS for Tendrl UI, API and Grafana
+# ===============================================
+#
+# This is **minimal setup**, which **uses default local ssl certs** provided by
+# mod_ssl rpm package.
+
+- hosts: usm_server
+  remote_user: root
+  handlers:
+    - name: restart httpd
+      service: name=httpd state=restarted
+  roles:
+    - role: tendrl-httpd-ssl
+      httpd_server_name: "{{ inventory_hostname }}"
+      httpd_ip_address: "{{ ansible_default_ipv4.address }}"
