@@ -35,6 +35,28 @@
   notify:
     - restart httpd
 
+#
+# Specify different cert files if needed
+#
+
+- name: Configure SSL certificate files
+  lineinfile:
+    path: /etc/httpd/conf.d/tendrl-ssl.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - regexp: '^ *SSLCertificateFile .*'
+      line: '  SSLCertificateFile {{ httpd_ssl_certificate_file }}'
+    - regexp: '^ *SSLCertificateKeyFile .*'
+      line: '  SSLCertificateKeyFile {{ httpd_ssl_certificate_key_file }}'
+  when: httpd_ssl_certificate_key_file is defined and httpd_ssl_certificate_file is defined
+  notify:
+    - restart httpd
+
+#
+# Config validation
+#
+
 - name: Run apachectl configtest to validate new configuration
   command: apachectl -t
   changed_when: False
@@ -45,6 +67,10 @@
     that:
       - apachectl_configtest.stderr == 'Syntax OK'
       - apachectl_configtest.stdout == ''
+
+#
+# Firewall
+#
 
 - name: Open port for https in firewalld
   firewalld:

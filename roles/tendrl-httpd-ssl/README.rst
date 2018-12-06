@@ -19,3 +19,5 @@ Variables
 
 * ``httpd_ip_address``: public ip address of WA server, where the web is hosted
 * ``httpd_server_name``: ``ServerName`` of the Tendrl Web
+* ``httpd_ssl_certificate_key_file``: ``SLCertificateFile`` of the Tendrl Web
+* ``httpd_ssl_certificate_file``: ``SSLCertificateKeyFile`` of the Tendrl Web
