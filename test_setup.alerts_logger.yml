@@ -29,7 +29,7 @@
 
     - name: Add user to users.ini
       ini_file:
-        path: /usr/local/bin/users.ini
+        path: /etc/usmqe_alerts_logger_users.ini
         section: "{{ tendrl_user }}"
         option: password
         value: "{{ tendrl_password }}"
