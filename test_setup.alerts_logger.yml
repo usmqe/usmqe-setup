@@ -13,11 +13,10 @@
     tendrl_password: "adminuser"
 
   tasks:
-    - name: Create alerts_logger python script based on a template
-      template:
-        dest: /usr/local/bin/alerts_logger_{{ tendrl_user }}.py
-        src: alerts_logger.py.j2
-        force: yes
+    - name: Create alerts_logger python script
+      copy:
+        dest: /usr/local/bin/alerts_logger.py
+        src: alerts_logger.py
         mode: "+x"
 
     - name: Create service file
@@ -28,8 +27,9 @@
     - name: force systemd to reread configs
       systemd: daemon_reload=yes
 
-    - name: enable alert logger
-      systemd:
-        name: alerts_logger@{{ tendrl_user }}
-        state: started
-        enabled: True
+    - name: Add user to users.ini
+      ini_file:
+        path: /usr/local/bin/users.ini
+        section: "{{ tendrl_user }}"
+        option: password
+        value: "{{ tendrl_password }}"

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Tendrl Notifier REST API logger."""
 
+import argparse
+import ConfigParser
 import logging
 import os
 import json
@@ -10,8 +12,6 @@ import requests
 
 
 URL = "http://0.0.0.0/api/1.0/"
-USER = "{{ tendrl_user }}"
-PASSWORD = "{{ tendrl_password }}"
 
 class TendrlAuth(requests.auth.AuthBase):
     """
@@ -122,10 +122,17 @@ class TendrlFormatter(logging.Formatter):
 
 
 def main():
-    auth = login(USER, PASSWORD)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("user", type=str, nargs='?')
+    args = parser.parse_args()
+    config = ConfigParser.RawConfigParser()
+    thisfolder = os.path.dirname(os.path.abspath(__file__))
+    config.read(os.path.join(thisfolder, "users.ini"))
+    password = config.get(args.user, "password")
+    auth = login(args.user, password)
     api = TendrlApi(auth=auth)
     logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
-    logger = logging.getLogger("tendrl-notifier.{}".format(USER))
+    logger = logging.getLogger("tendrl-notifier.{}".format(args.user))
     formatter = TendrlFormatter(logging.BASIC_FORMAT)
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
