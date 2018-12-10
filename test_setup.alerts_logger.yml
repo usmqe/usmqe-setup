@@ -15,14 +15,14 @@
   tasks:
     - name: Create alerts_logger python script
       copy:
-        dest: /usr/local/bin/alerts_logger.py
-        src: alerts_logger.py
+        dest: /usr/local/bin/usmqe_alerts_logger.py
+        src: usmqe_alerts_logger.py
         mode: "+x"
 
     - name: Create service file
       copy:
         dest: /etc/systemd/system/
-        src: alerts_logger@.service
+        src: usmqe_alerts_logger@.service
 
     - name: force systemd to reread configs
       systemd: daemon_reload=yes
@@ -36,6 +36,6 @@
 
     - name: Enable alert logger
       systemd:
-        name: alerts_logger@{{ tendrl_user }}
+        name: usmqe_alerts_logger@{{ tendrl_user }}
         state: started
         enabled: True
