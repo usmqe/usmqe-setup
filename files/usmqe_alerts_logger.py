@@ -131,7 +131,7 @@ def main():
     auth = login(args.user, password)
     api = TendrlApi(auth=auth)
     logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
-    logger = logging.getLogger("tendrl-notifier.{}".format(args.user))
+    logger = logging.getLogger("usmqe_alerts_logger@{}".format(args.user))
     formatter = TendrlFormatter(logging.BASIC_FORMAT)
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
