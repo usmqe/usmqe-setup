@@ -33,3 +33,9 @@
         section: "{{ tendrl_user }}"
         option: password
         value: "{{ tendrl_password }}"
+
+    - name: Enable alert logger
+      systemd:
+        name: alerts_logger@{{ tendrl_user }}
+        state: started
+        enabled: True
