@@ -10,5 +10,3 @@
   remote_user: root
   roles:
     - role: tendrl-httpd-ssl
-      httpd_server_name: "{{ inventory_hostname }}"
-      httpd_ip_address: "{{ ansible_default_ipv4.address }}"

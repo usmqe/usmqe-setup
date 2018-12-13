@@ -18,6 +18,8 @@ Variables
 =========
 
 * ``httpd_ip_address``: public ip address of WA server, where the web is hosted
+  (default value provided in the role is valid for standard usmqe environment)
 * ``httpd_server_name``: ``ServerName`` of the Tendrl Web
+  (default value provided in the role is valid for standard usmqe environment)
 * ``httpd_ssl_certificate_key_file``: ``SLCertificateFile`` of the Tendrl Web
 * ``httpd_ssl_certificate_file``: ``SSLCertificateKeyFile`` of the Tendrl Web
