@@ -6,11 +6,12 @@
 # This playbook serves as setup of alerts logger on tendrl server machine.
 # It periodically logs alerts from tendrl api based on tendrl user.
 
-- hosts: usm_server
+- hosts: usm_client
   remote_user: root
   vars:
     tendrl_user: "admin"
     tendrl_password: "adminuser"
+    tendrl_ssl: "false"
 
   tasks:
     - name: Create alerts_logger python script
@@ -27,12 +28,16 @@
     - name: force systemd to reread configs
       systemd: daemon_reload=yes
 
-    - name: Add user to users.ini
+    - name: Add user and address to users.ini
       ini_file:
         path: /etc/usmqe_alerts_logger_users.ini
         section: "{{ tendrl_user }}"
-        option: password
-        value: "{{ tendrl_password }}"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - { option: "password", value: "{{ tendrl_password }}" }
+        - { option: "url", value: "{{ groups['usm_server'][0] }}" }
+        - { option: "ssl", value: "{{ tendrl_ssl }}" }
 
     - name: Enable alert logger
       systemd:

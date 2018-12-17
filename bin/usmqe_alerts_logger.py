@@ -11,8 +11,6 @@ import time
 import requests
 
 
-URL = "http://0.0.0.0/api/1.0/"
-
 class TendrlAuth(requests.auth.AuthBase):
     """
     Implementation of Tendrl Auth Method (Bearer Token) for requests
@@ -53,7 +51,7 @@ class TendrlAuth(requests.auth.AuthBase):
         return r
 
 
-def login(username, password, asserts_in=None):
+def login(username, password, url, asserts_in=None):
     """
     Login Tendrl user.
     Args:
@@ -65,32 +63,18 @@ def login(username, password, asserts_in=None):
     pattern = "login"
     post_data = {"username": username, "password": password}
     request = requests.post(
-        URL + pattern,
+        url + pattern,
         data=json.dumps(post_data))
     token = request.json().get("access_token")
     auth = TendrlAuth(token, username)
     return auth
 
 
-def logout(auth, asserts_in=None):
-    """
-    Logout Tendrl user.
-    Args:
-        asserts_in: assert values for this call and this method
-        auth: TendrlAuth object (defines bearer token header)
-    """
-    pattern = "logout"
-    request = requests.delete(
-        URL + pattern,
-        auth=auth)
-    return request.json()
-
-
 class TendrlApi(object):
     """ Common methods for Tendrl REST API.
     """
 
-    def __init__(self, auth=None):
+    def __init__(self, auth=None, url=None):
         """
         Args:
             auth: TendrlAuth object (defines bearer token header), when auth is
@@ -98,6 +82,7 @@ class TendrlApi(object):
         """
         # requests auth object with so called tendrl bearer token
         self._auth = auth
+        self.url = url
 
     def alerts(self):
         """ Alerts REST API
@@ -106,8 +91,8 @@ class TendrlApi(object):
         Pattern:     "alerts",
         """
         response = requests.get(
-            URL + "alerts",
-            auth=self._auth,)
+            self.url + "alerts",
+            auth=self._auth)
         return response.json()
 
 
@@ -128,8 +113,13 @@ def main():
     config = ConfigParser.RawConfigParser()
     config.read("/etc/usmqe_alerts_logger_users.ini")
     password = config.get(args.user, "password")
-    auth = login(args.user, password)
-    api = TendrlApi(auth=auth)
+    ssl = True if config.get(args.user, "ssl") == "true" else False
+    if ssl:
+        url = "https://" + config.get(args.user, "url") + "/api/1.0/"
+    else:
+        url = "http://" + config.get(args.user, "url") + "/api/1.0/"
+    auth = login(args.user, password, url)
+    api = TendrlApi(auth=auth, url=url)
     logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
     logger = logging.getLogger("usmqe_alerts_logger@{}".format(args.user))
     formatter = TendrlFormatter(logging.BASIC_FORMAT)
