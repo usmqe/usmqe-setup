@@ -1,0 +1,34 @@
+---
+# ========================================
+#  QE configuration for alerts logger
+# ========================================
+#
+# This playbook serves as teardown of alerts logger on tendrl server machine.
+
+- hosts: usm_client
+  remote_user: root
+
+  tasks:
+    - name: Disable alert logger
+      systemd:
+        name: usmqe_alerts_logger@*
+        state: stopped
+        enabled: no
+
+    - name: Remove alerts_logger python script
+      file:
+        path: "/usr/local/bin/usmqe_alerts_logger.py"
+        state: absent
+
+    - name: Remove alerts_logger configuration
+      file:
+        path: "/etc/usmqe_alerts_logger_users.ini"
+        state: absent
+
+    - name: Remove service file
+      file:
+        dest: "/etc/systemd/system/"
+        state: absent
+
+    - name: force systemd to reread configs
+      systemd: daemon_reload=yes
