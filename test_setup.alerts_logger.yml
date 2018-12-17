@@ -15,8 +15,8 @@
   tasks:
     - name: Create alerts_logger python script
       copy:
-        dest: /usr/local/bin/usmqe_alerts_logger.py
-        src: usmqe_alerts_logger.py
+        dest: "/usr/local/bin/usmqe_alerts_logger.py"
+        src: "bin/usmqe_alerts_logger.py"
         mode: "+x"
 
     - name: Create service file
