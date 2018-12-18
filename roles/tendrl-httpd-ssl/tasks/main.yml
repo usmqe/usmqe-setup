@@ -54,6 +54,37 @@
     - restart httpd
 
 #
+# Automatic redirect of all http urls to https
+#
+
+- name: Configure SSL redirect in tendrl.conf
+  lineinfile:
+    path: /etc/httpd/conf.d/tendrl.conf
+    regexp: ' *#? *Redirect permanent / https://.*/'
+    line: "  Redirect permanent / https://{{ httpd_ip_address }}/"
+  notify:
+    - restart httpd
+
+- name: Comment out DocumentRoot, ProxyPass and ProxyPassReverse in tendrl.conf
+  lineinfile:
+    path: /etc/httpd/conf.d/tendrl.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - regexp: '  *#?DocumentRoot /var/www/tendrl'
+      line: '  #DocumentRoot /var/www/tendrl'
+    - regexp: '  *#?ProxyPass "/api" http://127.0.0.1:9292/'
+      line: '  #ProxyPass "/api" http://127.0.0.1:9292/'
+    - regexp: '  *#?ProxyPassReverse "/api" http://127.0.0.1:9292/'
+      line: '  #ProxyPassReverse "/api" http://127.0.0.1:9292/'
+    - regexp: '  *#?ProxyPass /grafana http://127.0.0.1:3000'
+      line: '  #ProxyPass /grafana http://127.0.0.1:3000'
+    - regexp: '  *#?ProxyPassReverse /grafana http://127.0.0.1:3000/grafana'
+      line: '  #ProxyPassReverse /grafana http://127.0.0.1:3000/grafana'
+  notify:
+    - restart httpd
+
+#
 # Config validation
 #
 
