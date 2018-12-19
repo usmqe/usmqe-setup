@@ -2,6 +2,6 @@ usmqe:
   web_url: http://{{ groups['usm_server'][0] }}
   api_url: http://{{ groups['usm_server'][0] }}/api/1.0/
   etcd_api_url: http://{{ groups['usm_server'][0] }}:2379/v2/
-  graphite_api_url: http://{{ groups['usm_server'][0] }}:10080/
+  graphite_api_url: http://{{ groups['usm_server'][0] }}:60080/
   grafana_api_url: http://{{ groups['usm_server'][0] }}/grafana/api/
   cluster_member: {{ groups['gluster_servers'][0] }}
