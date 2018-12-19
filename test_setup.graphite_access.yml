@@ -1,0 +1,17 @@
+---
+# Add firewalld rule to redirect port 60080/tcp to port 10080/tcp (Graphite) to
+# allow access to Graphite from tests.
+
+- hosts: tendrl_server
+  remote_user: root
+  tasks:
+    - name: Redirect port 60080/tcp to 10080/tcp (Graphite)
+      firewalld:
+        rich_rule: rule family={{ item }} forward-port port=60080 protocol=tcp to-port=10080
+        zone: public
+        permanent: yes
+        immediate: yes
+        state: enabled
+      with_items:
+        - ipv4
+        - ipv6
