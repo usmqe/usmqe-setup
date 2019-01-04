@@ -11,3 +11,8 @@
   when: configure_fips|default(false)|bool
 
 - include: gluster.yml
+
+- hosts: tendrl_server
+  remote_user: root
+  roles:
+    - { role: epel, epel_enabled: 1 }
