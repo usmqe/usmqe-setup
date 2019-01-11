@@ -119,12 +119,6 @@
 # other tools
 #
 
-- name: Start and enable atd
-  service:
-    name=atd
-    state=started
-    enabled=true
-
 - name: Install pylatest dependencies via yum
   yum: name={{ item }} state=installed enablerepo=epel
   with_items:
