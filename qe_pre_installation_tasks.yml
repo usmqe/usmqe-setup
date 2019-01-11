@@ -83,3 +83,12 @@
         name: chronyd
         state: started
         enabled: yes
+    - name: Install at
+      yum:
+        name: at
+        state: installed
+    - name: Enable and start atd service
+      service:
+        name: atd
+        state: started
+        enabled: yes
