@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 """Tendrl Notifier REST API logger."""
 
 import argparse
