@@ -3,7 +3,7 @@
 #  QE configuration for alerts logger
 # ========================================
 #
-# This playbook serves as teardown of alerts logger on tendrl server machine.
+# This playbook serves as teardown of alerts logger on client machine.
 
 - hosts: usm_client
   remote_user: root
@@ -27,7 +27,7 @@
 
     - name: Remove service file
       file:
-        dest: "/etc/systemd/system/"
+        dest: "/etc/systemd/system/usmqe_alerts_logger@.service"
         state: absent
 
     - name: force systemd to reread configs

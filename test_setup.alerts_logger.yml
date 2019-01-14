@@ -3,7 +3,7 @@
 #  QE configuration for alerts logger
 # ========================================
 #
-# This playbook serves as setup of alerts logger on tendrl server machine.
+# This playbook serves as setup of alerts logger on a client machine.
 # It periodically logs alerts from tendrl api based on tendrl user.
 
 - hosts: usm_client
