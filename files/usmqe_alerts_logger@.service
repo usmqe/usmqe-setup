@@ -1,0 +1,9 @@
+[Unit]
+Description=Tendrl alerts logger for user %i
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c "/usr/local/bin/usmqe_alerts_logger.py %i"
+
+[Install]
+WantedBy=multi-user.target

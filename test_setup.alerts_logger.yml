@@ -1,0 +1,46 @@
+---
+# ========================================
+#  QE configuration for alerts logger
+# ========================================
+#
+# This playbook serves as setup of alerts logger on a client machine.
+# It periodically logs alerts from tendrl api based on tendrl user.
+
+- hosts: usm_client
+  remote_user: root
+  vars:
+    tendrl_user: "admin"
+    tendrl_password: "adminuser"
+    tendrl_ssl: "false"
+
+  tasks:
+    - name: Create alerts_logger python script
+      copy:
+        dest: "/usr/local/bin/usmqe_alerts_logger.py"
+        src: "bin/usmqe_alerts_logger.py"
+        mode: "+x"
+
+    - name: Create service file
+      copy:
+        dest: /etc/systemd/system/
+        src: usmqe_alerts_logger@.service
+
+    - name: force systemd to reread configs
+      systemd: daemon_reload=yes
+
+    - name: Add user and address to users.ini
+      ini_file:
+        path: /etc/usmqe_alerts_logger_users.ini
+        section: "{{ tendrl_user }}"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - { option: "password", value: "{{ tendrl_password }}" }
+        - { option: "url", value: "{{ groups['usm_server'][0] }}" }
+        - { option: "ssl", value: "{{ tendrl_ssl }}" }
+
+    - name: Enable alert logger
+      systemd:
+        name: usmqe_alerts_logger@{{ tendrl_user }}
+        state: started
+        enabled: True
