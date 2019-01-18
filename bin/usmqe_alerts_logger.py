@@ -130,9 +130,17 @@ def main():
     last_alerts = []
     while(True):
         alerts = api.alerts()
+        # how many alerts in current alert list we have already seen last time
+        seen_count = 0
         for alert in alerts:
             if alert not in last_alerts:
                 logger.info(alert)
+            else:
+                seen_count =+ 1
+        if seen_count > 0:
+            logger.info("Old alerts seen in last check that were not "\
+                "logged again: {0}".format(
+                    seen_count))
         last_alerts = alerts
         time.sleep(10)
 
