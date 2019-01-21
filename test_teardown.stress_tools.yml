@@ -1,5 +1,5 @@
 ---
-# Removal of stress-ng tool and all it's dependencies from EPEL,
+# Removal of stress, stress-ng tool and all it's dependencies from EPEL,
 # to make sure we don't keep other packages from EPEL installed.
 - hosts: usm_nodes
   remote_user: root
@@ -10,6 +10,7 @@
         state: absent
       with_items:
         - stress-ng
+        - stress
         - libbsd
       register: task_result
       until: task_result is success
