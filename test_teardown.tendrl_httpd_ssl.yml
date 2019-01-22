@@ -20,6 +20,26 @@
         state: absent
       notify: restart httpd
 
+    - name: Restore tendrl.conf from backup
+      copy:
+        src: /etc/httpd/conf.d/tendrl.conf.usmqe_backup
+        dest: /etc/httpd/conf.d/tendrl.conf
+        remote_src: yes
+        backup: yes
+      notify: restart httpd
+
+    - name: Run rpm -qV tendrl-api-httpd to validate config file restoration
+      command: rpm -qV tendrl-api-httpd
+      changed_when: False
+      register: rpm_qv_tendrl_api_httpd
+      failed_when: rpm_qv_tendrl_api_httpd.rc > 1
+
+    - name: Recheck result of config file restoration (based on previous task)
+      assert:
+        that:
+          - (rpm_qv_tendrl_api_httpd.rc == 0) or (rpm_qv_tendrl_api_httpd.stdout == '.......T.  c /etc/httpd/conf.d/tendrl.conf')
+          - rpm_qv_tendrl_api_httpd.stderr == ''
+
     - name: Remove mod_ssl package
       yum:
         name: mod_ssl

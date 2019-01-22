@@ -57,6 +57,13 @@
 # Automatic redirect of all http urls to https
 #
 
+- name: Backup tendrl.conf (for easy teardown)
+  copy:
+    src: /etc/httpd/conf.d/tendrl.conf
+    dest: /etc/httpd/conf.d/tendrl.conf.usmqe_backup
+    remote_src: yes
+    backup: yes
+
 - name: Configure SSL redirect in tendrl.conf
   lineinfile:
     path: /etc/httpd/conf.d/tendrl.conf
