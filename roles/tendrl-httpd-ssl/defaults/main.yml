@@ -1,3 +1,5 @@
 ---
 httpd_server_name: "{{ inventory_hostname }}"
 httpd_ip_address: "{{ ansible_default_ipv4.address }}"
+tendrl_https_redirection: True
+tendrl_https_disable_port_80: False

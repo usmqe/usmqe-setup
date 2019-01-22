@@ -25,3 +25,7 @@ Variables
   if not specified, default self signed one is used
 * ``httpd_ssl_certificate_file``: ``SSLCertificateKeyFile`` of the Tendrl Web,
   if not specified, default self signed one is used
+* ``tendrl_https_redirection``: should we redirect http request to https?
+  (default True)
+* ``tendrl_https_disable_port_80``: should we disable http port for better
+  testing? (default False)

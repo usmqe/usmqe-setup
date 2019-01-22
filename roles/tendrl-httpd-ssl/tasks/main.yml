@@ -62,6 +62,7 @@
     path: /etc/httpd/conf.d/tendrl.conf
     regexp: ' *#? *Redirect permanent / https://.*/'
     line: "  Redirect permanent / https://{{ httpd_ip_address }}/"
+  when: tendrl_https_redirection == True
   notify:
     - restart httpd
 
@@ -81,6 +82,7 @@
       line: '  #ProxyPass /grafana http://127.0.0.1:3000'
     - regexp: '  *#?ProxyPassReverse /grafana http://127.0.0.1:3000/grafana'
       line: '  #ProxyPassReverse /grafana http://127.0.0.1:3000/grafana'
+  when: tendrl_https_redirection == True
   notify:
     - restart httpd
 
@@ -112,8 +114,10 @@
   firewalld:
     service=http
     zone=public permanent=true state=disabled immediate=true
+  when: tendrl_https_disable_port_80 == True
 
 - name: Close port 80 in firewalld (for proper testing)
   firewalld:
     port="80/tcp"
     zone=public permanent=true state=disabled immediate=true
+  when: tendrl_https_disable_port_80 == True
