@@ -68,7 +68,7 @@
   lineinfile:
     path: /etc/httpd/conf.d/tendrl.conf
     regexp: ' *#? *Redirect permanent / https://.*/'
-    line: "  Redirect permanent / https://{{ httpd_ip_address }}/"
+    line: "  Redirect permanent / https://{{ httpd_server_name }}/"
   when: tendrl_https_redirection == True
   notify:
     - restart httpd
