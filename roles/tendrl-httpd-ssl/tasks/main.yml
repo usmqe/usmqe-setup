@@ -41,7 +41,7 @@
 
 - name: Configure SSL certificate files
   lineinfile:
-    path: /etc/httpd/conf.d/tendrl-ssl.conf
+    path: /etc/httpd/conf.d/ssl.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
