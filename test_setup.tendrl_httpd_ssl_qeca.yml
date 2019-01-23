@@ -27,3 +27,12 @@
     - role: tendrl-httpd-ssl
       httpd_ssl_certificate_key_file: "/etc/pki/tls/private/{{ tendrl_ssl_cert_name }}.key"
       httpd_ssl_certificate_file: "/etc/pki/tls/certs/{{ tendrl_ssl_cert_name }}.crt"
+
+# For client machine to be able to communicate with Tendrl over https without
+# any problems, QE CA cert file (which signed the just deployed Tendrl httpd
+# cert) is imported on the client.
+
+- hosts: usm_client
+  remote_user: root
+  roles:
+    - role: qe-ssl-ca
