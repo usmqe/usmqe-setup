@@ -63,6 +63,7 @@
     dest: /etc/httpd/conf.d/tendrl.conf.usmqe_backup
     remote_src: yes
     backup: yes
+    force: no
 
 - name: Configure SSL redirect in tendrl.conf
   lineinfile:

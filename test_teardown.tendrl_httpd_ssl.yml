@@ -26,6 +26,7 @@
         dest: /etc/httpd/conf.d/tendrl.conf
         remote_src: yes
         backup: yes
+        force: yes
       notify: restart httpd
 
     - name: Run rpm -qV tendrl-api-httpd to validate config file restoration
