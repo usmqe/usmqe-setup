@@ -1,0 +1,29 @@
+---
+# ===============================================================
+#  Setup of HTTPS for Tendrl UI, API and Grafana using QE SSL CA
+# ===============================================================
+#
+# This is real world use case which doesn't use self signed SSL certs, but
+# instead it:
+#
+#  * generates new SSL certificate for httpd on Tendrl server
+#  * sings this new cert with QE SSL CA
+#  * SSL key and cert for http is different from SSL key and cert used for
+#    etcd client server auth (but it's signed by the same QE SSL CA)
+#
+# Browsers and clients of QE team have this QE CA imported, so that there
+# should be no warning about unknown SSL certificate, and accessing Tendrl
+# via https should just work.
+
+- hosts: usm_server
+  remote_user: root
+  vars:
+    tendrl_ssl_cert_name: "tendrl-grafana-http"
+  roles:
+    - role: qe-ssl-cert
+      ssl_cert_name: "{{ tendrl_ssl_cert_name }}"
+      ssl_owner: "apache"
+      ssl_group: "apache"
+    - role: tendrl-httpd-ssl
+      httpd_ssl_certificate_key_file: "/etc/pki/tls/private/{{ tendrl_ssl_cert_name }}.key"
+      httpd_ssl_certificate_file: "/etc/pki/tls/certs/{{ tendrl_ssl_cert_name }}.crt"

@@ -1,9 +1,0 @@
----
-#
-# obtain ssl certs on all servers
-#
-
-- hosts: usm_server:usm_nodes:usm_client
-  remote_user: root
-  roles:
-    - {role: qe-ssl-cert, ssl_cert_name: "server"}
