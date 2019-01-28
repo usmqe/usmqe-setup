@@ -1,0 +1,27 @@
+---
+# ===========================================================================
+#  QE configuration for starting again gluster volumes on gluster machines
+# ===========================================================================
+#
+# This playbook serves as a teardown for tests that check availability of
+# gluster volumes. It starts all gluster volumes on gluster nodes.
+
+- hosts: gluster_servers
+  remote_user: root
+  tasks:
+    - name: Get list of gluster volumes
+      command: gluster volume list
+      run_once: true
+      register: gluster_volumes
+      changed_when: false
+
+    - name: Start all gluster volumes
+      gluster_volume:
+        state: started
+        name: "{{ item }}"
+      with_items: "{{ gluster_volumes.stdout_lines }}"
+      run_once: true
+      retries: 5
+      delay: 5
+      register: result
+      until: 'result is success'
