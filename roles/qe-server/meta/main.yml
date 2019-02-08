@@ -2,3 +2,4 @@
 dependencies:
   - { role: epel, epel_enabled: 1, qe_not_production_testing_server: True}
   - { role: rh-python36 }
+  - { role: qe-ssl-ca }

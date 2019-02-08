@@ -1,0 +1,12 @@
+---
+# ===============================================
+#  Setup of HTTPS for Tendrl UI, API and Grafana
+# ===============================================
+#
+# This is **minimal setup**, which **uses default local ssl certs** provided by
+# mod_ssl rpm package.
+
+- hosts: usm_server
+  remote_user: root
+  roles:
+    - role: tendrl-httpd-ssl

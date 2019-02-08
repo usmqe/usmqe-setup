@@ -10,6 +10,7 @@
    - { role: epel, epel_enabled: 1 }
    - rh-python36
    - tendrl-ansible.gluster-gdeploy-copr
+   - qe-ssl-ca
    - qe-server
 
 - name: Prepare test environment of usmqe user

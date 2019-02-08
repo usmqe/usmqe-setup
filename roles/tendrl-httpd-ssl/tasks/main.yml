@@ -1,0 +1,131 @@
+---
+
+- debug:
+    var: httpd_server_name
+
+- debug:
+    var: httpd_ip_address
+
+- name: Install mod_ssl package
+  yum:
+    name: mod_ssl
+    state: latest
+
+- name: Initialize new tendrl-ssl.conf file based on sample conf file
+  copy:
+    src: /etc/httpd/conf.d/tendrl-ssl.conf.sample
+    remote_src: True
+    dest: /etc/httpd/conf.d/tendrl-ssl.conf
+
+- name: Replace ssl_virtualhost_ip with the correct ip address
+  lineinfile:
+    path: /etc/httpd/conf.d/tendrl-ssl.conf
+    regexp: '^<VirtualHost .*:443>'
+    line: "<VirtualHost {{ httpd_ip_address }}:443>"
+  notify:
+    - restart httpd
+
+- name: Adjust ServerName
+  lineinfile:
+    path: /etc/httpd/conf.d/tendrl-ssl.conf
+    insertafter: '<VirtualHost .*:443>'
+    regexp: '^ *ServerName .*'
+    line: "  ServerName {{ httpd_server_name }}"
+    state: present
+  notify:
+    - restart httpd
+
+#
+# Specify different cert files if needed
+#
+
+- name: Configure SSL certificate files
+  lineinfile:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - regexp: '^ *SSLCertificateFile .*'
+      line: '  SSLCertificateFile {{ httpd_ssl_certificate_file }}'
+    - regexp: '^ *SSLCertificateKeyFile .*'
+      line: '  SSLCertificateKeyFile {{ httpd_ssl_certificate_key_file }}'
+  when: httpd_ssl_certificate_key_file is defined and httpd_ssl_certificate_file is defined
+  notify:
+    - restart httpd
+
+#
+# Automatic redirect of all http urls to https
+#
+
+- name: Backup tendrl.conf (for easy teardown)
+  copy:
+    src: /etc/httpd/conf.d/tendrl.conf
+    dest: /etc/httpd/conf.d/tendrl.conf.usmqe_backup
+    remote_src: yes
+    backup: yes
+    force: no
+
+- name: Configure SSL redirect in tendrl.conf
+  lineinfile:
+    path: /etc/httpd/conf.d/tendrl.conf
+    regexp: ' *#? *Redirect permanent / https://.*/'
+    line: "  Redirect permanent / https://{{ httpd_server_name }}/"
+  when: tendrl_https_redirection == True
+  notify:
+    - restart httpd
+
+- name: Comment out DocumentRoot, ProxyPass and ProxyPassReverse in tendrl.conf
+  lineinfile:
+    path: /etc/httpd/conf.d/tendrl.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - regexp: '  *#?DocumentRoot /var/www/tendrl'
+      line: '  #DocumentRoot /var/www/tendrl'
+    - regexp: '  *#?ProxyPass "/api" http://127.0.0.1:9292/'
+      line: '  #ProxyPass "/api" http://127.0.0.1:9292/'
+    - regexp: '  *#?ProxyPassReverse "/api" http://127.0.0.1:9292/'
+      line: '  #ProxyPassReverse "/api" http://127.0.0.1:9292/'
+    - regexp: '  *#?ProxyPass /grafana http://127.0.0.1:3000'
+      line: '  #ProxyPass /grafana http://127.0.0.1:3000'
+    - regexp: '  *#?ProxyPassReverse /grafana http://127.0.0.1:3000/grafana'
+      line: '  #ProxyPassReverse /grafana http://127.0.0.1:3000/grafana'
+  when: tendrl_https_redirection == True
+  notify:
+    - restart httpd
+
+#
+# Config validation
+#
+
+- name: Run apachectl configtest to validate new configuration
+  command: apachectl -t
+  changed_when: False
+  register: apachectl_configtest
+
+- name: Recheck result of config validation (based on previous task)
+  assert:
+    that:
+      - apachectl_configtest.stderr == 'Syntax OK'
+      - apachectl_configtest.stdout == ''
+
+#
+# Firewall
+#
+
+- name: Open port for https in firewalld
+  firewalld:
+    service=https
+    zone=public permanent=true state=enabled immediate=true
+
+- name: Disable http service in firewalld (for proper testing)
+  firewalld:
+    service=http
+    zone=public permanent=true state=disabled immediate=true
+  when: tendrl_https_disable_port_80 == True
+
+- name: Close port 80 in firewalld (for proper testing)
+  firewalld:
+    port="80/tcp"
+    zone=public permanent=true state=disabled immediate=true
+  when: tendrl_https_disable_port_80 == True

@@ -1,0 +1,30 @@
+---
+
+- name: Make sure openssl is installed
+  yum:
+    name: openssl
+    state: present
+
+- name: Make sure anchors directory exists
+  file:
+    path: /etc/pki/ca-trust/source/anchors
+    state: directory
+
+- name: Check that mandatory variables are defined
+  assert:
+    that:
+      - ca_usmqe_cert_url is defined
+    msg: >
+      You need to define all mandatory ansible variables to run this
+      playbook, see README file for guidance.
+
+- name: Get QE CA cert file
+  get_url:
+    url: "{{ ca_usmqe_cert_url }}"
+    dest: "/etc/pki/ca-trust/source/anchors/ca-usmqe.crt"
+    mode: "{{ ssl_cert_perm }}"
+  register: ca_trust
+
+- name: Run update-ca-trust extract
+  command: update-ca-trust extract
+  when: ca_trust.changed
