@@ -11,15 +11,15 @@
     name: mod_ssl
     state: latest
 
-- name: Initialize new tendrl-ssl.conf file based on sample conf file
+- name: Initialize new 00_tendrl-ssl.conf file based on sample conf file
   copy:
-    src: /etc/httpd/conf.d/tendrl-ssl.conf.sample
+    src: /etc/httpd/conf.d/00_tendrl-ssl.conf.sample
     remote_src: True
-    dest: /etc/httpd/conf.d/tendrl-ssl.conf
+    dest: /etc/httpd/conf.d/00_tendrl-ssl.conf
 
 - name: Replace ssl_virtualhost_ip with the correct ip address
   lineinfile:
-    path: /etc/httpd/conf.d/tendrl-ssl.conf
+    path: /etc/httpd/conf.d/00_tendrl-ssl.conf
     regexp: '^<VirtualHost .*:443>'
     line: "<VirtualHost {{ httpd_ip_address }}:443>"
   notify:
@@ -27,7 +27,7 @@
 
 - name: Adjust ServerName
   lineinfile:
-    path: /etc/httpd/conf.d/tendrl-ssl.conf
+    path: /etc/httpd/conf.d/00_tendrl-ssl.conf
     insertafter: '<VirtualHost .*:443>'
     regexp: '^ *ServerName .*'
     line: "  ServerName {{ httpd_server_name }}"
@@ -41,7 +41,7 @@
 
 - name: Configure SSL certificate files
   lineinfile:
-    path: /etc/httpd/conf.d/ssl.conf
+    path: /etc/httpd/conf.d/00_tendrl-ssl.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
