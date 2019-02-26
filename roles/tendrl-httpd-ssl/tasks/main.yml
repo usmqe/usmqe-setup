@@ -17,14 +17,6 @@
     remote_src: True
     dest: /etc/httpd/conf.d/00_tendrl-ssl.conf
 
-- name: Replace ssl_virtualhost_ip with the correct ip address
-  lineinfile:
-    path: /etc/httpd/conf.d/00_tendrl-ssl.conf
-    regexp: '^<VirtualHost .*:443>'
-    line: "<VirtualHost {{ httpd_ip_address }}:443>"
-  notify:
-    - restart httpd
-
 - name: Adjust ServerName
   lineinfile:
     path: /etc/httpd/conf.d/00_tendrl-ssl.conf
