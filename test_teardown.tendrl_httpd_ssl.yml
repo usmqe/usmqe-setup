@@ -14,9 +14,9 @@
       service: name=httpd state=restarted
   tasks:
 
-    - name: Remove tendrl-ssl.conf file
+    - name: Remove 00_tendrl-ssl.conf file
       file:
-        path: /etc/httpd/conf.d/tendrl-ssl.conf
+        path: /etc/httpd/conf.d/00_tendrl-ssl.conf
         state: absent
       notify: restart httpd
 
