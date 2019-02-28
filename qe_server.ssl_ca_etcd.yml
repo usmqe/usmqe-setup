@@ -1,0 +1,10 @@
+---
+# SSL setup for etcd client-server authentication for qe server, so that it's
+# possible to access Tendrl etcd instance from qe server.
+
+- hosts: qe_server
+  remote_user: root
+  roles:
+    - role: qe-ssl-cert
+      ssl_key_perm: "0644"
+      ssl_cert_name: "etcd"
