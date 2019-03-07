@@ -29,6 +29,11 @@
 - name: HACK - install python modules required to run usmqe-tests
   shell: scl enable rh-python36 "pip install --user -r  {{ ansible_user_dir }}/usmqe-tests/requirements.txt"
 
+# This is necessary for usmqe module and it's entry points (related to taretto
+# selenium tests) to be available.
+- name: HACK - install usmqe python module
+  shell: scl enable rh-python36 "pip install --user -e {{ ansible_user_dir }}/usmqe-tests/"
+
 # Based on http://developers.redhat.com/blog/2014/03/19/permanently-enable-a-software-collection/
 - name: Enable the software collection in ~/.bashrc
   lineinfile:
