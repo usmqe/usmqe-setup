@@ -10,10 +10,12 @@
    - { role: epel, epel_enabled: 1 }
    - rh-python36
    - tendrl-ansible.gluster-gdeploy-copr
-   - qe-ssl-ca
+   - role: qe-ssl-ca
+     when: skip_ssl_configuration is not defined
    - role: qe-ssl-cert
      ssl_key_perm: "0644"
      ssl_cert_name: "qeserver"
+     when: skip_ssl_configuration is not defined
    - qe-server
 
 - name: Prepare test environment of usmqe user
