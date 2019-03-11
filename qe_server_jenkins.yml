@@ -11,6 +11,9 @@
    - rh-python36
    - tendrl-ansible.gluster-gdeploy-copr
    - qe-ssl-ca
+   - role: qe-ssl-cert
+     ssl_key_perm: "0644"
+     ssl_cert_name: "qeserver"
    - qe-server
   tasks:
    - name: Add jenkins user into usmqe group
