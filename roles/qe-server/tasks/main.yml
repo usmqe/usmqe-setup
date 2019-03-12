@@ -78,6 +78,7 @@
     - x11vnc
     - firefox
     - chromium
+    - chromedriver
 
 - name: Install systemd service unit file
   copy:
