@@ -1,7 +1,7 @@
 ---
 
 - name: Fail if evidence_target variable is not defined
-  fail: msg="You need to define evidence target variable"
+  fail: msg="You need to define evidence_target variable"
   when: evidence_target is undefined
   delegate_to: 127.0.0.1
 
