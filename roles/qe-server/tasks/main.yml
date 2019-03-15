@@ -91,6 +91,9 @@
   with_items:
     - Xvfb.service
     - x11vnc.service
+  notify:
+    - restart Xvfb
+    - restart x11vnc
 
 - name: Enable both services
   service:

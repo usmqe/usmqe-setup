@@ -1,0 +1,12 @@
+---
+- name: restart Xvfb
+  service:
+    name: Xvfb
+    state: restarted
+    daemon-reload: yes
+
+- name: restart x11vnc
+  service:
+    name: x11vnc
+    state: restarted
+    daemon-reload: yes
