@@ -49,7 +49,7 @@ function mrg_ssl_create_key() {
   #echo -e ".\n.\n.\n.\n.\n${CERT_CN}\n.\n.\n.\n" \
   #| openssl req -new -nodes -key ${CERT_NAME}.key  -out ${CERT_NAME}.csr
   openssl req -new -nodes -key ${CERT_NAME}.key -out ${CERT_NAME}.csr -config /tmp/openssl.cnf \
-    -subj "/C=CZ/ST=CZ/L=Brno/O=Red Hat/OU=USM - QE/CN=${CERT_CN}"
+    -subj "/C=CZ/ST=CZ/L=Brno/O=Red Hat/OU=USM - QE/CN=${CERT_CN}" -sha256
   [ $? -ne 0 ] && err=$((${err} + 1))
 }
 
