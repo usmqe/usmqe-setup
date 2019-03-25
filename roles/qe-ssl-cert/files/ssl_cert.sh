@@ -17,7 +17,7 @@ function mrg_ssl_create_key() {
   local CERT_CN=$2
   test -f /etc/cron.d/redhat-ddns && \
     local DDNS_NAME=$(head -1 /etc/cron.d/redhat-ddns | sed 's|.*name=\([-a-zA-Z0-9]*\)&.*|\1|').usersys.redhat.com
-  host ${CERT_CN} && local IP=$(host ${CERT_CN} | sed 's|[-0-9a-zA-Z.]* has address \([0-9.]*\)|\1|')
+  host $(hostname -f) && local IP=$(host $(hostname -f) | sed 's|[-0-9a-zA-Z.]* has address \([0-9.]*\)|\1|')
 
 
   # Prepare openssl.cnf
