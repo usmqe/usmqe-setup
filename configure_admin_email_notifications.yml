@@ -17,8 +17,7 @@
   vars:
     tendrl_user: "admin"
     tendrl_password: "adminuser"
-    tendrl_api_url_protocol: "http"
-    tendrl_api_url: "{{ tendrl_api_url_protocol }}://{{ inventory_hostname }}/api/1.0"
+    tendrl_api_url: "{{ tendrl_api_url_protocol | default('http') }}://{{ inventory_hostname }}/api/1.0"
 
   pre_tasks:
     - name: Check that 'recipient_email' variable is defined properly

@@ -72,9 +72,7 @@
     # TODO: load admin and password from somewhere?
     tendrl_user: "admin"
     tendrl_password: "adminuser"
-    # note: we don't support https or other api versions so far
-    tendrl_api_url_protocol: "http"
-    tendrl_api_url: "{{ tendrl_api_url_protocol }}://{{ inventory_hostname }}/api/1.0"
+    tendrl_api_url: "{{ tendrl_api_url_protocol | default('http') }}://{{ inventory_hostname }}/api/1.0"
     # notifier sends email alerts (for tendrl admin) to this email address
     tendrl_admin_recipient_email: "root@{{ groups['usm_client'][0] }}"
     # notifier sends email alerts from this email address
