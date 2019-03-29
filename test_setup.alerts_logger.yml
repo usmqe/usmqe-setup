@@ -11,9 +11,17 @@
   vars:
     tendrl_user: "admin"
     tendrl_password: "adminuser"
-    tendrl_ssl: "false"
 
   tasks:
+
+    - set_fact:
+        tendrl_ssl: "{{ 'true' if tendrl_api_url_protocol == 'https' else 'false' }}"
+      when: tendrl_api_url_protocol is defined
+
+    - set_fact:
+        tendrl_ssl: "false"
+      when: tendrl_api_url_protocol is undefined
+
     - name: Create alerts_logger python script
       copy:
         dest: "/usr/local/bin/usmqe_alerts_logger.py"
