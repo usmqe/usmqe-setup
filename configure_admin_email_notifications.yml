@@ -26,8 +26,13 @@
           - recipient_email is defined
 
   tasks:
+
+    - debug:
+        var: tendrl_api_url
+
     - name: Login into Tendrl
-      uri:
+      local_action:
+        module: uri
         url: "{{ tendrl_api_url }}/login"
         method: POST
         body: {"username":"{{ tendrl_user }}", "password":"{{ tendrl_password }}"}
@@ -35,7 +40,8 @@
       register: login
 
     - name: Configure admin user
-      uri:
+      local_action:
+        module: uri
         url: "{{ tendrl_api_url }}/users/admin"
         method: PUT
         body: {"name":"Admin", "username":"admin", "email":"{{ recipient_email }}", "role":"admin", "email_notifications":true}
@@ -44,7 +50,8 @@
           Authorization: Bearer {{ login.json.access_token }}
 
     - name: Logout
-      uri:
+      local_action:
+        module: uri
         url: "{{ tendrl_api_url }}/logout"
         method: DELETE
         return_content: yes

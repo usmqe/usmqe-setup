@@ -15,6 +15,9 @@
 
   tasks:
 
+    - debug:
+        var: tendrl_api_url
+
     # this task comes from tendl-ansible,
     # using default values from tendrl-notifier rpm package
     - name: Reset email notifications in email.conf.yaml of tendrl-notifier
@@ -33,7 +36,8 @@
         - restart tendrl-notifier
 
     - name: Login into Tendrl via API
-      uri:
+      local_action:
+        module: uri
         url: "{{ tendrl_api_url }}/login"
         method: POST
         body: {"username":"{{ tendrl_user }}", "password":"{{ tendrl_password }}"}
@@ -41,7 +45,8 @@
       register: login
 
     - name: Disable and unconfigure email notifications for admin user via API
-      uri:
+      local_action:
+        module: uri
         url: "{{ tendrl_api_url }}/users/admin"
         method: PUT
         body: {"name":"Admin", "username":"admin", "email":"admin@example.com", "role":"admin", "email_notifications":false}
@@ -50,7 +55,8 @@
           Authorization: Bearer {{ login.json.access_token }}
 
     - name: Logout via API
-      uri:
+      local_action:
+        module: uri
         url: "{{ tendrl_api_url }}/logout"
         method: DELETE
         return_content: yes
