@@ -72,9 +72,7 @@
     # TODO: load admin and password from somewhere?
     tendrl_user: "admin"
     tendrl_password: "adminuser"
-    # note: we don't support https or other api versions so far
-    tendrl_api_url_protocol: "http"
-    tendrl_api_url: "{{ tendrl_api_url_protocol }}://{{ inventory_hostname }}/api/1.0"
+    tendrl_api_url: "{{ tendrl_api_url_protocol | default('http') }}://{{ inventory_hostname }}/api/1.0"
     # notifier sends email alerts (for tendrl admin) to this email address
     tendrl_admin_recipient_email: "root@{{ groups['usm_client'][0] }}"
     # notifier sends email alerts from this email address
@@ -85,6 +83,9 @@
     tendrl_notifier_email_smtp_port: "25"
 
   tasks:
+
+    - debug:
+        var: tendrl_api_url
 
     # this task comes from tendl-ansible
     - name: Setup email notifications in email.conf.yaml of tendrl-notifier
@@ -103,7 +104,8 @@
         - restart tendrl-notifier
 
     - name: Login into Tendrl via API
-      uri:
+      local_action:
+        module: uri
         url: "{{ tendrl_api_url }}/login"
         method: POST
         body: {"username":"{{ tendrl_user }}", "password":"{{ tendrl_password }}"}
@@ -111,7 +113,8 @@
       register: login
 
     - name: Enable and configure email notifications for admin user via API
-      uri:
+      local_action:
+        module: uri
         url: "{{ tendrl_api_url }}/users/admin"
         method: PUT
         body: {"name":"Admin", "username":"admin", "email":"{{ tendrl_admin_recipient_email }}", "role":"admin", "email_notifications":true}
@@ -120,7 +123,8 @@
           Authorization: Bearer {{ login.json.access_token }}
 
     - name: Logout via API
-      uri:
+      local_action:
+        module: uri
         url: "{{ tendrl_api_url }}/logout"
         method: DELETE
         return_content: yes
