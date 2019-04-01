@@ -12,6 +12,13 @@
     tendrl_user: "admin"
     tendrl_password: "adminuser"
 
+  handlers:
+
+    - name: Restart alert logger
+      service:
+        name: usmqe_alerts_logger@{{ tendrl_user }}
+        state: restarted
+
   tasks:
 
     - set_fact:
@@ -46,8 +53,10 @@
         - { option: "password", value: "{{ tendrl_password }}" }
         - { option: "url", value: "{{ groups['usm_server'][0] }}" }
         - { option: "ssl", value: "{{ tendrl_ssl }}" }
+      notify:
+        - Restart alert logger
 
-    - name: Enable alert logger
+    - name: Enable and start alert logger
       systemd:
         name: usmqe_alerts_logger@{{ tendrl_user }}
         state: started
