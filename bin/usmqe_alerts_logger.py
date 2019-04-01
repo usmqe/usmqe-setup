@@ -113,7 +113,7 @@ def main():
     config = ConfigParser.RawConfigParser()
     config.read("/etc/usmqe_alerts_logger_users.ini")
     password = config.get(args.user, "password")
-    ssl = True if config.get(args.user, "ssl") == "true" else False
+    ssl = bool(config.get(args.user, "ssl"))
     if ssl:
         url = "https://" + config.get(args.user, "url") + "/api/1.0/"
     else:
