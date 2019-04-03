@@ -113,7 +113,7 @@ def main():
     config = ConfigParser.RawConfigParser()
     config.read("/etc/usmqe_alerts_logger_users.ini")
     password = config.get(args.user, "password")
-    ssl = bool(config.get(args.user, "ssl"))
+    ssl = config.get(args.user, "ssl") in ['true', 'True']
     if ssl:
         url = "https://" + config.get(args.user, "url") + "/api/1.0/"
     else:
@@ -133,7 +133,7 @@ def main():
         # how many alerts in current alert list we have already seen last time
         seen_count = 0
         for alert in alerts:
-            if alert not in last_alerts:
+            if alert['tags']['message'] not in last_alerts:
                 logger.info(alert)
             else:
                 seen_count =+ 1
@@ -141,7 +141,7 @@ def main():
             logger.info("Old alerts seen in last check that were not "\
                 "logged again: {0}".format(
                     seen_count))
-        last_alerts = alerts
+        last_alerts = [alert['tags']['message'] for alert in alerts]
         time.sleep(10)
 
 
