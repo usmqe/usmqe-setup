@@ -1,0 +1,15 @@
+---
+# =============================================================
+#  QE configuration for stopping tendrl node agent on one node
+# =============================================================
+#
+# This playbook serves as a setup for negative test cases, such as import
+# with cluster in an invalid state.
+
+- hosts: gluster_servers[0]
+  remote_user: root
+  tasks:
+    - name: Stop tendrl-node-agent
+      service:
+        name: tendrl-node-agent
+        state: stopped
