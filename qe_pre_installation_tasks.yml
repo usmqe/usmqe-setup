@@ -52,6 +52,13 @@
       with_items: "{{ (additional_repos_usm_client | default('')).split(',') }}"
       when: item != ""
 
+    - name: Stop and disable firewalld
+      service: 
+        name: firewalld
+        state: stopped
+        enabled: false
+      ignore_errors: yes 
+
 - hosts: usm_server:usm_nodes:usm_client
   remote_user: root
   tasks:
